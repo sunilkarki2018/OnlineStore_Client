@@ -1,6 +1,18 @@
-import { AppBar, Box, List, ListItem, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Badge,
+  Box,
+  IconButton,
+  List,
+  ListItem,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import * as React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { AppState } from "../redux/store";
+import useAppSelector from "../hooks/useAppSelector";
+import { ShoppingCart } from "@mui/icons-material";
 
 const mainLinks = [
   { title: "Home", path: "/" },
@@ -8,6 +20,10 @@ const mainLinks = [
 ];
 
 export default function Header() {
+  const { cartItems, loading } = useAppSelector(
+    (state: AppState) => state.cart
+  );
+  const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ mb: 4 }}>
@@ -16,6 +32,19 @@ export default function Header() {
             Ecommerce
           </Typography>
 
+          <IconButton
+            component={Link}
+            to="/cartList"
+            size="large"
+            edge="start"
+            color="inherit"
+            sx={{ mr: 2 }}
+          >
+            <Badge badgeContent={cartItemCount} color="secondary">
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
+
           <List sx={{ display: "flex" }}>
             {mainLinks.map(({ title, path }) => (
               <ListItem component={NavLink} to={path} key={path}>
@@ -23,7 +52,6 @@ export default function Header() {
               </ListItem>
             ))}
           </List>
-
         </Toolbar>
       </AppBar>
     </Box>

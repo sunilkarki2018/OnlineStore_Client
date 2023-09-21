@@ -26,7 +26,7 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
 
   const { singleLoading, productsSingle } = useAppSelector(
-    (state: AppState) => state.productReducer
+    (state: AppState) => state.product
   );
   const dispatch = useAppDispatch();
 

@@ -8,16 +8,20 @@ import { fetchAllProductsAsync } from "../redux/productReducer";
 import apis from "../apis/urls";
 import { Product } from "../types/Product";
 import { LoadingButton } from "@mui/lab";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   const { productsList, listLoading } = useAppSelector(
-    (state: AppState) => state.productReducer
+    (state: AppState) => state.product
   );
+  const { cartItems, loading } = useAppSelector(
+    (state: AppState) => state.cart
+  );
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("ProductList: ", productsList);
     dispatch(fetchAllProductsAsync());
   }, []);
 
@@ -37,6 +41,9 @@ export const HomePage = () => {
   return (
     <>
       <ProductList products={productsList} />
+      <Button component={Link} to={`/cartList`} size="small">
+          View
+        </Button>
     </>
   );
 };
