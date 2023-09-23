@@ -12,10 +12,10 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
-import useAppSelector from "../../hooks/useAppSelector";
-import { AppState } from "../../redux/store";
-import { addToCart, removeFromCart } from "../../redux/cartReducer";
-import useAppDispatch from "../../hooks/useAppDispatch";
+import useAppSelector from "../../app/hooks/useAppSelector";
+import { AppState } from "../../app/store/store";
+import { addToCart, removeFromCart } from "./cartReducer";
+import useAppDispatch from "../../app/hooks/useAppDispatch";
 
 export default function CartList() {
   const { cartItems, loading } = useAppSelector(

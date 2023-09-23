@@ -14,10 +14,13 @@ const requests = {
 const Product = {
   list: () => requests.get("products"),
   details: (id: string) => requests.get(`products/${id}`),
+  add: (productData: {}) => requests.post("products", productData),
+  update: (id: string, productData: {}) => requests.put(`products/${id}`, productData),
+  delete: (id: string) => requests.del(`products/${id}`),
 };
 
 const apis = {
   Product,
 };
 
-export default apis
+export default apis;

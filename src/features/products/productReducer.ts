@@ -1,24 +1,35 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import apis from "../apis/urls";
+import apis from "../../app/apis/urls";
 import axios from "axios";
-import { Product } from "../types/Product";
 
-//const initialState: Product[] = [];
+export interface Product {
+  id: string;
+  title: string;
+  price: number;
+  description: string;
+  category: {
+    id: number;
+    name: string;
+    image: string;
+  };
+  images: string[];
+}
+
 
 interface ProductState {
   productsList: Product[];
-  productsSingle: Product|null;
-  error: string|null;
+  productsSingle: Product | null;
+  error: string | null;
   listLoading: boolean;
   singleLoading: boolean;
 }
 
 const initialState: ProductState = {
   productsList: [],
-  productsSingle:null,
+  productsSingle: null,
   listLoading: false,
   singleLoading: false,
-  error:null
+  error: null,
 };
 
 export const fetchAllProductsAsync = createAsyncThunk<Product[]>(
@@ -28,12 +39,12 @@ export const fetchAllProductsAsync = createAsyncThunk<Product[]>(
   }
 );
 
-export const fetchSingleProductsAsync = createAsyncThunk<Product,{ productId: string }>(
-  "fetchSingleProductsAsync",
-  async ({productId}) => {
-    return await apis.Product.details(productId);
-  }
-);
+export const fetchSingleProductsAsync = createAsyncThunk<
+  Product,
+  { productId: string }
+>("fetchSingleProductsAsync", async ({ productId }) => {
+  return await apis.Product.details(productId);
+});
 
 const productsSlice = createSlice({
   name: "products",
@@ -78,7 +89,7 @@ const productsSlice = createSlice({
         return {
           ...state,
           singleLoading: false,
-          error:action.payload.message
+          error: action.payload.message,
         };
       }
     });
@@ -89,7 +100,6 @@ const productsSlice = createSlice({
         singleLoading: false,
       };
     });
-
   },
 });
 

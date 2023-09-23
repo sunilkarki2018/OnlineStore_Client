@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { ProductList } from "../features/products/ProductList";
+import { ProductCardList } from "../features/products/ProductCardList";
 import axios from "axios";
-import useAppSelector from "../hooks/useAppSelector";
-import { AppState } from "../redux/store";
-import useAppDispatch from "../hooks/useAppDispatch";
-import { fetchAllProductsAsync } from "../redux/productReducer";
-import apis from "../apis/urls";
-import { Product } from "../types/Product";
-import { LoadingButton } from "@mui/lab";
+import useAppSelector from "../app/hooks/useAppSelector";
+import { AppState } from "../app/store/store";
+import useAppDispatch from "../app/hooks/useAppDispatch";
+import { fetchAllProductsAsync } from "../features/products/productReducer";
 import { Box, Button, CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -40,7 +37,7 @@ export const HomePage = () => {
 
   return (
     <>
-      <ProductList products={productsList} />
+      <ProductCardList products={productsList} />
       <Button component={Link} to={`/cartList`} size="small">
           View
         </Button>

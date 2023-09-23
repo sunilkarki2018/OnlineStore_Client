@@ -8,9 +8,9 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import { Product } from "../../types/Product";
-import useAppDispatch from "../../hooks/useAppDispatch";
-import { addToCart } from "../../redux/cartReducer";
+import useAppDispatch from "../../app/hooks/useAppDispatch";
+import { addToCart } from "../cart/cartReducer";
+import { Product } from "./productReducer";
 
 interface Props {
   product: Product;
@@ -20,13 +20,13 @@ export default function ProductCard({ product }: Props) {
   const dispatch = useAppDispatch();
 
   const handleAddToCartClick = () => {
-    const test={
+    const test = {
       id: product.id,
       title: product.title,
       price: product.price,
       quantity: 1,
     };
-    console.log("test: ",test);
+    console.log("test: ", test);
     dispatch(
       addToCart({
         id: product.id,

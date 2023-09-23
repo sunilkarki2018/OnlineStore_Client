@@ -13,11 +13,10 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Product } from "../../types/Product";
-import useAppSelector from "../../hooks/useAppSelector";
-import useAppDispatch from "../../hooks/useAppDispatch";
-import { AppState } from "../../redux/store";
-import { fetchSingleProductsAsync } from "../../redux/productReducer";
+import useAppSelector from "../../app/hooks/useAppSelector";
+import useAppDispatch from "../../app/hooks/useAppDispatch";
+import { AppState } from "../../app/store/store";
+import { Product, fetchSingleProductsAsync } from "./productReducer";
 import Carousel from "react-material-ui-carousel";
 
 export default function ProductDetails() {

@@ -1,13 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import App from "./app/App";
+import App from "./app/layouts/App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import { RouterProvider } from "react-router-dom";
-import { router } from "./router/Routes";
+import { router } from "./app/router/Routes";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import store from "./app/store/store";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

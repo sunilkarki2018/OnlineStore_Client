@@ -1,0 +1,136 @@
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import apis from "../../app/apis/urls";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+interface ProductFormData {
+  title: string;
+  price: number;
+  description: string;
+  categoryId: string;
+  imageUrl: string;
+  images: string[];
+}
+
+const ProductForm = () => {
+  const navigate = useNavigate();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductFormData>();
+
+  const handleFormSubmit = (data: ProductFormData) => {
+    data.images = data.imageUrl.split(",");
+    try {
+      //apis.Product.add(data);
+      toast.success("Product added successfully");
+      navigate("/product");
+    } catch (error) {
+      toast.error("Error on adding product");
+      console.log("Error:", error);
+    }
+    console.log(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <Controller
+        name="title"
+        control={control}
+        defaultValue=""
+        rules={{ required: "Title is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Title"
+            variant="outlined"
+            fullWidth
+            error={!!errors.title}
+            helperText={errors.title?.message}
+          />
+        )}
+      />
+      <Controller
+        name="price"
+        control={control}
+        rules={{ required: "Price is required", pattern: /^\d+(\.\d{1,2})?$/ }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Price"
+            variant="outlined"
+            fullWidth
+            error={!!errors.price}
+            helperText={errors.price?.message}
+          />
+        )}
+      />
+      <Controller
+        name="description"
+        control={control}
+        defaultValue=""
+        rules={{ required: "Description is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Description"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+            error={!!errors.description}
+            helperText={errors.description?.message}
+          />
+        )}
+      />
+      <Controller
+        name="categoryId"
+        control={control}
+        defaultValue=""
+        rules={{ required: "Category is required" }}
+        render={({ field }) => (
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Category</InputLabel>
+            <Select label="Category" {...field} error={!!errors.categoryId}>
+              <MenuItem value="1">Category 1</MenuItem>
+              <MenuItem value="2">Category 2</MenuItem>
+              <MenuItem value="3">Category 3</MenuItem>
+            </Select>
+          </FormControl>
+        )}
+      />
+
+      <Controller
+        name="imageUrl"
+        control={control}
+        rules={{ required: "Images are required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Images (comma-separated URLs)"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+            error={!!errors.imageUrl}
+            helperText={errors.imageUrl?.message}
+          />
+        )}
+      />
+
+      <Button type="submit" variant="contained" color="primary">
+        Submit
+      </Button>
+    </form>
+  );
+};
+
+export default ProductForm;
