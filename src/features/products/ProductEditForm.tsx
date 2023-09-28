@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -7,42 +7,59 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import apis from "../../app/apis/urls";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { addProductAsync } from "./productReducer";
+import { ProductFormData } from "./ProductCreateForm";
+import {
+  Product,
+  fetchProductAsync,
+  updateProductAsync,
+} from "./productReducer";
 
-export interface ProductFormData {
-  title: string;
-  price: number;
-  description: string;
-  categoryId: string;
-  imageUrl: string;
-  images: string[];
-}
-
-const ProductForm = () => {
+const EditProductForm: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ProductFormData>();
 
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(fetchProductAsync(id!)).then((productData) => {
+      const item = productData.payload as Product;
+      setValue("title", item.title);
+      setValue("price", item.price);
+      setValue("description", item.description);
+      setValue("categoryId", item.category.id.toString());
+      setValue("imageUrl", item.images.join(","));
+    });
+  }, [dispatch, id, setValue]);
+
   const handleFormSubmit = (data: ProductFormData) => {
     data.images = data.imageUrl.split(",");
     try {
-      dispatch(addProductAsync(data));
-      toast.success("Product added successfully");
-      navigate("/product");
+      if (id) {
+        dispatch(updateProductAsync({ id, data }));
+        toast.success("Product updated successfully");
+        navigate("/product");
+      }
     } catch (error) {
-      toast.error("Error on adding product");
+      toast.error("Error updating product");
       console.log("Error:", error);
     }
-    console.log(data);
   };
+
+  const categories = [
+    { id: 1, name: "Category 1" },
+    { id: 2, name: "Category 2" },
+    { id: 3, name: "Category 3" },
+  ];
 
   return (
     <form
@@ -68,6 +85,7 @@ const ProductForm = () => {
       <Controller
         name="price"
         control={control}
+        defaultValue={0}
         rules={{ required: "Price is required", pattern: /^\d+(\.\d{1,2})?$/ }}
         render={({ field }) => (
           <TextField
@@ -107,9 +125,11 @@ const ProductForm = () => {
           <FormControl fullWidth variant="outlined">
             <InputLabel>Category</InputLabel>
             <Select label="Category" {...field} error={!!errors.categoryId}>
-              <MenuItem value="1">Category 1</MenuItem>
-              <MenuItem value="2">Category 2</MenuItem>
-              <MenuItem value="3">Category 3</MenuItem>
+              {categories.map((category) => (
+                <MenuItem key={category.id} value={category.id}>
+                  {category.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         )}
@@ -118,6 +138,7 @@ const ProductForm = () => {
       <Controller
         name="imageUrl"
         control={control}
+        defaultValue=""
         rules={{ required: "Images are required" }}
         render={({ field }) => (
           <TextField
@@ -134,10 +155,10 @@ const ProductForm = () => {
       />
 
       <Button type="submit" variant="contained" color="primary">
-        Submit
+        Update
       </Button>
     </form>
   );
 };
 
-export default ProductForm;
+export default EditProductForm;

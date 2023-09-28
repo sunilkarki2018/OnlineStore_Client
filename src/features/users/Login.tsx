@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { FieldValues, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAppDispatch from "../../app/hooks/useAppDispatch";
+import { login } from "./userSlice";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -21,21 +23,20 @@ export default function Login() {
     formState: { isSubmitting, errors, isValid },
   } = useForm();
 
-    async function submitForm(data: FieldValues) {
-        try {
-            //await dispatch(signInUser(data));
-            //navigate(location.state?.from || '/catalog');
-        } catch (error) {
-            console.log(error);
-        }
-    }
+  const dispatch = useAppDispatch();
 
+  async function submitForm(data: FieldValues) {
+    try {
+      //await dispatch(signInUser(data));
+      //navigate(location.state?.from || '/catalog');
+      dispatch(login());
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
-    <Container
-      component={Paper}
-      maxWidth="sm"
-    >
+    <Container component={Paper} maxWidth="sm">
       <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
         <LockOutlined />
       </Avatar>

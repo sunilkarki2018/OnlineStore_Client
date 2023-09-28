@@ -1,15 +1,67 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {
+  AnyAction,
+  Reducer,
+  combineReducers,
+  configureStore,
+} from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
+
 import productReducer from "../../features/products/productReducer";
 import cartReducer from "../../features/cart/cartReducer";
+import { PersistConfig } from "redux-persist/lib/types";
+import userReducer from "../../features/users/userSlice";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
+} from "redux-persist";
 
-const store = configureStore({
+const persisConfig: PersistConfig<any> = {
+  key: "root",
+  storage,
+  whitelist: ["cart"],
+  //blacklist: ["productReducer", "usersReducer"]
+};
+
+const rootReducer = combineReducers({
+  product:productReducer,
+  cart: cartReducer,
+  user:userReducer
+}); // the combination of all reducers
+
+const persistedReducer: Reducer<AppState, AnyAction> = persistReducer(
+  persisConfig,
+  rootReducer
+);
+
+/* const store = configureStore({
   reducer: {
     product:productReducer,
     cart: cartReducer,
+    user:userReducer
   },
-});
+}); */
 
-export type AppState = ReturnType<typeof store.getState>;
+export const createStore = () => {
+  return configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PAUSE, REGISTER],
+        },
+      }),
+  });
+};
+
+const store = createStore();
+
+export type AppState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
+export const persistor = persistStore(store);
 
 export default store;

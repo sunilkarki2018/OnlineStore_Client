@@ -13,12 +13,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Link, useNavigate } from "react-router-dom";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/store/store";
 import { useEffect } from "react";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { fetchAllProductsAsync } from "./productReducer";
+import { deleteProductAsync, fetchAllProductsAsync } from "./productReducer";
+import { toast } from "react-toastify";
 
 export default function ProductTableList() {
   const { productsList, listLoading } = useAppSelector(
@@ -29,6 +32,7 @@ export default function ProductTableList() {
     dispatch(fetchAllProductsAsync());
   }, []);
 
+  const navigate = useNavigate();
   if (listLoading)
     return (
       <Box
@@ -41,7 +45,14 @@ export default function ProductTableList() {
         <CircularProgress size={64} color="secondary" />
       </Box>
     );
-  //onClick={handleAddProduct}
+
+  const handleDelete = (id: number) => {
+    dispatch(deleteProductAsync(id)).then(() => {
+      toast.info("Product deleted successfully");
+      dispatch(fetchAllProductsAsync());
+    });
+  };
+
   return (
     <>
       <Container>
@@ -65,8 +76,8 @@ export default function ProductTableList() {
                   <TableCell>Title</TableCell>
                   <TableCell>Price</TableCell>
                   <TableCell>Description</TableCell>
-                  <TableCell>Update</TableCell>
                   <TableCell>Delete</TableCell>
+                  <TableCell>Update</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -77,20 +88,19 @@ export default function ProductTableList() {
                     <TableCell>{product.description}</TableCell>
                     <TableCell>
                       <Button
-                        component={Link}
-                        to={`/brewery/${product.id}`}
                         size="small"
+                        onClick={() => handleDelete(product.id)}
                       >
-                        Delete
+                        <DeleteIcon />
                       </Button>
                     </TableCell>
                     <TableCell>
                       <Button
                         component={Link}
-                        to={`/brewery/${product.id}`}
+                        to={`/productEdit/${product.id}`}
                         size="small"
                       >
-                        Edit
+                        <EditIcon />
                       </Button>
                     </TableCell>
                   </TableRow>

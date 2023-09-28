@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import apis from "../../app/apis/urls";
 import axios from "axios";
+import { ProductFormData } from "./ProductCreateForm";
+import { toast } from "react-toastify";
 
 export interface Product {
-  id: string;
+  id: number;
   title: string;
   price: number;
   description: string;
@@ -14,7 +16,6 @@ export interface Product {
   };
   images: string[];
 }
-
 
 interface ProductState {
   productsList: Product[];
@@ -39,11 +40,41 @@ export const fetchAllProductsAsync = createAsyncThunk<Product[]>(
   }
 );
 
-export const fetchSingleProductsAsync = createAsyncThunk<
+export const fetchProductAsync = createAsyncThunk<Product, string>(
+  "fetchProductAsync",
+  async (productId) => {
+    return await apis.Product.details(productId);
+  }
+);
+
+export const addProductAsync = createAsyncThunk<Product, ProductFormData>(
+  "addProductAsync",
+  async (data) => {
+    return await apis.Product.add(data);
+  }
+);
+
+export const deleteProductAsync = createAsyncThunk(
+  "deleteProductAsync",
+  async (id: number) => {
+    try {
+      const result = await apis.Product.delete(id.toString());
+      if (!result.data) {
+        throw new Error("Cannot delete");
+      }
+      return id;
+    } catch (e) {
+      const error = e as Error;
+      return error.message;
+    }
+  }
+);
+
+export const updateProductAsync = createAsyncThunk<
   Product,
-  { productId: string }
->("fetchSingleProductsAsync", async ({ productId }) => {
-  return await apis.Product.details(productId);
+  { id: string; data: ProductFormData }
+>("updateProductAsync", async ({ id, data }) => {
+  return await apis.Product.update(id, data);
 });
 
 const productsSlice = createSlice({
@@ -78,13 +109,13 @@ const productsSlice = createSlice({
       };
     });
 
-    builder.addCase(fetchSingleProductsAsync.pending, (state, action) => {
+    builder.addCase(fetchProductAsync.pending, (state, action) => {
       return {
         ...state,
         singleLoading: true,
       };
     });
-    builder.addCase(fetchSingleProductsAsync.rejected, (state, action) => {
+    builder.addCase(fetchProductAsync.rejected, (state, action) => {
       if (action.payload instanceof Error) {
         return {
           ...state,
@@ -93,11 +124,34 @@ const productsSlice = createSlice({
         };
       }
     });
-    builder.addCase(fetchSingleProductsAsync.fulfilled, (state, action) => {
+    builder.addCase(fetchProductAsync.fulfilled, (state, action) => {
       return {
         ...state,
         productsSingle: action.payload,
         singleLoading: false,
+      };
+    });
+
+    builder.addCase(addProductAsync.fulfilled, (state, action) => {
+      return {
+        ...state,
+      };
+    });
+
+    builder.addCase(deleteProductAsync.fulfilled, (state, action) => {
+      if (typeof action.payload === "number") {
+        state.productsList = state.productsList.filter(
+          (p) => p.id != action.payload
+        );
+      }
+      return {
+        ...state,
+      };
+    });
+
+    builder.addCase(updateProductAsync.fulfilled, (state, action) => {
+      return {
+        ...state,
       };
     });
   },

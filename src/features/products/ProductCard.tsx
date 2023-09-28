@@ -20,13 +20,6 @@ export default function ProductCard({ product }: Props) {
   const dispatch = useAppDispatch();
 
   const handleAddToCartClick = () => {
-    const test = {
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      quantity: 1,
-    };
-    console.log("test: ", test);
     dispatch(
       addToCart({
         id: product.id,

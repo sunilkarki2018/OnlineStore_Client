@@ -16,7 +16,7 @@ import axios from "axios";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { AppState } from "../../app/store/store";
-import { Product, fetchSingleProductsAsync } from "./productReducer";
+import { Product, fetchProductAsync } from "./productReducer";
 import Carousel from "react-material-ui-carousel";
 
 export default function ProductDetails() {
@@ -30,7 +30,7 @@ export default function ProductDetails() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchSingleProductsAsync({ productId: id! }));
+    dispatch(fetchProductAsync( id! ));
   }, [id]);
 
   if (singleLoading)
