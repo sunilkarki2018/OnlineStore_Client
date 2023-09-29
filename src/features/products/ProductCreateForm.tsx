@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { addProductAsync } from "./productReducer";
+import { fetchAllCategoriesAsync } from "../category/categoryReducer";
+import useAppSelector from "../../app/hooks/useAppSelector";
+import { AppState } from "../../app/store/store";
 
 export interface ProductFormData {
   title: string;
@@ -43,6 +46,10 @@ const ProductForm = () => {
     }
     console.log(data);
   };
+  const { categories } = useAppSelector((state: AppState) => state.category);
+  useEffect(() => {
+    dispatch(fetchAllCategoriesAsync());
+  }, []);
 
   return (
     <form
@@ -98,6 +105,7 @@ const ProductForm = () => {
           />
         )}
       />
+
       <Controller
         name="categoryId"
         control={control}
@@ -107,9 +115,11 @@ const ProductForm = () => {
           <FormControl fullWidth variant="outlined">
             <InputLabel>Category</InputLabel>
             <Select label="Category" {...field} error={!!errors.categoryId}>
-              <MenuItem value="1">Category 1</MenuItem>
-              <MenuItem value="2">Category 2</MenuItem>
-              <MenuItem value="3">Category 3</MenuItem>
+              {categories.map((item) => (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         )}

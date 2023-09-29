@@ -19,6 +19,7 @@ import {
   persistStore,
 } from "redux-persist";
 import productReducer from "../../features/products/productReducer";
+import categoryReducer from "../../features/category/categoryReducer";
 
 const persisConfig: PersistConfig<any> = {
   key: "root",
@@ -28,9 +29,10 @@ const persisConfig: PersistConfig<any> = {
 };
 
 const rootReducer = combineReducers({
-  product:productReducer,
+  product: productReducer,
   cart: cartReducer,
-  user:userReducer
+  user: userReducer,
+  category: categoryReducer,
 }); // the combination of all reducers
 
 const persistedReducer: Reducer<AppState, AnyAction> = persistReducer(

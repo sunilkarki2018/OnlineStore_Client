@@ -19,8 +19,13 @@ const Product = {
   delete: (id: string) => requests.del(`products/${id}`),
 };
 
+const Category = {
+  list: () => requests.get("categories"),
+};
+
 const apis = {
   Product,
+  Category
 };
 
 export default apis;
