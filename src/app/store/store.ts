@@ -6,10 +6,9 @@ import {
 } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 
-import productReducer from "../../features/products/productReducer";
 import cartReducer from "../../features/cart/cartReducer";
 import { PersistConfig } from "redux-persist/lib/types";
-import userReducer from "../../features/users/userSlice";
+import userReducer from "../../features/users/userReducer";
 import {
   FLUSH,
   PAUSE,
@@ -19,6 +18,7 @@ import {
   persistReducer,
   persistStore,
 } from "redux-persist";
+import productReducer from "../../features/products/productReducer";
 
 const persisConfig: PersistConfig<any> = {
   key: "root",

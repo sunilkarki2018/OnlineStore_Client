@@ -4,7 +4,7 @@ const useDebounce = (func: Function, dependancy: any) => {
   useEffect(() => {
     const timerId = setTimeout(func, 500);
     return () => clearTimeout(timerId);
-  }, dependancy);
+  }, [dependancy]);
 };
 
 export default useDebounce;

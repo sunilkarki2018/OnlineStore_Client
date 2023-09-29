@@ -3,18 +3,23 @@ import apis from "../../app/apis/urls";
 import axios from "axios";
 import { ProductFormData } from "./ProductCreateForm";
 import { toast } from "react-toastify";
+import { boolean } from "yup";
 
 export interface Product {
   id: number;
   title: string;
   price: number;
   description: string;
+  images: string[];
+  creationAt: string;
+  updatedAt: string;
   category: {
     id: number;
     name: string;
     image: string;
+    creationAt: string;
+    updatedAt: string;
   };
-  images: string[];
 }
 
 interface ProductState {
@@ -59,7 +64,7 @@ export const deleteProductAsync = createAsyncThunk(
   async (id: number) => {
     try {
       const result = await apis.Product.delete(id.toString());
-      if (!result.data) {
+      if (!result) {
         throw new Error("Cannot delete");
       }
       return id;
@@ -144,9 +149,6 @@ const productsSlice = createSlice({
           (p) => p.id != action.payload
         );
       }
-      return {
-        ...state,
-      };
     });
 
     builder.addCase(updateProductAsync.fulfilled, (state, action) => {

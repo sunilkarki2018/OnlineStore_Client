@@ -12,7 +12,9 @@ import {
 import { FieldValues, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { login } from "./userSlice";
+import { fetchUserProfileAsync, loginAsync } from "./userReducer";
+import { AppState } from "../../app/store/store";
+import useAppSelector from "../../app/hooks/useAppSelector";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -22,14 +24,17 @@ export default function Login() {
     handleSubmit,
     formState: { isSubmitting, errors, isValid },
   } = useForm();
-
+  const { isAdmin, loggedIn, access_token } = useAppSelector(
+    (state: AppState) => state.user
+  );
   const dispatch = useAppDispatch();
 
   async function submitForm(data: FieldValues) {
     try {
-      //await dispatch(signInUser(data));
-      //navigate(location.state?.from || '/catalog');
-      dispatch(login());
+      await dispatch(
+        loginAsync({ email: data.username, password: data.password })
+      );
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

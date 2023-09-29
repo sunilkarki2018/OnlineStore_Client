@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { ProductCardList } from "../features/products/ProductCardList";
 import axios from "axios";
 import useAppSelector from "../app/hooks/useAppSelector";
 import { AppState } from "../app/store/store";
 import useAppDispatch from "../app/hooks/useAppDispatch";
-import { fetchAllProductsAsync } from "../features/products/productReducer";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Paper } from "@mui/material";
 import { Link } from "react-router-dom";
+import ProductSearch from "../features/products/ProductSearch";
+import { fetchAllProductsAsync } from "../features/products/productReducer";
+import { ProductCardList } from "../features/products/ProductCardList";
 
 export const HomePage = () => {
   const { productsList, listLoading } = useAppSelector(
@@ -16,6 +17,7 @@ export const HomePage = () => {
     (state: AppState) => state.cart
   );
 
+  const [filteredProducts, setFilteredProducts] = useState(productsList);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -35,12 +37,25 @@ export const HomePage = () => {
       </Box>
     );
 
+  const handleSearch = (searchKey: string) => {
+    const filteredProducts = productsList.filter((product) =>
+      product.title.toLowerCase().includes(searchKey.toLowerCase())
+    );
+    setFilteredProducts(filteredProducts);
+  };
+
   return (
     <>
-      <ProductCardList products={productsList} />
-      <Button component={Link} to={`/cartList`} size="small">
-          View
-        </Button>
+      <Grid container columnSpacing={4}>
+        <Grid item xs={3}>
+          <Paper sx={{ mb: 2 }}>
+            <ProductSearch onSearch={handleSearch} />
+          </Paper>
+        </Grid>
+        <Grid item xs={9}>
+          <ProductCardList products={filteredProducts} />
+        </Grid>
+      </Grid>
     </>
   );
 };
