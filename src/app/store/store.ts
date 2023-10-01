@@ -24,7 +24,7 @@ import categoryReducer from "../../features/category/categoryReducer";
 const persisConfig: PersistConfig<any> = {
   key: "root",
   storage,
-  whitelist: ["cart"],
+  whitelist: ["product","cart"],
   //blacklist: ["productReducer", "usersReducer"]
 };
 

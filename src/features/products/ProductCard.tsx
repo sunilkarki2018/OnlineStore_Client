@@ -1,16 +1,14 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Typography,
-} from "@mui/material";
-import { Link } from "react-router-dom";
-
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { Product } from "./productReducer";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { addToCart } from "../cart/cartReducer";
-import { Product } from "./productReducer";
+import { Link } from "react-router-dom";
 
 interface Props {
   product: Product;
@@ -29,18 +27,30 @@ export default function ProductCard({ product }: Props) {
       })
     );
   };
+  const cardStyle = {
+    maxWidth: 345,
+    height: "100%",
+  };
 
+  const buttonContainerStyle = {
+    marginTop: "auto", // Push buttons to the bottom
+  };
   return (
-    <Card>
-      <CardContent>
-        <Typography gutterBottom color="secondary" variant="h5">
-          {product.title}
+    <Card sx={cardStyle}>
+      <CardMedia
+        sx={{ height: 140 }}
+        image={product.images[0]}
+        title="green iguana"
+      />
+      <CardContent sx={{ height: 140 }}>
+        <Typography gutterBottom variant="h6" component="div">
+          {product.title} (${product.price})({product.category.name})
         </Typography>
-        <Typography gutterBottom color="secondary" variant="h5">
-          {product.price}
+        <Typography variant="body2" color="text.secondary">
+          {product.description}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={buttonContainerStyle}>
         <Button onClick={handleAddToCartClick} size="small">
           Add
         </Button>
