@@ -11,14 +11,14 @@ import { fetchAllCategoriesAsync } from "../app/redux/reducers/categoryReducer";
 import CategorySearch from "../features/category/CategorySearch";
 import ProductSort from "../features/products/ProductSort";
 import { executeSearchandSort } from "../app/redux/selectors/getFilteredAndSort";
+import { Product } from "../app/types/Product/Product";
 
 export const HomePage = () => {
   const { productsList, listLoading } = useAppSelector(
     (state: AppState) => state.product
   );
-
-  const [filteredProducts, setFilteredProducts] = useState(productsList);
-
+  console.log("productsList:", productsList);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchText, setSearchText] = useState("");
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [sortOrder, setSortOrder] = useState("");
@@ -26,8 +26,8 @@ export const HomePage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllCategoriesAsync());
     dispatch(fetchAllProductsAsync());
+    dispatch(fetchAllCategoriesAsync());
   }, []);
 
   useEffect(() => {

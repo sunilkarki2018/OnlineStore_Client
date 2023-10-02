@@ -1,4 +1,5 @@
-import { Product } from "../reducers/productReducer";
+import { Product } from "../../types/Product/Product";
+
 
 export const executeSearchandSort = (
   productsList: Product[],

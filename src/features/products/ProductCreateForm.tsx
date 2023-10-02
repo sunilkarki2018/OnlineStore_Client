@@ -10,38 +10,42 @@ import apis from "../../app/apis/urls";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { addProductAsync } from "../../app/redux/reducers/productReducer";
+import { createProductAsync } from "../../app/redux/reducers/productReducer";
 import { fetchAllCategoriesAsync } from "../../app/redux/reducers/categoryReducer";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
+import { CreateProductInput } from "../../app/types/Product/CreateProductInput";
 
-export interface ProductFormData {
+/* export interface ProductFormData {
   title: string;
   price: number;
   description: string;
   categoryId: string;
   imageUrl: string;
   images: string[];
-}
+} */
 
-const ProductForm = () => {
+const ProductCreateForm = () => {
   const navigate = useNavigate();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ProductFormData>();
+  } = useForm<CreateProductInput>();
 
   const dispatch = useAppDispatch();
 
-  const handleFormSubmit = (data: ProductFormData) => {
-    data.images = data.imageUrl.split(",");
+  const handleFormSubmit = (data: CreateProductInput) => {
+    console.log("FormData:", data);
+    data.images = ["https://i.imgur.com/O1LUkwy.jpeg"];
+    //data.images = data.imageUrl.split(",");
+
     try {
-      dispatch(addProductAsync(data));
+      dispatch(createProductAsync(data));
       toast.success("Product added successfully");
       navigate("/product");
     } catch (error) {
-      toast.error("Error on adding product");
+      toast.error("Error while adding product");
       console.log("Error:", error);
     }
     console.log(data);
@@ -109,7 +113,6 @@ const ProductForm = () => {
       <Controller
         name="categoryId"
         control={control}
-        defaultValue=""
         rules={{ required: "Category is required" }}
         render={({ field }) => (
           <FormControl fullWidth variant="outlined">
@@ -126,7 +129,7 @@ const ProductForm = () => {
       />
 
       <Controller
-        name="imageUrl"
+        name="images"
         control={control}
         rules={{ required: "Images are required" }}
         render={({ field }) => (
@@ -137,8 +140,8 @@ const ProductForm = () => {
             fullWidth
             multiline
             rows={4}
-            error={!!errors.imageUrl}
-            helperText={errors.imageUrl?.message}
+            error={!!errors.images}
+            helperText={errors.images?.message}
           />
         )}
       />
@@ -150,4 +153,4 @@ const ProductForm = () => {
   );
 };
 
-export default ProductForm;
+export default ProductCreateForm;

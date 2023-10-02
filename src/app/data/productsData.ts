@@ -1,8 +1,8 @@
-import { Product } from "../redux/reducers/productReducer";
+import { Product } from "../types/Product/Product";
 
 export const productsData: Product[] = [
   {
-    id: 8,
+    id: 1,
     title: "yes",
     price: 1212,
     description: "test",
@@ -18,7 +18,7 @@ export const productsData: Product[] = [
     },
   },
   {
-    id: 9,
+    id: 2,
     title: "Product 42",
     price: 518,
     description:
@@ -35,7 +35,7 @@ export const productsData: Product[] = [
     },
   },
   {
-    id: 10,
+    id: 3,
     title: "Product 43",
     price: 771,
     description:

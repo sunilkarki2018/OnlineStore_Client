@@ -5,10 +5,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Product } from "../../app/redux/reducers/productReducer";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { addToCart } from "../../app/redux/reducers/cartReducer";
 import { Link } from "react-router-dom";
+import { Product } from "../../app/types/Product/Product";
 
 interface Props {
   product: Product;

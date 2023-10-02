@@ -16,8 +16,9 @@ import axios from "axios";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { AppState } from "../../app/redux/store";
-import { Product, fetchProductAsync } from "../../app/redux/reducers/productReducer";
+import { fetchProductAsync } from "../../app/redux/reducers/productReducer";
 import Carousel from "react-material-ui-carousel";
+import { Product } from "../../app/types/Product/Product";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -30,7 +31,7 @@ export default function ProductDetails() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchProductAsync( id! ));
+    dispatch(fetchProductAsync(id!));
   }, [id]);
 
   if (singleLoading)

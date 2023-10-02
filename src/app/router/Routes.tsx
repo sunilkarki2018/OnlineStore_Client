@@ -8,7 +8,7 @@ import Register from "../../features/users/Register";
 import ProductView from "../../features/products/ProductView";
 import ProductTableList from "../../features/products/ProductTableList";
 import ProductCreateForm from "../../features/products/ProductCreateForm";
-import EditProductForm from "../../features/products/ProductEditForm";
+import ProductEditForm from "../../features/products/ProductEditForm";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
       {path: 'product/:id', element: <ProductView />},
       {path: 'product', element: <ProductTableList />},
       {path: 'productCreate', element: <ProductCreateForm />},
-      {path: 'productEdit/:id', element: <EditProductForm />},
+      {path: 'productEdit/:id', element: <ProductEditForm />},
       { path: "cartList", element: <CartList /> },
       { path: "contact", element: <ContactPage /> },
       { path: "login", element: <Login /> },

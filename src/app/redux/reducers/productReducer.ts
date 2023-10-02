@@ -1,26 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import apis from "../../apis/urls";
-import axios from "axios";
-import { ProductFormData } from "../../../features/products/ProductCreateForm";
+import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { boolean } from "yup";
-
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  images: string[];
-  creationAt: string;
-  updatedAt: string;
-  category: {
-    id: number;
-    name: string;
-    image: string;
-    creationAt: string;
-    updatedAt: string;
-  };
-}
+import { Product } from "../../types/Product/Product";
+import { CreateProductInput } from "../../types/Product/CreateProductInput";
+import { UpdateProductInput } from "../../types/Product/UpdateProductInput";
 
 interface ProductState {
   productsList: Product[];
@@ -38,49 +23,96 @@ const initialState: ProductState = {
   error: null,
 };
 
-export const fetchAllProductsAsync = createAsyncThunk<Product[]>(
+export const fetchAllProductsAsync = createAsyncThunk(
   "fetchAllProductsAsync",
-  async () => {
-    return await apis.Product.list();
+  async (_, { rejectWithValue }) => {
+    try {
+      const result = await axios.get(
+        `https://api.escuelajs.co/api/v1/products`
+      );
+      const products: Product[] = await result.data;
+      return products;
+    } catch (e) {
+      const error = e as AxiosError;
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const fetchProductAsync = createAsyncThunk<Product, string>(
   "fetchProductAsync",
-  async (productId) => {
-    return await apis.Product.details(productId);
+  async (id, { rejectWithValue }) => {
+    try {
+      const result = await axios.get<Product>(
+        `https://api.escuelajs.co/api/v1/products/${id}`
+      );
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return rejectWithValue(error.message);
+    }
   }
 );
 
-export const addProductAsync = createAsyncThunk<Product, ProductFormData>(
-  "addProductAsync",
-  async (data) => {
-    return await apis.Product.add(data);
+export const createProductAsync = createAsyncThunk(
+  "createProductAsync",
+  async (newProduct: CreateProductInput, { rejectWithValue }) => {
+    try {
+      const result = await axios.post<Product>(
+        "https://api.escuelajs.co/api/v1/products/",
+        newProduct
+      );
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const deleteProductAsync = createAsyncThunk(
   "deleteProductAsync",
-  async (id: number) => {
+  async (id: number, { rejectWithValue }) => {
     try {
-      const result = await apis.Product.delete(id.toString());
-      if (!result) {
+      const result = await axios.delete<boolean>(
+        `https://api.escuelajs.co/api/v1/products/${id}`
+      );
+      if (!result.data) {
         throw new Error("Cannot delete");
       }
       return id;
     } catch (e) {
-      const error = e as Error;
-      return error.message;
+      const error = e as AxiosError;
+      return rejectWithValue(error.message);
     }
   }
 );
 
-export const updateProductAsync = createAsyncThunk<
+/* export const updateProductAsync = createAsyncThunk<
   Product,
   { id: string; data: ProductFormData }
 >("updateProductAsync", async ({ id, data }) => {
   return await apis.Product.update(id, data);
-});
+}); */
+
+export const updateProductAsync = createAsyncThunk(
+  "updateProductAsync",
+  async ({ id, update }: UpdateProductInput, { rejectWithValue }) => {
+    try {
+      console.log("id:", id);
+      console.log("update:", update);
+      const result = await axios.put<Product>(
+        `https://api.escuelajs.co/api/v1/products/${id}`,
+        update
+      );
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      console.log("update:", error.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const productsSlice = createSlice({
   name: "products",
@@ -99,12 +131,10 @@ const productsSlice = createSlice({
       };
     });
     builder.addCase(fetchAllProductsAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          listLoading: false,
-        };
-      }
+      return {
+        ...state,
+        listLoading: false,
+      };
     });
     builder.addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
       return {
@@ -137,24 +167,29 @@ const productsSlice = createSlice({
       };
     });
 
-    builder.addCase(addProductAsync.fulfilled, (state, action) => {
-      return {
-        ...state,
-      };
+    builder.addCase(createProductAsync.fulfilled, (state, action) => {
+      state.productsList.push(action.payload);
+    });
+    builder.addCase(createProductAsync.rejected, (state, action) => {
+      state.error = action.payload as string;
     });
 
     builder.addCase(deleteProductAsync.fulfilled, (state, action) => {
-      if (typeof action.payload === "number") {
-        state.productsList = state.productsList.filter(
-          (p) => p.id != action.payload
-        );
-      }
+      state.productsList = state.productsList.filter(
+        (p) => p.id != action.payload
+      );
+    });
+    builder.addCase(deleteProductAsync.rejected, (state, action) => {
+      state.error = action.payload as string;
     });
 
     builder.addCase(updateProductAsync.fulfilled, (state, action) => {
-      return {
-        ...state,
-      };
+      const foundIndex = state.productsList.findIndex(
+        (p) => p.id === action.payload.id
+      );
+      if (foundIndex >= 0) {
+        state.productsList[foundIndex] = action.payload;
+      }
     });
   },
 });

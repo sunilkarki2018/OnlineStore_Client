@@ -10,56 +10,46 @@ import apis from "../../app/apis/urls";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { ProductFormData } from "./ProductCreateForm";
 import {
-  Product,
   fetchProductAsync,
   updateProductAsync,
 } from "../../app/redux/reducers/productReducer";
+import { Product } from "../../app/types/Product/Product";
+import { UpdateProductInput } from "../../app/types/Product/UpdateProductInput";
+import useAppSelector from "../../app/hooks/useAppSelector";
+import { AppState } from "../../app/redux/store";
 
-const EditProductForm: React.FC = () => {
+const ProductEditForm: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
   const {
     control,
+    register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<ProductFormData>();
-
+  } = useForm<UpdateProductInput>();
+  const { categories } = useAppSelector((state: AppState) => state.category);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchProductAsync(id!)).then((productData) => {
       const item = productData.payload as Product;
-      setValue("title", item.title);
-      setValue("price", item.price);
-      setValue("description", item.description);
-      setValue("categoryId", item.category.id.toString());
-      setValue("imageUrl", item.images.join(","));
+      setValue("update.title", item.title);
+      setValue("update.price", item.price);
+      setValue("update.description", item.description);
+      setValue("update.categoryId", item.category.id);
+      setValue("update.images", item.images);
+      setValue("id", item.id);
     });
   }, [dispatch, id, setValue]);
 
-  const handleFormSubmit = (data: ProductFormData) => {
-    data.images = data.imageUrl.split(",");
-    try {
-      if (id) {
-        dispatch(updateProductAsync({ id, data }));
-        toast.success("Product updated successfully");
-        navigate("/product");
-      }
-    } catch (error) {
-      toast.error("Error updating product");
-      console.log("Error:", error);
-    }
+  const handleFormSubmit = (data: UpdateProductInput) => {
+    dispatch(updateProductAsync(data));
+    toast.success("Product updated successfully");
+    navigate("/product");
   };
-
-  const categories = [
-    { id: 1, name: "Category 1" },
-    { id: 2, name: "Category 2" },
-    { id: 3, name: "Category 3" },
-  ];
 
   return (
     <form
@@ -67,7 +57,7 @@ const EditProductForm: React.FC = () => {
       style={{ display: "flex", flexDirection: "column", gap: "16px" }}
     >
       <Controller
-        name="title"
+        name="update.title"
         control={control}
         defaultValue=""
         rules={{ required: "Title is required" }}
@@ -77,13 +67,13 @@ const EditProductForm: React.FC = () => {
             label="Title"
             variant="outlined"
             fullWidth
-            error={!!errors.title}
-            helperText={errors.title?.message}
+            error={!!errors.update?.title}
+            helperText={errors.update?.title?.message}
           />
         )}
       />
       <Controller
-        name="price"
+        name="update.price"
         control={control}
         defaultValue={0}
         rules={{ required: "Price is required", pattern: /^\d+(\.\d{1,2})?$/ }}
@@ -93,13 +83,13 @@ const EditProductForm: React.FC = () => {
             label="Price"
             variant="outlined"
             fullWidth
-            error={!!errors.price}
-            helperText={errors.price?.message}
+            error={!!errors.update?.price}
+            helperText={errors.update?.price?.message}
           />
         )}
       />
       <Controller
-        name="description"
+        name="update.description"
         control={control}
         defaultValue=""
         rules={{ required: "Description is required" }}
@@ -111,20 +101,23 @@ const EditProductForm: React.FC = () => {
             fullWidth
             multiline
             rows={4}
-            error={!!errors.description}
-            helperText={errors.description?.message}
+            error={!!errors.update?.description}
+            helperText={errors.update?.description?.message}
           />
         )}
       />
       <Controller
-        name="categoryId"
+        name="update.categoryId"
         control={control}
-        defaultValue=""
         rules={{ required: "Category is required" }}
         render={({ field }) => (
           <FormControl fullWidth variant="outlined">
             <InputLabel>Category</InputLabel>
-            <Select label="Category" {...field} error={!!errors.categoryId}>
+            <Select
+              label="Category"
+              {...field}
+              error={!!errors.update?.categoryId}
+            >
               {categories.map((category) => (
                 <MenuItem key={category.id} value={category.id}>
                   {category.name}
@@ -136,9 +129,8 @@ const EditProductForm: React.FC = () => {
       />
 
       <Controller
-        name="imageUrl"
+        name="update.images"
         control={control}
-        defaultValue=""
         rules={{ required: "Images are required" }}
         render={({ field }) => (
           <TextField
@@ -148,8 +140,8 @@ const EditProductForm: React.FC = () => {
             fullWidth
             multiline
             rows={4}
-            error={!!errors.imageUrl}
-            helperText={errors.imageUrl?.message}
+            error={!!errors.update?.images}
+            helperText={errors.update?.images?.message}
           />
         )}
       />
@@ -161,4 +153,4 @@ const EditProductForm: React.FC = () => {
   );
 };
 
-export default EditProductForm;
+export default ProductEditForm;
