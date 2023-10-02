@@ -3,11 +3,11 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import { AppState } from "../store/store";
+import { AppState } from "../redux/store";
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { logout } from "../../features/users/userReducer";
-import { clearCartItems } from "../../features/cart/cartReducer";
+import { logout } from "../redux/reducers/userReducer";
+import { clearCartItems } from "../redux/reducers/cartReducer";
 
 export default function LoginMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

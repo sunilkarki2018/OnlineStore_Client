@@ -5,9 +5,9 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Product } from "./productReducer";
+import { Product } from "../../app/redux/reducers/productReducer";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { addToCart } from "../cart/cartReducer";
+import { addToCart } from "../../app/redux/reducers/cartReducer";
 import { Link } from "react-router-dom";
 
 interface Props {

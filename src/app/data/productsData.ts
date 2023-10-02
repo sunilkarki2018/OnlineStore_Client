@@ -1,4 +1,4 @@
-import { Product } from "../../features/products/productReducer";
+import { Product } from "../redux/reducers/productReducer";
 
 export const productsData: Product[] = [
   {

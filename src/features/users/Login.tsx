@@ -12,8 +12,8 @@ import {
 import { FieldValues, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { fetchUserProfileAsync, loginAsync } from "./userReducer";
-import { AppState } from "../../app/store/store";
+import { fetchUserProfileAsync, loginAsync } from "../../app/redux/reducers/userReducer";
+import { AppState } from "../../app/redux/store";
 import useAppSelector from "../../app/hooks/useAppSelector";
 
 export default function Login() {

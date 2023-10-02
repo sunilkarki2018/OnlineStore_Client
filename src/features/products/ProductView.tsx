@@ -15,8 +15,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { AppState } from "../../app/store/store";
-import { Product, fetchProductAsync } from "./productReducer";
+import { AppState } from "../../app/redux/store";
+import { Product, fetchProductAsync } from "../../app/redux/reducers/productReducer";
 import Carousel from "react-material-ui-carousel";
 
 export default function ProductDetails() {

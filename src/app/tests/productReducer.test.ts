@@ -1,8 +1,8 @@
 import {
   deleteProductAsync,
   fetchAllProductsAsync,
-} from "../../features/products/productReducer";
-import { createStore } from "../store/store";
+} from "../redux/reducers/productReducer";
+import { createStore } from "../redux/store";
 import server from "./shared/server";
 
 let store = createStore();

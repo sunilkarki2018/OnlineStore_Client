@@ -10,11 +10,11 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { AppState } from "../store/store";
+import { AppState } from "../redux/store";
 import useAppSelector from "../hooks/useAppSelector";
 import { ShoppingCart } from "@mui/icons-material";
 import LoginMenu from "./LoginMenu";
-import { fetchUserProfileAsync } from "../../features/users/userReducer";
+import { fetchUserProfileAsync } from "../redux/reducers/userReducer";
 import useAppDispatch from "../hooks/useAppDispatch";
 
 const mainLinks = [

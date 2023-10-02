@@ -13,8 +13,8 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/store/store";
-import { addToCart, removeFromCart } from "./cartReducer";
+import { AppState } from "../../app/redux/store";
+import { addToCart, removeFromCart } from "../../app/redux/reducers/cartReducer";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 
 export default function CartList() {

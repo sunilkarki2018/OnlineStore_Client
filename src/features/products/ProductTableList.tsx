@@ -17,10 +17,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, useNavigate } from "react-router-dom";
 import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/store/store";
+import { AppState } from "../../app/redux/store";
 import { useEffect } from "react";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { deleteProductAsync, fetchAllProductsAsync } from "./productReducer";
+import { deleteProductAsync, fetchAllProductsAsync } from "../../app/redux/reducers/productReducer";
 import { toast } from "react-toastify";
 
 export default function ProductTableList() {

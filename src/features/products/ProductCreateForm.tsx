@@ -10,10 +10,10 @@ import apis from "../../app/apis/urls";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { addProductAsync } from "./productReducer";
-import { fetchAllCategoriesAsync } from "../category/categoryReducer";
+import { addProductAsync } from "../../app/redux/reducers/productReducer";
+import { fetchAllCategoriesAsync } from "../../app/redux/reducers/categoryReducer";
 import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/store/store";
+import { AppState } from "../../app/redux/store";
 
 export interface ProductFormData {
   title: string;

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import apis from "../../app/apis/urls";
+import apis from "../../apis/urls";
 import axios from "axios";
-import { ProductFormData } from "./ProductCreateForm";
+import { ProductFormData } from "../../../features/products/ProductCreateForm";
 import { toast } from "react-toastify";
 import { boolean } from "yup";
 

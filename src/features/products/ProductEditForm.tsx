@@ -15,7 +15,7 @@ import {
   Product,
   fetchProductAsync,
   updateProductAsync,
-} from "./productReducer";
+} from "../../app/redux/reducers/productReducer";
 
 const EditProductForm: React.FC = () => {
   const navigate = useNavigate();

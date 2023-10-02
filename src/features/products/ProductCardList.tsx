@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import ProductCard from "./ProductCard";
-import { Product } from "./productReducer";
+import { Product } from "../../app/redux/reducers/productReducer";
 
 interface Props {
   products: Product[];

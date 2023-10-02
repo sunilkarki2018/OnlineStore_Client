@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
-import { User } from "../../app/types/User";
+import { User } from "../../types/User";
 
 interface UserState {
   user: User | null;

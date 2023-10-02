@@ -2,22 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, CircularProgress, Grid, Paper } from "@mui/material";
 
 import useAppSelector from "../app/hooks/useAppSelector";
-import { AppState } from "../app/store/store";
+import { AppState } from "../app/redux/store";
 import useAppDispatch from "../app/hooks/useAppDispatch";
 import ProductSearch from "../features/products/ProductSearch";
-import { fetchAllProductsAsync } from "../features/products/productReducer";
+import { fetchAllProductsAsync } from "../app/redux/reducers/productReducer";
 import { ProductCardList } from "../features/products/ProductCardList";
-import { fetchAllCategoriesAsync } from "../features/category/categoryReducer";
+import { fetchAllCategoriesAsync } from "../app/redux/reducers/categoryReducer";
 import CategorySearch from "../features/category/CategorySearch";
 import ProductSort from "../features/products/ProductSort";
-
-function isNotNullOrEmpty(value: string) {
-  // Check if the value is not null and not an empty string
-  return value !== null && value !== "";
-}
-function isNotNullOrZero(value: number | null) {
-  return value !== null && value !== 0 ? true : false;
-}
+import { executeSearchandSort } from "../app/redux/selectors/getFilteredAndSort";
 
 export const HomePage = () => {
   const { productsList, listLoading } = useAppSelector(
@@ -37,42 +30,14 @@ export const HomePage = () => {
     dispatch(fetchAllProductsAsync());
   }, []);
 
-  const executeSearchandSort = () => {
-    let filteredResult;
-    if (isNotNullOrEmpty(searchText) && isNotNullOrZero(categoryId)) {
-      filteredResult = productsList.filter(
-        (product) =>
-          product.title.toLowerCase().includes(searchText.toLowerCase()) &&
-          product.category.id === categoryId
-      );
-    } else if (isNotNullOrEmpty(searchText)) {
-      filteredResult = productsList.filter((product) =>
-        product.title.toLowerCase().includes(searchText.toLowerCase())
-      );
-    } else if (isNotNullOrZero(categoryId)) {
-      filteredResult = productsList.filter(
-        (product) => product.category.id === categoryId
-      );
-    } else {
-      filteredResult = productsList;
-    }
-    if (sortOrder === "asc") {
-      const sortedResult = [...filteredResult].sort(
-        (a, b) => a.price - b.price
-      );
-      setFilteredProducts(sortedResult);
-    } else if (sortOrder === "desc") {
-      const sortedResult = [...filteredResult].sort(
-        (a, b) => b.price - a.price
-      );
-      setFilteredProducts(sortedResult);
-    } else {
-      setFilteredProducts(filteredResult);
-    }
-  };
-
   useEffect(() => {
-    executeSearchandSort();
+    const filteredResult = executeSearchandSort(
+      productsList,
+      searchText,
+      categoryId,
+      sortOrder
+    );
+    setFilteredProducts(filteredResult);
   }, [searchText, categoryId, sortOrder]);
 
   if (listLoading)
@@ -97,7 +62,6 @@ export const HomePage = () => {
   };
 
   const sortHandler = (sortOrder: string) => {
-    console.log("sortOrder:", sortOrder);
     setSortOrder(sortOrder);
   };
 

@@ -8,7 +8,7 @@ import App from "./app/layouts/App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import { router } from "./app/router/Routes";
-import store, { persistor } from "./app/store/store";
+import store, { persistor } from "./app/redux/store";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

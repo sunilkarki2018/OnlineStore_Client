@@ -5,7 +5,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/store/store";
+import { AppState } from "../../app/redux/store";
 
 interface Props {
   onCategorySearch: (value: number) => void;
