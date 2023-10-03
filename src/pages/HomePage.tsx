@@ -10,14 +10,13 @@ import { ProductCardList } from "../features/products/ProductCardList";
 import { fetchAllCategoriesAsync } from "../app/redux/reducers/categoryReducer";
 import CategorySearch from "../features/category/CategorySearch";
 import ProductSort from "../features/products/ProductSort";
-import { executeSearchandSort } from "../app/redux/selectors/getFilteredAndSort";
+import { executeSearchandSort } from "../app/functions/getFilteredAndSort";
 import { Product } from "../app/types/Product/Product";
 
 export const HomePage = () => {
   const { productsList, listLoading } = useAppSelector(
     (state: AppState) => state.product
   );
-  console.log("productsList:", productsList);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchText, setSearchText] = useState("");
   const [categoryId, setCategoryId] = useState<number | null>(null);
@@ -38,7 +37,7 @@ export const HomePage = () => {
       sortOrder
     );
     setFilteredProducts(filteredResult);
-  }, [searchText, categoryId, sortOrder]);
+  }, [productsList,searchText, categoryId, sortOrder]);
 
   if (listLoading)
     return (
@@ -80,7 +79,7 @@ export const HomePage = () => {
           </Paper>
         </Grid>
         <Grid item xs={9}>
-          <ProductCardList products={filteredProducts} />
+          {productsList.length>0 && <ProductCardList products={filteredProducts} />}
         </Grid>
       </Grid>
     </>

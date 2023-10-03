@@ -18,10 +18,12 @@ import { Product } from "../../app/types/Product/Product";
 import { UpdateProductInput } from "../../app/types/Product/UpdateProductInput";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
+import uploadFile from "../../app/functions/UploadFile";
 
 const ProductEditForm: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [images, setImages] = useState<File[]>([]);
 
   const {
     control,
@@ -45,10 +47,21 @@ const ProductEditForm: React.FC = () => {
     });
   }, [dispatch, id, setValue]);
 
-  const handleFormSubmit = (data: UpdateProductInput) => {
+  const handleFormSubmit = async (data: UpdateProductInput) => {
+    let imageLocations: string[] = new Array(images.length);
+    for (let i = 0; i < images.length; i++) {
+      imageLocations[i] = await uploadFile(images[i]);
+    }
+    data.update.images = imageLocations;
     dispatch(updateProductAsync(data));
     toast.success("Product updated successfully");
     navigate("/product");
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setImages(Array.from(event.target.files));
+    }
   };
 
   return (
@@ -117,6 +130,7 @@ const ProductEditForm: React.FC = () => {
               label="Category"
               {...field}
               error={!!errors.update?.categoryId}
+              value={field.value || ''}
             >
               {categories.map((category) => (
                 <MenuItem key={category.id} value={category.id}>
@@ -128,21 +142,13 @@ const ProductEditForm: React.FC = () => {
         )}
       />
 
+      <InputLabel htmlFor="images">Select Multiple Files</InputLabel>
       <Controller
         name="update.images"
         control={control}
-        rules={{ required: "Images are required" }}
+        defaultValue={[]}
         render={({ field }) => (
-          <TextField
-            {...field}
-            label="Images (comma-separated URLs)"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={4}
-            error={!!errors.update?.images}
-            helperText={errors.update?.images?.message}
-          />
+          <input type="file" multiple onChange={handleFileChange} />
         )}
       />
 

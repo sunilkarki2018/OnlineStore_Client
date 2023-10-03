@@ -24,8 +24,8 @@ import categoryReducer from "./reducers/categoryReducer";
 const persisConfig: PersistConfig<any> = {
   key: "root",
   storage,
-  whitelist: ["product","cart"],
-  //blacklist: ["productReducer", "usersReducer"]
+  whitelist: ["cart"],
+  //blacklist: ["productReducer", "usersReducer"] "product",
 };
 
 const rootReducer = combineReducers({

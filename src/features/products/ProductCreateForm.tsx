@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -15,15 +15,8 @@ import { fetchAllCategoriesAsync } from "../../app/redux/reducers/categoryReduce
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
 import { CreateProductInput } from "../../app/types/Product/CreateProductInput";
-
-/* export interface ProductFormData {
-  title: string;
-  price: number;
-  description: string;
-  categoryId: string;
-  imageUrl: string;
-  images: string[];
-} */
+import { Input } from "@mui/material";
+import uploadFile from "../../app/functions/UploadFile";
 
 const ProductCreateForm = () => {
   const navigate = useNavigate();
@@ -33,13 +26,16 @@ const ProductCreateForm = () => {
     formState: { errors },
   } = useForm<CreateProductInput>();
 
+  const [images, setImages] = useState<File[]>([]);
+
   const dispatch = useAppDispatch();
 
-  const handleFormSubmit = (data: CreateProductInput) => {
-    console.log("FormData:", data);
-    data.images = ["https://i.imgur.com/O1LUkwy.jpeg"];
-    //data.images = data.imageUrl.split(",");
-
+  const handleFormSubmit = async (data: CreateProductInput) => {
+    let imageLocations: string[] = new Array(images.length);
+    for (let i = 0; i < images.length; i++) {
+      imageLocations[i] = await uploadFile(images[i]);
+    }
+    data.images = imageLocations;
     try {
       dispatch(createProductAsync(data));
       toast.success("Product added successfully");
@@ -48,12 +44,18 @@ const ProductCreateForm = () => {
       toast.error("Error while adding product");
       console.log("Error:", error);
     }
-    console.log(data);
   };
   const { categories } = useAppSelector((state: AppState) => state.category);
+
   useEffect(() => {
     dispatch(fetchAllCategoriesAsync());
   }, []);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setImages(Array.from(event.target.files));
+    }
+  };
 
   return (
     <form
@@ -128,21 +130,13 @@ const ProductCreateForm = () => {
         )}
       />
 
+      <InputLabel htmlFor="images">Select Multiple Files</InputLabel>
       <Controller
         name="images"
         control={control}
-        rules={{ required: "Images are required" }}
+        defaultValue={[]}
         render={({ field }) => (
-          <TextField
-            {...field}
-            label="Images (comma-separated URLs)"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={4}
-            error={!!errors.images}
-            helperText={errors.images?.message}
-          />
+          <input type="file" multiple onChange={handleFileChange} />
         )}
       />
 
