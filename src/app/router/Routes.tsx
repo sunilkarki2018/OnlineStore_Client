@@ -9,6 +9,7 @@ import ProductView from "../../features/products/ProductView";
 import ProductTableList from "../../features/products/ProductTableList";
 import ProductCreateForm from "../../features/products/ProductCreateForm";
 import ProductEditForm from "../../features/products/ProductEditForm";
+import Checkout from "../../features/cart/Checkout";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
       {path: 'productCreate', element: <ProductCreateForm />},
       {path: 'productEdit/:id', element: <ProductEditForm />},
       { path: "cartList", element: <CartList /> },
+      { path: "checkout", element: <Checkout /> },
       { path: "contact", element: <ContactPage /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },      

@@ -27,7 +27,6 @@ const ProductEditForm: React.FC = () => {
 
   const {
     control,
-    register,
     handleSubmit,
     setValue,
     formState: { errors },
@@ -130,7 +129,7 @@ const ProductEditForm: React.FC = () => {
               label="Category"
               {...field}
               error={!!errors.update?.categoryId}
-              value={field.value || ''}
+              value={field.value || ""}
             >
               {categories.map((category) => (
                 <MenuItem key={category.id} value={category.id}>

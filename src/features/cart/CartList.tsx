@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -14,8 +15,13 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
-import { addToCart, removeFromCart } from "../../app/redux/reducers/cartReducer";
+import {
+  addToCart,
+  removeFromCart,
+} from "../../app/redux/reducers/cartReducer";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
+import CartSummary from "./CartSummary";
+import { Link } from "react-router-dom";
 
 export default function CartList() {
   const { cartItems, loading } = useAppSelector(
@@ -26,7 +32,7 @@ export default function CartList() {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ marginBottom: "20px" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -98,6 +104,22 @@ export default function CartList() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Grid container>
+        <Grid item xs={6} />
+        <Grid item xs={6}>
+          <CartSummary />
+          <Button
+            component={Link}
+            to="/checkout"
+            variant="contained"
+            size="large"
+            fullWidth
+          >
+            Checkout
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 }
