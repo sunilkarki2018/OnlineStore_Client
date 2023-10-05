@@ -1,53 +1,88 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
-import { User } from "../../types/User";
+import { User } from "../../types/User/User";
+import { UserReducerState } from "../../types/User/UserReducerState";
 
-interface UserState {
-  user: User | null;
-  loggedIn: boolean;
-  isAdmin: boolean;
-  access_token: string | null;
-  refresh_token: string | null;
-  error: string | null;
-}
-
-interface UserFormData {
+interface UserCredential {
   email: string;
   password: string;
 }
 
-interface UserResponse {
-  access_token: string;
-  refresh_token: string;
-}
-
-const initialState: UserState = {
-  user: null,
-  loggedIn: false,
-  isAdmin: false,
-  access_token: null,
-  refresh_token: null,
-  error: null,
+const initialState: UserReducerState = {
+  users: [],
+  error: "",
+  loading: false,
 };
 
-export const loginAsync = createAsyncThunk<UserResponse, UserFormData>(
-  "loginAsync",
-  async (data: UserFormData, { rejectWithValue }) => {
-    try {
-      const result: AxiosResponse<UserResponse> = await axios.post(
-        `https://api.escuelajs.co/api/v1/auth/login`,
-        data
-      );
-      console.log("result.data:", result.data);
-      return result.data as UserResponse;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
-    }
+export const fetchUsersAsync = createAsyncThunk<
+  User[],
+  void,
+  { rejectValue: string }
+>("fetchUsersAsync", async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get<User[]>(
+      "https://api.escuelajs.co/api/v1/users"
+    );
+    return response.data;
+  } catch (e) {
+    const error = e as Error;
+    console.log("userInfoerror: ", error.message);
+    return rejectWithValue(error.message);
   }
-);
+});
 
-export const fetchUserProfileAsync = createAsyncThunk(
+export const loginUserAsync = createAsyncThunk<
+  User,
+  UserCredential,
+  { rejectValue: string }
+>("loginUserAsync", async (cred, { rejectWithValue, dispatch }) => {
+  try {
+    const result = await axios.post(
+      `https://api.escuelajs.co/api/v1/auth/login`,
+      cred
+    );
+    const { access_token } = result.data;
+    const authenticatedResult = await dispatch(
+      authenticateUserAsync(access_token)
+    );
+
+    if (
+      typeof authenticatedResult.payload === "string" ||
+      !authenticatedResult.payload
+    ) {
+      throw Error(authenticatedResult.payload || "Cannot login");
+    } else {
+      localStorage.setItem("access_token", access_token);
+      return authenticatedResult.payload as User;
+    }
+  } catch (e) {
+    const error = e as Error;
+    return rejectWithValue(error.message);
+  }
+});
+
+export const authenticateUserAsync = createAsyncThunk<
+  User,
+  string,
+  { rejectValue: string }
+>("authenticateUserAsync", async (access_token, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(
+      "https://api.escuelajs.co/api/v1/auth/profile",
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    const error = e as Error;
+    return rejectWithValue(error.message);
+  }
+});
+
+/* export const fetchUserProfileAsync = createAsyncThunk(
   "fetchUserProfileAsync",
   async (access_token: string, { rejectWithValue }) => {
     try {
@@ -71,7 +106,7 @@ export const fetchUserProfileAsync = createAsyncThunk(
     }
   }
 );
-
+ */
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -82,21 +117,31 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginAsync.pending, (state) => {
-        state.error = null;
+      .addCase(fetchUsersAsync.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.loading = false;
       })
-      .addCase(loginAsync.fulfilled, (state, action) => {
-        state.loggedIn = true;
+      .addCase(fetchUsersAsync.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchUsersAsync.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(loginUserAsync.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
+        /*  state.loggedIn = true;
         state.access_token = action.payload.access_token;
-        state.refresh_token = action.payload.refresh_token;
+        state.refresh_token = action.payload.refresh_token; */
       })
-      .addCase(loginAsync.rejected, (state, action) => {
-        // Handle login failure
-        state.error = action.payload as string; // This will be the error message
+      .addCase(loginUserAsync.rejected, (state, action) => {
+        state.error = action.payload;
       })
-      .addCase(fetchUserProfileAsync.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.error = null;
+      .addCase(authenticateUserAsync.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      .addCase(authenticateUserAsync.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
       });
   },
 });

@@ -5,7 +5,7 @@ import {
 } from "../redux/reducers/productReducer";
 import { createStore } from "../redux/store";
 import { CreateProductInput } from "../types/Product/CreateProductInput";
-import server from "./shared/server";
+import productServer from "./shared/productServer";
 
 let store = createStore();
 
@@ -13,11 +13,11 @@ beforeEach(() => {
   store = createStore();
 });
 
-beforeAll(() => server.listen());
+beforeAll(() => productServer.listen());
 
-afterEach(() => server.resetHandlers());
+afterEach(() => productServer.resetHandlers());
 
-afterAll(() => server.close());
+afterAll(() => productServer.close());
 
 describe("Test normal actions in productReducers", () => {
   test("Should fetch all products", async () => {
@@ -40,7 +40,7 @@ describe("Test normal actions in productReducers", () => {
     await store.dispatch(createProductAsync(input));
     expect(store.getState().product.productsList.length).toBe(1);
   });
-  test("should not create new Product with wrong categoryId", async () => {
+   test("should not create new Product with wrong categoryId", async () => {
     const input: CreateProductInput = {
       title: "test product",
       description: "test product",

@@ -87,6 +87,6 @@ export const handlers = [
   ),
 ];
 
-const server = setupServer(...handlers);
+const productServer = setupServer(...handlers);
 
-export default server;
+export default productServer;

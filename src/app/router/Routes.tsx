@@ -10,6 +10,8 @@ import ProductTableList from "../../features/products/ProductTableList";
 import ProductCreateForm from "../../features/products/ProductCreateForm";
 import ProductEditForm from "../../features/products/ProductEditForm";
 import Checkout from "../../features/cart/Checkout";
+import UserList from "../../features/users/UserList";
+import ProfilePage from "../../pages/ProfilePage";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -25,7 +27,9 @@ export const router = createBrowserRouter([
       { path: "checkout", element: <Checkout /> },
       { path: "contact", element: <ContactPage /> },
       { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },      
+      { path: "register", element: <Register /> },  
+      { path: "users", element: <UserList /> },  
+      { path: "profile", element: <ProfilePage /> },    
     ],
   },
 ]);

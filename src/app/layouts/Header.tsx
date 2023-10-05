@@ -8,14 +8,12 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useEffect } from "react";
+import { ShoppingCart } from "@mui/icons-material";
 import { Link, NavLink } from "react-router-dom";
+
 import { AppState } from "../redux/store";
 import useAppSelector from "../hooks/useAppSelector";
-import { ShoppingCart } from "@mui/icons-material";
 import LoginMenu from "./LoginMenu";
-import { fetchUserProfileAsync } from "../redux/reducers/userReducer";
-import useAppDispatch from "../hooks/useAppDispatch";
 
 const mainLinks = [
   { title: "Home", path: "home" },
@@ -27,27 +25,10 @@ const rightLinks = [
   { title: "Register", path: "register" },
 ];
 
-
-
 export default function Header() {
-  const { cartItems, loading } = useAppSelector(
-    (state: AppState) => state.cart
-  );
- 
+  const { cartItems } = useAppSelector((state: AppState) => state.cart);
+  const { currentUser } = useAppSelector((state: AppState) => state.user);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
-  const {  loggedIn, access_token } = useAppSelector(
-    (state: AppState) => state.user
-  );
-  
-  const dispatch = useAppDispatch();
-  useEffect(()=>{
-    if (access_token) {
-      dispatch(fetchUserProfileAsync(access_token));
-    }
-  
-  },[access_token])
-
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -64,6 +45,11 @@ export default function Header() {
                 {title.toUpperCase()}
               </ListItem>
             ))}
+            {currentUser && currentUser.role?.includes("admin") && (
+              <ListItem component={NavLink} to={"/users"}>
+                USERS
+              </ListItem>
+            )}
           </List>
           <Box display="flex" alignItems="center">
             <IconButton
@@ -79,10 +65,10 @@ export default function Header() {
               </Badge>
             </IconButton>
             <List sx={{ display: "flex" }}>
-              {loggedIn ? (
-                <h2>
+              {currentUser ? (
+                <ListItem>
                   <LoginMenu />
-                </h2>
+                </ListItem>
               ) : (
                 <>
                   {rightLinks.map(({ title, path }) => (

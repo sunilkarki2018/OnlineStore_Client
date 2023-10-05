@@ -91,13 +91,6 @@ export const deleteProductAsync = createAsyncThunk(
   }
 );
 
-/* export const updateProductAsync = createAsyncThunk<
-  Product,
-  { id: string; data: ProductFormData }
->("updateProductAsync", async ({ id, data }) => {
-  return await apis.Product.update(id, data);
-}); */
-
 export const updateProductAsync = createAsyncThunk(
   "updateProductAsync",
   async ({ id, update }: UpdateProductInput, { rejectWithValue }) => {

@@ -8,6 +8,7 @@ import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { logout } from "../redux/reducers/userReducer";
 import { clearCartItems } from "../redux/reducers/cartReducer";
+import { Link } from "react-router-dom";
 
 export default function LoginMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -18,12 +19,12 @@ export default function LoginMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { isAdmin, loggedIn } = useAppSelector((state: AppState) => state.user);
+  const { currentUser } = useAppSelector((state: AppState) => state.user);
   const dispatch = useAppDispatch();
   return (
     <div>
       <Button color="inherit" onClick={handleClick}>
-        Welcome
+        {currentUser?.email}
       </Button>
 
       <Menu
@@ -32,8 +33,7 @@ export default function LoginMenu() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem component={Link} to='/profile'>Profile</MenuItem>
         <MenuItem
           onClick={() => {
             dispatch(logout());
