@@ -6,9 +6,9 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import apis from "../../app/apis/urls";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import {
   fetchProductAsync,
@@ -20,11 +20,10 @@ import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
 import uploadFile from "../../app/functions/UploadFile";
 
-const ProductEditForm: React.FC = () => {
+export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
   const { id } = useParams();
   const [images, setImages] = useState<File[]>([]);
-
   const {
     control,
     handleSubmit,
@@ -33,6 +32,7 @@ const ProductEditForm: React.FC = () => {
   } = useForm<UpdateProductInput>();
   const { categories } = useAppSelector((state: AppState) => state.category);
   const dispatch = useAppDispatch();
+  const { currentUser } = useAppSelector((state: AppState) => state.user);
 
   useEffect(() => {
     dispatch(fetchProductAsync(id!)).then((productData) => {
@@ -45,6 +45,11 @@ const ProductEditForm: React.FC = () => {
       setValue("id", item.id);
     });
   }, [dispatch, id, setValue]);
+
+  if (!currentUser?.role.includes("admin")) {
+    navigate("/login");
+    return <div>Access Denied</div>;
+  }
 
   const handleFormSubmit = async (data: UpdateProductInput) => {
     let imageLocations: string[] = new Array(images.length);
@@ -156,6 +161,4 @@ const ProductEditForm: React.FC = () => {
       </Button>
     </form>
   );
-};
-
-export default ProductEditForm;
+}

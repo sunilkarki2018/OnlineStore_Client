@@ -16,17 +16,22 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { deleteProductAsync, fetchAllProductsAsync } from "../../app/redux/reducers/productReducer";
-import { toast } from "react-toastify";
+import {
+  deleteProductAsync,
+  fetchAllProductsAsync,
+} from "../../app/redux/reducers/productReducer";
 
 export default function ProductTableList() {
   const { productsList, listLoading } = useAppSelector(
     (state: AppState) => state.product
   );
+  const { currentUser } = useAppSelector((state: AppState) => state.user);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchAllProductsAsync());
@@ -62,6 +67,12 @@ export default function ProductTableList() {
           variant="contained"
           color="primary"
           style={{ marginBottom: "40px" }}
+          disabled={
+            !(
+              currentUser?.role.includes("admin") ||
+              currentUser?.role.includes("customer")
+            )
+          }
         >
           Add Product
         </Button>
@@ -90,6 +101,7 @@ export default function ProductTableList() {
                       <Button
                         size="small"
                         onClick={() => handleDelete(product.id)}
+                        disabled={!currentUser?.role.includes("admin")}
                       >
                         <DeleteIcon />
                       </Button>
@@ -99,6 +111,7 @@ export default function ProductTableList() {
                         component={Link}
                         to={`/productEdit/${product.id}`}
                         size="small"
+                        disabled={!currentUser?.role.includes("admin")}
                       >
                         <EditIcon />
                       </Button>

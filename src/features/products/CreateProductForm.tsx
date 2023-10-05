@@ -18,7 +18,7 @@ import { CreateProductInput } from "../../app/types/Product/CreateProductInput";
 import { Input } from "@mui/material";
 import uploadFile from "../../app/functions/UploadFile";
 
-const ProductCreateForm = () => {
+const CreateProductForm = () => {
   const navigate = useNavigate();
   const {
     control,
@@ -27,8 +27,8 @@ const ProductCreateForm = () => {
   } = useForm<CreateProductInput>();
 
   const [images, setImages] = useState<File[]>([]);
-
   const dispatch = useAppDispatch();
+  const { currentUser } = useAppSelector((state: AppState) => state.user);
 
   const handleFormSubmit = async (data: CreateProductInput) => {
     let imageLocations: string[] = new Array(images.length);
@@ -50,6 +50,16 @@ const ProductCreateForm = () => {
   useEffect(() => {
     dispatch(fetchAllCategoriesAsync());
   }, []);
+
+  if (
+    !(
+      currentUser?.role.includes("admin") ||
+      currentUser?.role.includes("customer")
+    )
+  ) {
+    navigate("/login");
+    return <div>Access Denied</div>;
+  }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -147,4 +157,4 @@ const ProductCreateForm = () => {
   );
 };
 
-export default ProductCreateForm;
+export default CreateProductForm;

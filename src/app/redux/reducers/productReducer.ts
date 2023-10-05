@@ -58,16 +58,16 @@ export const createProductAsync = createAsyncThunk(
   "createProductAsync",
   async (newProduct: CreateProductInput, { rejectWithValue }) => {
     try {
-      console.log("fetch start")
+      console.log("fetch start");
       const result = await axios.post<Product>(
         "https://api.escuelajs.co/api/v1/products/",
         newProduct
       );
-      console.log("fetch end",result)
+      console.log("fetch end", result);
       return result.data;
     } catch (e) {
       const error = e as AxiosError;
-      console.log("error",error.message)
+      console.log("error", error.message);
       return rejectWithValue(error.message);
     }
   }

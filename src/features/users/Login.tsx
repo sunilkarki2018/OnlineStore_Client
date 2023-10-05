@@ -24,9 +24,6 @@ export default function Login() {
     handleSubmit,
     formState: { isSubmitting, errors, isValid },
   } = useForm();
-  /*  const { isAdmin, loggedIn, access_token } = useAppSelector(
-    (state: AppState) => state.user
-  ); */
   const dispatch = useAppDispatch();
 
   async function submitForm(data: FieldValues) {
