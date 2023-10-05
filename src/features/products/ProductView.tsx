@@ -10,22 +10,20 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import Carousel from "react-material-ui-carousel";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+
 import useAppSelector from "../../app/hooks/useAppSelector";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { AppState } from "../../app/redux/store";
 import { fetchProductAsync } from "../../app/redux/reducers/productReducer";
-import Carousel from "react-material-ui-carousel";
-import { Product } from "../../app/types/Product/Product";
+import ErrorMessage from "../../app/errors/ErrorMessage";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  const { singleLoading, productsSingle } = useAppSelector(
+  const { singleLoading, productsSingle, error } = useAppSelector(
     (state: AppState) => state.product
   );
   const dispatch = useAppDispatch();
@@ -46,6 +44,7 @@ export default function ProductDetails() {
         <CircularProgress size={64} color="secondary" />
       </Box>
     );
+  if (error) return <ErrorMessage message={error} />;
 
   return (
     <Grid container spacing={6}>

@@ -26,9 +26,10 @@ import {
   deleteProductAsync,
   fetchAllProductsAsync,
 } from "../../app/redux/reducers/productReducer";
+import ErrorMessage from "../../app/errors/ErrorMessage";
 
 export default function ProductTableList() {
-  const { productsList, listLoading } = useAppSelector(
+  const { productsList, listLoading, error } = useAppSelector(
     (state: AppState) => state.product
   );
   const { currentUser } = useAppSelector((state: AppState) => state.user);
@@ -50,6 +51,7 @@ export default function ProductTableList() {
         <CircularProgress size={64} color="secondary" />
       </Box>
     );
+  if (error) return <ErrorMessage message={error} />;
 
   const handleDelete = (id: number) => {
     dispatch(deleteProductAsync(id)).then(() => {

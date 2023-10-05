@@ -12,9 +12,10 @@ import CategorySearch from "../features/category/CategorySearch";
 import ProductSort from "../features/products/ProductSort";
 import { executeSearchandSort } from "../app/functions/getFilteredAndSort";
 import { Product } from "../app/types/Product/Product";
+import ErrorMessage from "../app/errors/ErrorMessage";
 
 export const HomePage = () => {
-  const { productsList, listLoading } = useAppSelector(
+  const { productsList, listLoading, error } = useAppSelector(
     (state: AppState) => state.product
   );
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -37,7 +38,7 @@ export const HomePage = () => {
       sortOrder
     );
     setFilteredProducts(filteredResult);
-  }, [productsList,searchText, categoryId, sortOrder]);
+  }, [productsList, searchText, categoryId, sortOrder]);
 
   if (listLoading)
     return (
@@ -51,6 +52,8 @@ export const HomePage = () => {
         <CircularProgress size={64} color="secondary" />
       </Box>
     );
+
+  if (error) return <ErrorMessage message={error} />;
 
   const handleSearch = (searchKey: string) => {
     setSearchText(searchKey);
@@ -79,7 +82,9 @@ export const HomePage = () => {
           </Paper>
         </Grid>
         <Grid item xs={9}>
-          {productsList.length>0 && <ProductCardList products={filteredProducts} />}
+          {productsList.length > 0 && (
+            <ProductCardList products={filteredProducts} />
+          )}
         </Grid>
       </Grid>
     </>

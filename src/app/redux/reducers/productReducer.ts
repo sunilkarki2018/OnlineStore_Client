@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import apis from "../../apis/urls";
 import axios, { AxiosError } from "axios";
-import { toast } from "react-toastify";
-import { boolean } from "yup";
+
 import { Product } from "../../types/Product/Product";
 import { CreateProductInput } from "../../types/Product/CreateProductInput";
 import { UpdateProductInput } from "../../types/Product/UpdateProductInput";
@@ -10,7 +8,7 @@ import { UpdateProductInput } from "../../types/Product/UpdateProductInput";
 interface ProductState {
   productsList: Product[];
   productsSingle: Product | null;
-  error: string | null;
+  error?: string | null;
   listLoading: boolean;
   singleLoading: boolean;
 }
@@ -23,80 +21,81 @@ const initialState: ProductState = {
   error: null,
 };
 
-export const fetchAllProductsAsync = createAsyncThunk(
-  "fetchAllProductsAsync",
-  async (_, { rejectWithValue }) => {
-    try {
-      const result = await axios.get(
-        `https://api.escuelajs.co/api/v1/products`
-      );
-      const products: Product[] = await result.data;
-      return products;
-    } catch (e) {
-      const error = e as AxiosError;
-      return rejectWithValue(error.message);
-    }
+export const fetchAllProductsAsync = createAsyncThunk<
+  Product[],
+  void,
+  { rejectValue: string }
+>("fetchAllProductsAsync", async (_, { rejectWithValue }) => {
+  try {
+    const result = await axios.get(`https://api.escuelajs.co/api/v1/products`);
+    const products: Product[] = await result.data;
+    return products;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
   }
-);
+});
 
-export const fetchProductAsync = createAsyncThunk<Product, string>(
-  "fetchProductAsync",
-  async (id, { rejectWithValue }) => {
-    try {
-      const result = await axios.get<Product>(
-        `https://api.escuelajs.co/api/v1/products/${id}`
-      );
-      return result.data;
-    } catch (e) {
-      const error = e as AxiosError;
-      return rejectWithValue(error.message);
-    }
+export const fetchProductAsync = createAsyncThunk<
+  Product,
+  string,
+  { rejectValue: string }
+>("fetchProductAsync", async (id, { rejectWithValue }) => {
+  try {
+    const result = await axios.get<Product>(
+      `https://api.escuelajs.co/api/v1/products/${id}`
+    );
+    return result.data;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
   }
-);
+});
 
-export const createProductAsync = createAsyncThunk(
-  "createProductAsync",
-  async (newProduct: CreateProductInput, { rejectWithValue }) => {
-    try {
-      console.log("fetch start");
-      const result = await axios.post<Product>(
-        "https://api.escuelajs.co/api/v1/products/",
-        newProduct
-      );
-      console.log("fetch end", result);
-      return result.data;
-    } catch (e) {
-      const error = e as AxiosError;
-      console.log("error", error.message);
-      return rejectWithValue(error.message);
-    }
+export const createProductAsync = createAsyncThunk<
+  Product,
+  CreateProductInput,
+  { rejectValue: string }
+>("createProductAsync", async (newProduct, { rejectWithValue }) => {
+  try {
+    const result = await axios.post<Product>(
+      "https://api.escuelajs.co/api/v1/products/",
+      newProduct
+    );
+    return result.data;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
   }
-);
+});
 
-export const deleteProductAsync = createAsyncThunk(
-  "deleteProductAsync",
-  async (id: number, { rejectWithValue }) => {
-    try {
-      const result = await axios.delete<boolean>(
-        `https://api.escuelajs.co/api/v1/products/${id}`
-      );
-      if (!result.data) {
-        throw new Error("Cannot delete");
-      }
-      return id;
-    } catch (e) {
-      const error = e as AxiosError;
-      return rejectWithValue(error.message);
+export const deleteProductAsync = createAsyncThunk<
+  number,
+  number,
+  { rejectValue: string }
+>("deleteProductAsync", async (id: number, { rejectWithValue }) => {
+  try {
+    const result = await axios.delete<boolean>(
+      `https://api.escuelajs.co/api/v1/products/${id}`
+    );
+    if (!result.data) {
+      throw new Error("Cannot delete");
     }
+    return id;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
   }
-);
+});
 
-export const updateProductAsync = createAsyncThunk(
+export const updateProductAsync = createAsyncThunk<
+  Product,
+  UpdateProductInput,
+  { rejectValue: string }
+>(
   "updateProductAsync",
   async ({ id, update }: UpdateProductInput, { rejectWithValue }) => {
     try {
-      console.log("id:", id);
-      console.log("update:", update);
       const result = await axios.put<Product>(
         `https://api.escuelajs.co/api/v1/products/${id}`,
         update
@@ -104,7 +103,6 @@ export const updateProductAsync = createAsyncThunk(
       return result.data;
     } catch (e) {
       const error = e as AxiosError;
-      console.log("update:", error.message);
       return rejectWithValue(error.message);
     }
   }
@@ -130,6 +128,7 @@ const productsSlice = createSlice({
       return {
         ...state,
         listLoading: false,
+        error: action.payload,
       };
     });
     builder.addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
@@ -147,13 +146,11 @@ const productsSlice = createSlice({
       };
     });
     builder.addCase(fetchProductAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          singleLoading: false,
-          error: action.payload.message,
-        };
-      }
+      return {
+        ...state,
+        singleLoading: false,
+        error: action.payload,
+      };
     });
     builder.addCase(fetchProductAsync.fulfilled, (state, action) => {
       return {
@@ -167,7 +164,7 @@ const productsSlice = createSlice({
       state.productsList.push(action.payload);
     });
     builder.addCase(createProductAsync.rejected, (state, action) => {
-      state.error = action.payload as string;
+      state.error = action.payload;
     });
 
     builder.addCase(deleteProductAsync.fulfilled, (state, action) => {
@@ -176,7 +173,7 @@ const productsSlice = createSlice({
       );
     });
     builder.addCase(deleteProductAsync.rejected, (state, action) => {
-      state.error = action.payload as string;
+      state.error = action.payload;
     });
 
     builder.addCase(updateProductAsync.fulfilled, (state, action) => {
@@ -186,6 +183,9 @@ const productsSlice = createSlice({
       if (foundIndex >= 0) {
         state.productsList[foundIndex] = action.payload;
       }
+    });
+    builder.addCase(updateProductAsync.rejected, (state, action) => {
+      state.error = action.payload;
     });
   },
 });

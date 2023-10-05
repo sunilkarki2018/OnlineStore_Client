@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { User } from "../../types/User/User";
 import { UserReducerState } from "../../types/User/UserReducerState";
+import { CreateUserInput } from "../../types/User/CreateUserInput";
 
 interface UserCredential {
   email: string;
@@ -82,31 +83,25 @@ export const authenticateUserAsync = createAsyncThunk<
   }
 });
 
-/* export const fetchUserProfileAsync = createAsyncThunk(
-  "fetchUserProfileAsync",
-  async (access_token: string, { rejectWithValue }) => {
-    try {
-      console.log("user fetch triggered: ");
-      const response = await axios.get(
-        "https://api.escuelajs.co/api/v1/auth/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
-      const userInfo = response.data as User;
-
-      console.log("userInfo: ", userInfo);
-      return userInfo;
-    } catch (e) {
-      const error = e as Error;
-      console.log("userInfoerror: ", error.message);
-      return rejectWithValue(error.message);
-    }
+export const createUserAsync = createAsyncThunk<
+  User,
+  CreateUserInput,
+  { rejectValue: string }
+>("createUserAsync", async (newUser, { rejectWithValue }) => {
+  try {
+    const result = await axios.post<User>(
+      "https://api.escuelajs.co/api/v1/users/",
+      newUser
+    );
+    console.log("Result:", result);
+    return result.data;
+  } catch (e) {
+    const error = e as AxiosError;
+    console.log("Error:", error);
+    return rejectWithValue(error.message);
   }
-);
- */
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -130,9 +125,6 @@ const userSlice = createSlice({
       })
       .addCase(loginUserAsync.fulfilled, (state, action) => {
         state.currentUser = action.payload;
-        /*  state.loggedIn = true;
-        state.access_token = action.payload.access_token;
-        state.refresh_token = action.payload.refresh_token; */
       })
       .addCase(loginUserAsync.rejected, (state, action) => {
         state.error = action.payload;
@@ -142,6 +134,12 @@ const userSlice = createSlice({
       })
       .addCase(authenticateUserAsync.fulfilled, (state, action) => {
         state.currentUser = action.payload;
+      })
+      .addCase(createUserAsync.fulfilled, (state, action) => {
+        state.users.push(action.payload);
+      })
+      .addCase(createUserAsync.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });

@@ -21,9 +21,10 @@ import { AppState } from "../../app/redux/store";
 import { useEffect } from "react";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { fetchUsersAsync } from "../../app/redux/reducers/userReducer";
+import ErrorMessage from "../../app/errors/ErrorMessage";
 
 export default function UserList() {
-  const { users, loading } = useAppSelector((state: AppState) => state.user);
+  const { users, loading,error } = useAppSelector((state: AppState) => state.user);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchUsersAsync());
@@ -43,12 +44,14 @@ export default function UserList() {
     </Box>
   );
 
+  if (error) return <ErrorMessage message={error} />;
+
   return (
     <>
       <Container>
         <Button
           component={Link}
-          to={`/productCreate`}
+          to={`/userCreate`}
           variant="contained"
           color="primary"
           style={{ marginBottom: "40px" }}

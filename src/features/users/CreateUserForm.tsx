@@ -16,40 +16,32 @@ import { AppState } from "../../app/redux/store";
 import { CreateProductInput } from "../../app/types/Product/CreateProductInput";
 import { Input } from "@mui/material";
 import uploadFile from "../../app/functions/UploadFile";
+import { CreateUserInput } from "../../app/types/User/CreateUserInput";
+import { createUserAsync } from "../../app/redux/reducers/userReducer";
 
-export default function CreateProductForm(): JSX.Element {
+export default function CreateUserForm(): JSX.Element {
   const navigate = useNavigate();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateProductInput>();
+  } = useForm<CreateUserInput>();
 
   const [images, setImages] = useState<File[]>([]);
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state: AppState) => state.user);
 
-  const handleFormSubmit = async (data: CreateProductInput) => {
-    let imageLocations: string[] = new Array(images.length);
-    for (let i = 0; i < images.length; i++) {
-      imageLocations[i] = await uploadFile(images[i]);
-    }
-    data.images = imageLocations;
+  const handleFormSubmit = async (data: CreateUserInput) => {
     try {
-      dispatch(createProductAsync(data));
-      toast.success("Product added successfully");
-      navigate("/product");
+      data.avatar = await uploadFile(images[0]);
+      dispatch(createUserAsync(data));
+      toast.success("User added successfully");
+      navigate("/users");
     } catch (error) {
-      toast.error("Error while adding product");
+      toast.error("Error while adding user");
       console.log("Error:", error);
     }
   };
-  const { categories } = useAppSelector((state: AppState) => state.category);
-
-  useEffect(() => {
-    dispatch(fetchAllCategoriesAsync());
-  }, []);
-
   if (
     !(
       currentUser?.role.includes("admin") ||
@@ -72,80 +64,64 @@ export default function CreateProductForm(): JSX.Element {
       style={{ display: "flex", flexDirection: "column", gap: "16px" }}
     >
       <Controller
-        name="title"
+        name="name"
         control={control}
         defaultValue=""
-        rules={{ required: "Title is required" }}
+        rules={{ required: "Name is required" }}
         render={({ field }) => (
           <TextField
             {...field}
-            label="Title"
+            label="Name"
             variant="outlined"
             fullWidth
-            error={!!errors.title}
-            helperText={errors.title?.message}
-          />
-        )}
-      />
-      <Controller
-        name="price"
-        control={control}
-        rules={{ required: "Price is required", pattern: /^\d+(\.\d{1,2})?$/ }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Price"
-            variant="outlined"
-            fullWidth
-            error={!!errors.price}
-            helperText={errors.price?.message}
-          />
-        )}
-      />
-      <Controller
-        name="description"
-        control={control}
-        defaultValue=""
-        rules={{ required: "Description is required" }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Description"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={4}
-            error={!!errors.description}
-            helperText={errors.description?.message}
+            error={!!errors.name}
+            helperText={errors.name?.message}
           />
         )}
       />
 
       <Controller
-        name="categoryId"
+        name="email"
         control={control}
-        rules={{ required: "Category is required" }}
+        defaultValue=""
+        rules={{ required: "Email is required" }}
         render={({ field }) => (
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Category</InputLabel>
-            <Select label="Category" {...field} error={!!errors.categoryId}>
-              {categories.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <TextField
+            {...field}
+            label="Email"
+            variant="outlined"
+            fullWidth
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
         )}
       />
 
-      <InputLabel htmlFor="images">Select Multiple Files</InputLabel>
       <Controller
-        name="images"
+        name="password"
         control={control}
-        defaultValue={[]}
+        defaultValue=""
+        rules={{ required: "Password is required" }}
         render={({ field }) => (
-          <input type="file" multiple onChange={handleFileChange} />
+          <TextField
+            {...field}
+            label="Password"
+            variant="outlined"
+            fullWidth
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+        )}
+      />
+
+      <InputLabel htmlFor="images">Select Image</InputLabel>
+      <Controller
+        name="avatar"
+        control={control}
+        defaultValue=""
+        rules={{ required: "Image is required" }}
+        render={({ field }) => (
+          <input type="file" onChange={handleFileChange} />
         )}
       />
 
@@ -155,4 +131,3 @@ export default function CreateProductForm(): JSX.Element {
     </form>
   );
 }
-

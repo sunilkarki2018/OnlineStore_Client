@@ -5,12 +5,12 @@ import apis from "../../apis/urls";
 interface CategoryState {
   categories: Category[];
   status: string;
-  error: string;
+  error?: string;
 }
 
 const initialState: CategoryState = {
   categories: [],
-  status: "idle", // 'idle', 'loading', 'succeeded', or 'failed'
+  status: "idle",
   error: "",
 };
 
@@ -37,6 +37,7 @@ const categorySlice = createSlice({
       })
       .addCase(fetchAllCategoriesAsync.fulfilled, (state, action) => {
         state.categories = action.payload;
+        state.status= "idle"
       })
       .addCase(fetchAllCategoriesAsync.rejected, (state, action) => {
         state.status = "failed";

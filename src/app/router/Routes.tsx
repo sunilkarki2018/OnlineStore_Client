@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import App from "../layouts/App";
 import { HomePage } from "../../pages/HomePage";
 import { ContactPage } from "../../pages/ContactPage";
@@ -12,6 +12,8 @@ import EditProductForm from "../../features/products/EditProductForm";
 import Checkout from "../../features/cart/Checkout";
 import ProfilePage from "../../pages/ProfilePage";
 import { UserPage } from "../../pages/UserPage";
+import CreateUserForm from "../../features/users/CreateUserForm";
+import NotFound from "../errors/NotFound";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -29,7 +31,10 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "users", element: <UserPage /> },
+      { path: "userCreate", element: <CreateUserForm /> },
       { path: "profile", element: <ProfilePage /> },
+      { path: "notFound", element: <NotFound /> },
+      { path: "*", element: <Navigate replace to="/notFound" /> },
     ],
   },
 ]);
