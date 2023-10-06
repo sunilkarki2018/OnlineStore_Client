@@ -29,7 +29,7 @@ export default function ProductDetails() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchProductAsync(id!));
+    dispatch(fetchProductAsync(Number(id!)));
   }, [id]);
 
   if (singleLoading)

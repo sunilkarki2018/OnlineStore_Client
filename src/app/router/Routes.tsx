@@ -14,6 +14,7 @@ import ProfilePage from "../../pages/ProfilePage";
 import { UserPage } from "../../pages/UserPage";
 import CreateUserForm from "../../features/users/CreateUserForm";
 import NotFound from "../errors/NotFound";
+import EditUserForm from "../../features/users/EditUserForm";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "users", element: <UserPage /> },
       { path: "userCreate", element: <CreateUserForm /> },
+      { path: "userEdit/:id", element: <EditUserForm /> },
       { path: "profile", element: <ProfilePage /> },
       { path: "notFound", element: <NotFound /> },
       { path: "*", element: <Navigate replace to="/notFound" /> },

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Category } from "../../types/Category";
+import { AxiosError } from "axios";
 import apis from "../../apis/urls";
 
 interface CategoryState {
@@ -13,13 +14,19 @@ const initialState: CategoryState = {
   status: "idle",
   error: "",
 };
-
-export const fetchAllCategoriesAsync = createAsyncThunk<Category[]>(
-  "fetchAllCategoriesAsync",
-  async () => {
-    return await apis.Category.list();
+export const fetchAllCategoriesAsync = createAsyncThunk<
+  Category[],
+  void,
+  { rejectValue: string }
+>("fetchAllCategoriesAsync", async (_, { rejectWithValue }) => {
+  try {
+    const result: Category[] = await apis.Category.list();
+    return result;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
   }
-);
+});
 
 const categorySlice = createSlice({
   name: "category",
@@ -37,7 +44,7 @@ const categorySlice = createSlice({
       })
       .addCase(fetchAllCategoriesAsync.fulfilled, (state, action) => {
         state.categories = action.payload;
-        state.status= "idle"
+        state.status = "idle";
       })
       .addCase(fetchAllCategoriesAsync.rejected, (state, action) => {
         state.status = "failed";

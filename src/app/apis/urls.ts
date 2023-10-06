@@ -9,23 +9,44 @@ const requests = {
   post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
   put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
   del: (url: string) => axios.delete(url).then(responseBody),
+  getAuth: (url: string, headerData: string) =>
+    axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${headerData}`,
+        },
+      })
+      .then(responseBody),
 };
 
 const Product = {
   list: () => requests.get("products"),
-  details: (id: string) => requests.get(`products/${id}`),
+  details: (id: number) => requests.get(`products/${id}`),
   add: (productData: {}) => requests.post("products", productData),
-  update: (id: string, productData: {}) => requests.put(`products/${id}`, productData),
-  delete: (id: string) => requests.del(`products/${id}`),
+  update: (id: number, productData: {}) =>
+    requests.put(`products/${id}`, productData),
+  delete: (id: number) => requests.del(`products/${id}`),
 };
 
 const Category = {
   list: () => requests.get("categories"),
 };
 
+const User = {
+  list: () => requests.get("users"),
+  details: (id: number) => requests.get(`users/${id}`),
+  login: (userData: {}) => requests.post("auth/login", userData),
+  profile: (headerData: string) =>
+    requests.getAuth("auth/profile", headerData),
+  add: (userData: {}) => requests.post("users", userData),
+  update: (id: number, userData: {}) => requests.put(`users/${id}`, userData),
+  delete: (id: number) => requests.del(`users/${id}`),
+};
+
 const apis = {
   Product,
-  Category
+  Category,
+  User,
 };
 
 export default apis;

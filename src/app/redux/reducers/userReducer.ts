@@ -3,6 +3,8 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { User } from "../../types/User/User";
 import { UserReducerState } from "../../types/User/UserReducerState";
 import { CreateUserInput } from "../../types/User/CreateUserInput";
+import { UpdateUserInput } from "../../types/User/UpdateUserInput";
+import apis from "../../apis/urls";
 
 interface UserCredential {
   email: string;
@@ -21,13 +23,10 @@ export const fetchUsersAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchUsersAsync", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get<User[]>(
-      "https://api.escuelajs.co/api/v1/users"
-    );
-    return response.data;
+    const result: User[] = await apis.User.list();
+    return result;
   } catch (e) {
     const error = e as Error;
-    console.log("userInfoerror: ", error.message);
     return rejectWithValue(error.message);
   }
 });
@@ -38,11 +37,8 @@ export const loginUserAsync = createAsyncThunk<
   { rejectValue: string }
 >("loginUserAsync", async (cred, { rejectWithValue, dispatch }) => {
   try {
-    const result = await axios.post(
-      `https://api.escuelajs.co/api/v1/auth/login`,
-      cred
-    );
-    const { access_token } = result.data;
+    const result = await apis.User.login(cred);
+    const { access_token } = result;
     const authenticatedResult = await dispatch(
       authenticateUserAsync(access_token)
     );
@@ -68,15 +64,8 @@ export const authenticateUserAsync = createAsyncThunk<
   { rejectValue: string }
 >("authenticateUserAsync", async (access_token, { rejectWithValue }) => {
   try {
-    const response = await axios.get(
-      "https://api.escuelajs.co/api/v1/auth/profile",
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
-    return response.data;
+    const result: User = await apis.User.profile(access_token);
+    return result;
   } catch (e) {
     const error = e as Error;
     return rejectWithValue(error.message);
@@ -102,6 +91,41 @@ export const createUserAsync = createAsyncThunk<
   }
 });
 
+export const updateUserAsync = createAsyncThunk<
+  User,
+  UpdateUserInput,
+  { rejectValue: string }
+>(
+  "updateUserAsync",
+  async ({ id, update }: UpdateUserInput, { rejectWithValue }) => {
+    try {
+      const result = await apis.User.update(id, update);
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchUserAsync = createAsyncThunk<
+  User,
+  number,
+  { rejectValue: string }
+>("fetchProductAsync", async (id, { rejectWithValue }) => {
+  try {
+    /*  const result = await axios.get<User>(
+      `https://api.escuelajs.co/api/v1/users/${id}`
+    );
+    return result.data; */
+    const result = await apis.User.details(id);
+    return result;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
+  }
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -114,6 +138,7 @@ const userSlice = createSlice({
     builder
       .addCase(fetchUsersAsync.fulfilled, (state, action) => {
         state.users = action.payload;
+        state.error = "";
         state.loading = false;
       })
       .addCase(fetchUsersAsync.pending, (state, action) => {
@@ -139,6 +164,17 @@ const userSlice = createSlice({
         state.users.push(action.payload);
       })
       .addCase(createUserAsync.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      .addCase(updateUserAsync.fulfilled, (state, action) => {
+        const foundIndex = state.users.findIndex(
+          (u) => u.id === action.payload.id
+        );
+        if (foundIndex >= 0) {
+          state.users[foundIndex] = action.payload;
+        }
+      })
+      .addCase(updateUserAsync.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

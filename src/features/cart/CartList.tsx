@@ -24,9 +24,7 @@ import CartSummary from "./CartSummary";
 import { Link } from "react-router-dom";
 
 export default function CartList() {
-  const { cartItems, loading } = useAppSelector(
-    (state: AppState) => state.cart
-  );
+  const { cartItems } = useAppSelector((state: AppState) => state.cart);
 
   const dispatch = useAppDispatch();
 
@@ -104,22 +102,23 @@ export default function CartList() {
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Grid container>
-        <Grid item xs={6} />
-        <Grid item xs={6}>
-          <CartSummary />
-          <Button
-            component={Link}
-            to="/checkout"
-            variant="contained"
-            size="large"
-            fullWidth
-          >
-            Checkout
-          </Button>
+      {cartItems.length > 0 ? (
+        <Grid container>
+          <Grid item xs={6} />
+          <Grid item xs={6}>
+            <CartSummary />
+            <Button
+              component={Link}
+              to="/checkout"
+              variant="contained"
+              size="large"
+              fullWidth
+            >
+              Checkout
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : null}
     </>
   );
 }

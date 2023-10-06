@@ -34,6 +34,7 @@ export default function CreateUserForm(): JSX.Element {
   const handleFormSubmit = async (data: CreateUserInput) => {
     try {
       data.avatar = await uploadFile(images[0]);
+      data.avatar = "";
       dispatch(createUserAsync(data));
       toast.success("User added successfully");
       navigate("/users");
@@ -42,12 +43,7 @@ export default function CreateUserForm(): JSX.Element {
       console.log("Error:", error);
     }
   };
-  if (
-    !(
-      currentUser?.role.includes("admin") ||
-      currentUser?.role.includes("customer")
-    )
-  ) {
+  if (!currentUser?.role.includes("admin")) {
     navigate("/login");
     return <div>Access Denied</div>;
   }
