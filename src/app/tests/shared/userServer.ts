@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { productsData } from "../../data/productsData";
+import { productsData } from "../data/productsData";
 import { usersData } from "../data/usersData";
 
 export const access_token = "aaa-bbb-ccc";

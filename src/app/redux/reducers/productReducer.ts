@@ -91,12 +91,10 @@ export const updateProductAsync = createAsyncThunk<
   "updateProductAsync",
   async ({ id, update }: UpdateProductInput, { rejectWithValue }) => {
     try {
-      console.log("id and update", id, update);
       const result: Product = await apis.Product.update(id, update);
       return result;
     } catch (e) {
       const error = e as AxiosError;
-      console.log("error.message", error.message);
       return rejectWithValue(error.message);
     }
   }

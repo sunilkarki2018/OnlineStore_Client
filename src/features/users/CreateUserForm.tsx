@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { createProductAsync } from "../../app/redux/reducers/productReducer";
-import { fetchAllCategoriesAsync } from "../../app/redux/reducers/categoryReducer";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
-import { CreateProductInput } from "../../app/types/Product/CreateProductInput";
-import { Input } from "@mui/material";
 import uploadFile from "../../app/functions/UploadFile";
 import { CreateUserInput } from "../../app/types/User/CreateUserInput";
 import { createUserAsync } from "../../app/redux/reducers/userReducer";
@@ -32,16 +26,16 @@ export default function CreateUserForm(): JSX.Element {
   const { currentUser } = useAppSelector((state: AppState) => state.user);
 
   const handleFormSubmit = async (data: CreateUserInput) => {
-    try {
-      data.avatar = await uploadFile(images[0]);
-      data.avatar = "";
-      dispatch(createUserAsync(data));
+    data.avatar = await uploadFile(images[0]);
+    data.avatar = "";
+    const result = await dispatch(createUserAsync(data));
+    if (result.meta.requestStatus === "fulfilled") {
       toast.success("User added successfully");
-      navigate("/users");
-    } catch (error) {
-      toast.error("Error while adding user");
-      console.log("Error:", error);
+    } else if (result.meta.requestStatus === "rejected") {
+      toast.error("Error while adding User");
     }
+    toast.success("User added successfully");
+    navigate("/users");
   };
   if (!currentUser?.role.includes("admin")) {
     navigate("/login");

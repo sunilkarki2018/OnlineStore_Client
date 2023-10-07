@@ -60,9 +60,12 @@ export default function EditProductForm(): JSX.Element {
       }
       data.update.images = imageLocations;
     }
-
-    dispatch(updateProductAsync(data));
-    toast.success("Product updated successfully");
+    const result = await dispatch(updateProductAsync(data));
+    if (result.meta.requestStatus === "fulfilled") {
+      toast.success("Product updated successfully");
+    } else if (result.meta.requestStatus === "rejected") {
+      toast.error("Error while updating product");
+    } 
     navigate("/product");
   };
 

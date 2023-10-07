@@ -32,7 +32,7 @@ export default function EditProductForm(): JSX.Element {
     formState: { errors },
   } = useForm<UpdateUserInput>();
   const dispatch = useAppDispatch();
-  const { currentUser, error } = useAppSelector(
+  const { currentUser } = useAppSelector(
     (state: AppState) => state.user
   );
 
@@ -52,7 +52,6 @@ export default function EditProductForm(): JSX.Element {
     navigate("/login");
     return <div>Access Denied</div>;
   }
-  if (error) return <ErrorMessage message={error} />;
 
   const handleFormSubmit = async (data: UpdateUserInput) => {
     let imageLocations: string = "";
@@ -60,10 +59,12 @@ export default function EditProductForm(): JSX.Element {
       imageLocations = await uploadFile(images[0]);
       data.update.avatar = imageLocations;
     }
-
-    console.log("data:", data);
-    dispatch(updateUserAsync(data));
-    toast.success("User updated successfully");
+    const result = await dispatch(updateUserAsync(data));
+    if (result.meta.requestStatus === "fulfilled") {
+      toast.success("User updated successfully");
+    } else if (result.meta.requestStatus === "rejected") {
+      toast.error("Error while updating User");
+    }
     navigate("/users");
   };
 

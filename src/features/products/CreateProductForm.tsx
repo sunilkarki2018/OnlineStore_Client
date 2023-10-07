@@ -8,13 +8,14 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Box, Typography } from "@mui/material";
+
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { createProductAsync } from "../../app/redux/reducers/productReducer";
 import { fetchAllCategoriesAsync } from "../../app/redux/reducers/categoryReducer";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
 import { CreateProductInput } from "../../app/types/Product/CreateProductInput";
-import { Box, Input, Typography } from "@mui/material";
 import uploadFile from "../../app/functions/UploadFile";
 
 export default function CreateProductForm(): JSX.Element {
@@ -36,15 +37,13 @@ export default function CreateProductForm(): JSX.Element {
     }
     data.images = imageLocations;
 
-    console.log("errors:", errors);
-    try {
-      dispatch(createProductAsync(data));
+    const result = await dispatch(createProductAsync(data));
+    if (result.meta.requestStatus === "fulfilled") {
       toast.success("Product added successfully");
-      navigate("/product");
-    } catch (error) {
+    } else if (result.meta.requestStatus === "rejected") {
       toast.error("Error while adding product");
-      console.log("Error:", error);
     }
+    navigate("/product");
   };
   const { categories } = useAppSelector((state: AppState) => state.category);
 
@@ -181,7 +180,7 @@ export default function CreateProductForm(): JSX.Element {
           type="submit"
           variant="contained"
           color="primary"
-          style={{ margin: "20px", width: "20%"  }}
+          style={{ margin: "20px", width: "20%" }}
         >
           Submit
         </Button>
