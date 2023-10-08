@@ -1,17 +1,20 @@
 import {
   Box,
+  Button,
   CircularProgress,
   Divider,
   Grid,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import useAppSelector from "../../app/hooks/useAppSelector";
@@ -19,14 +22,53 @@ import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { AppState } from "../../app/redux/store";
 import { fetchProductAsync } from "../../app/redux/reducers/productReducer";
 import ErrorMessage from "../../app/errors/ErrorMessage";
+import { addToCart } from "../../app/redux/reducers/cartReducer";
+import { isStringNotNullOrEmpty } from "../../app/functions/common";
+import { toast } from "react-toastify";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
-
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { singleLoading, productsSingle, error } = useAppSelector(
     (state: AppState) => state.product
   );
+  const { cartItems } = useAppSelector((state: AppState) => state.cart);
+  const stock = cartItems.find((item) => item.id === Number(id))?.quantity;
   const dispatch = useAppDispatch();
+
+  const handleAddToCartClick = () => {
+    const debounceDelay = 500;
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+    if (!isStringNotNullOrEmpty(inputValue)) {
+      toast.error("Please enter valid number between 1 to 5");
+      setIsLoading(false);
+      return;
+    }
+    if (isStringNotNullOrEmpty(inputValue)) {
+      if (
+        isNaN(Number(inputValue)) ||
+        Number(inputValue) < 1 ||
+        Number(inputValue) > 5
+      ) {
+        toast.error("Please enter valid number between 1 to 5");
+        setIsLoading(false);
+        return;
+      }
+    }
+    dispatch(
+      addToCart({
+        id: productsSingle!.id,
+        title: productsSingle!.title,
+        price: productsSingle!.price,
+        quantity: Number(inputValue),
+      })
+    );
+    setTimeout(() => setIsLoading(false), debounceDelay);
+  };
 
   useEffect(() => {
     dispatch(fetchProductAsync(Number(id!)));
@@ -55,23 +97,24 @@ export default function ProductDetails() {
               key={index}
               src={image}
               alt={`${productsSingle?.title} Image ${index + 1}`}
-              style={{ width: "100%" }}
+              style={{ width: "80%", height: "80%" }}
             />
           ))}
         </Carousel>
       </Grid>
       <Grid item xs={6}>
-        <Typography variant="h3">{productsSingle?.title}</Typography>
+        <Typography variant="h3">Product Detail</Typography>
         <Divider sx={{ mb: 2 }} />
-        <Typography variant="h4" color="secondary">
-          ${productsSingle?.price}
-        </Typography>
-        <TableContainer>
+        <TableContainer component={Paper} style={{ margin: "20px 0" }}>
           <Table>
             <TableBody sx={{ fontSize: "1.1em" }}>
               <TableRow>
                 <TableCell>Title</TableCell>
                 <TableCell>{productsSingle?.title}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Price</TableCell>
+                <TableCell>{productsSingle?.price}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Description</TableCell>
@@ -80,6 +123,29 @@ export default function ProductDetails() {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-basic"
+              label="Enter quantity"
+              variant="outlined"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              onClick={handleAddToCartClick}
+              sx={{ height: "52px" }}
+              fullWidth
+            >
+              {isLoading ? "Loading..." : stock && stock > 0 ? "Update" : "Add"}
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

@@ -1,4 +1,3 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -9,6 +8,7 @@ import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { addToCart } from "../../app/redux/reducers/cartReducer";
 import { Link } from "react-router-dom";
 import { Product } from "../../app/types/Product/Product";
+import { useState } from "react";
 
 interface Props {
   product: Product;
@@ -16,8 +16,14 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddToCartClick = () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+    const debounceDelay = 500;
     dispatch(
       addToCart({
         id: product.id,
@@ -26,6 +32,7 @@ export default function ProductCard({ product }: Props) {
         quantity: 1,
       })
     );
+    setTimeout(() => setIsLoading(false), debounceDelay);
   };
   const cardStyle = {
     maxWidth: 345,
@@ -52,7 +59,7 @@ export default function ProductCard({ product }: Props) {
       </CardContent>
       <CardActions sx={buttonContainerStyle}>
         <Button onClick={handleAddToCartClick} size="small">
-          Add
+          {isLoading ? "Loading..." : "Add"}
         </Button>
         <Button component={Link} to={`/product/${product.id}`} size="small">
           View

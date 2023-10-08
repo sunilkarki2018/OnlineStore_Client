@@ -1,4 +1,5 @@
 import { Product } from "../types/Product/Product";
+import {  isNumberNotNullOrZero, isStringNotNullOrEmpty } from "./common";
 
 
 export const executeSearchandSort = (
@@ -8,17 +9,17 @@ export const executeSearchandSort = (
   sortOrder: string
 ): Product[] => {
   let filteredResult;
-  if (isNotNullOrEmpty(searchText) && isNotNullOrZero(categoryId)) {
+  if (isStringNotNullOrEmpty(searchText) && isNumberNotNullOrZero(categoryId)) {
     filteredResult = productsList.filter(
       (product) =>
         product.title.toLowerCase().includes(searchText.toLowerCase()) &&
         product.category.id === categoryId
     );
-  } else if (isNotNullOrEmpty(searchText)) {
+  } else if (isStringNotNullOrEmpty(searchText)) {
     filteredResult = productsList.filter((product) =>
       product.title.toLowerCase().includes(searchText.toLowerCase())
     );
-  } else if (isNotNullOrZero(categoryId)) {
+  } else if (isNumberNotNullOrZero(categoryId)) {
     filteredResult = productsList.filter(
       (product) => product.category.id === categoryId
     );
@@ -36,9 +37,4 @@ export const executeSearchandSort = (
   return sortedResult;
 };
 
-function isNotNullOrEmpty(value: string) {
-  return value !== null && value !== "";
-}
-function isNotNullOrZero(value: number | null) {
-  return value !== null && value !== 0 ? true : false;
-}
+
