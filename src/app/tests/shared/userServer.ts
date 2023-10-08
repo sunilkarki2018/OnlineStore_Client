@@ -2,6 +2,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { productsData } from "../data/productsData";
 import { usersData } from "../data/usersData";
+import { UpdateUserInput } from "../../types/User/UpdateUserInput";
 
 export const access_token = "aaa-bbb-ccc";
 
@@ -37,6 +38,33 @@ export const handlers = [
       return res(ctx.text("Cannot return user profile"));
     }
   }),
+  rest.put(
+    "https://api.escuelajs.co/api/v1/users/:id",
+    async (req, res, ctx) => {
+      const input: UpdateUserInput = await req.json();
+      const { id } = req.params;
+      const findIndex = usersData.findIndex((i) => i.id === Number(id));
+      if (findIndex > -1) {
+        return res(
+          ctx.json({
+            ...usersData[findIndex],
+            ...input,
+          })
+        );
+      } else {
+        ctx.status(400);
+        ctx.json({
+          message: [
+            "email must be an email",
+            "role must be one of the following values: admin, customer",
+            "avatar must be a URL address",
+          ],
+          error: "Bad Request",
+          statusCode: 400,
+        });
+      }
+    }
+  ),
 ];
 
 const userServer = setupServer(...handlers);

@@ -47,7 +47,6 @@ export default function Register() {
       navigate("/home");
     } catch (error) {
       toast.error("Error while adding user");
-      console.log("Error:", error);
     }
   };
 

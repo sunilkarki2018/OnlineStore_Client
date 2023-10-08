@@ -82,11 +82,9 @@ export const createUserAsync = createAsyncThunk<
       "https://api.escuelajs.co/api/v1/users/",
       newUser
     );
-    console.log("Result:", result);
     return result.data;
   } catch (e) {
     const error = e as AxiosError;
-    console.log("Error:", error);
     return rejectWithValue(error.message);
   }
 });
@@ -100,7 +98,7 @@ export const updateUserAsync = createAsyncThunk<
   async ({ id, update }: UpdateUserInput, { rejectWithValue }) => {
     try {
       const result = await apis.User.update(id, update);
-      return result.data;
+      return result;
     } catch (e) {
       const error = e as AxiosError;
       return rejectWithValue(error.message);

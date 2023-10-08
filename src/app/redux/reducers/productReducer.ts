@@ -56,7 +56,6 @@ export const createProductAsync = createAsyncThunk<
   { rejectValue: string }
 >("createProductAsync", async (newProduct, { rejectWithValue }) => {
   try {
-    console.log("newProduct:", newProduct);
     const result: Product = await apis.Product.add(newProduct);
     return result;
   } catch (e) {
@@ -72,7 +71,6 @@ export const deleteProductAsync = createAsyncThunk<
 >("deleteProductAsync", async (id: number, { rejectWithValue }) => {
   try {
     const result: boolean = await apis.Product.delete(id);
-    //return result;
     if (!result) {
       throw new Error("Cannot delete");
     }
@@ -173,12 +171,12 @@ const productsSlice = createSlice({
       const foundIndex = state.productsList.findIndex(
         (p) => p.id === action.payload.id
       );
-      if (foundIndex >= 0) {
+       if (foundIndex >= 0) {
         state.productsList[foundIndex] = action.payload;
       }
     });
     builder.addCase(updateProductAsync.rejected, (state, action) => {
-      state.error = action.payload;
+     state.error = action.payload;
     });
   },
 });
