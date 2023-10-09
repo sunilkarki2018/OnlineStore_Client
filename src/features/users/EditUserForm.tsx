@@ -32,9 +32,7 @@ export default function EditProductForm(): JSX.Element {
     formState: { errors },
   } = useForm<UpdateUserInput>();
   const dispatch = useAppDispatch();
-  const { currentUser } = useAppSelector(
-    (state: AppState) => state.user
-  );
+  const { currentUser } = useAppSelector((state: AppState) => state.user);
 
   useEffect(() => {
     dispatch(fetchUserAsync(+id!)).then((userData) => {
@@ -48,9 +46,11 @@ export default function EditProductForm(): JSX.Element {
     });
   }, [dispatch, id, setValue]);
 
-  if (!currentUser?.role.includes("admin")) {
-    navigate("/login");
+  if (currentUser && currentUser?.role.includes("customer")) {
     return <div>Access Denied</div>;
+  }
+  if (!currentUser) {
+    navigate("/login");
   }
 
   const handleFormSubmit = async (data: UpdateUserInput) => {

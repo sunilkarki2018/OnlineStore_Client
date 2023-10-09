@@ -20,6 +20,7 @@ import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
 import uploadFile from "../../app/functions/UploadFile";
 import { Box, Typography } from "@mui/material";
+import ErrorMessage from "../../app/errors/ErrorMessage";
 
 export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
@@ -34,16 +35,19 @@ export default function EditProductForm(): JSX.Element {
   const { categories } = useAppSelector((state: AppState) => state.category);
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state: AppState) => state.user);
+  const { error } = useAppSelector((state: AppState) => state.product);
 
   useEffect(() => {
     dispatch(fetchProductAsync(+id!)).then((productData) => {
-      const item = productData.payload as Product;
-      setValue("update.title", item.title);
-      setValue("update.price", item.price);
-      setValue("update.description", item.description);
-      setValue("update.categoryId", item.category.id);
-      setValue("update.images", item.images);
-      setValue("id", item.id);
+      if (productData.meta.requestStatus === "fulfilled") {
+        const item = productData.payload as Product;
+        setValue("update.title", item.title);
+        setValue("update.price", item.price);
+        setValue("update.description", item.description);
+        setValue("update.categoryId", item.category.id);
+        setValue("update.images", item.images);
+        setValue("id", item.id);
+      }
     });
   }, [dispatch, id, setValue]);
 
@@ -65,9 +69,11 @@ export default function EditProductForm(): JSX.Element {
       toast.success("Product updated successfully");
     } else if (result.meta.requestStatus === "rejected") {
       toast.error("Error while updating product");
-    } 
+    }
     navigate("/product");
   };
+
+  if (error) return <ErrorMessage message={error} />;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {

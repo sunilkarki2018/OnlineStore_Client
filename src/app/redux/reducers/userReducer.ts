@@ -129,6 +129,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      localStorage.removeItem("access_token");
       return initialState;
     },
   },
@@ -157,7 +158,7 @@ const userSlice = createSlice({
       })
       .addCase(authenticateUserAsync.fulfilled, (state, action) => {
         state.currentUser = action.payload;
-      })
+       })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.users.push(action.payload);
       })

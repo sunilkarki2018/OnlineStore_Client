@@ -24,7 +24,7 @@ import categoryReducer from "./reducers/categoryReducer";
 const persisConfig: PersistConfig<any> = {
   key: "root",
   storage,
-  whitelist: ["cart"],
+  whitelist: ["cart","user"],
   //blacklist: ["productReducer", "usersReducer"] "product",
 };
 
@@ -33,7 +33,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   user: userReducer,
   category: categoryReducer,
-}); // the combination of all reducers
+});
 
 const persistedReducer: Reducer<AppState, AnyAction> = persistReducer(
   persisConfig,

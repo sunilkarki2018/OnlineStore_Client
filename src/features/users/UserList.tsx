@@ -19,7 +19,10 @@ import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
 import { useEffect } from "react";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { authenticateUserAsync, fetchUsersAsync } from "../../app/redux/reducers/userReducer";
+import {
+  authenticateUserAsync,
+  fetchUsersAsync,
+} from "../../app/redux/reducers/userReducer";
 import ErrorMessage from "../../app/errors/ErrorMessage";
 
 export default function UserList() {
@@ -30,16 +33,15 @@ export default function UserList() {
   const token = localStorage.getItem("access_token");
   useEffect(() => {
     dispatch(fetchUsersAsync());
-    if (token) {
-      dispatch(authenticateUserAsync(token));
-    }
-  }, []);
-
+  }, [token]);
   const navigate = useNavigate();
-  if (!currentUser?.role.includes("admin")) {
-    navigate("/login");
+  if (currentUser && !currentUser?.role.includes("admin")) {
     return <div>Access Denied</div>;
   }
+  if (!currentUser) {
+    navigate("/login");
+  }
+
   if (loading)
     return (
       <Box
@@ -82,23 +84,24 @@ export default function UserList() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell>
-                      <Button
-                        component={Link}
-                        to={`/userEdit/${user.id}`}
-                        size="small"
-                        disabled={!currentUser?.role.includes("admin")}
-                      >
-                        <EditIcon />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {users &&
+                  users.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.role}</TableCell>
+                      <TableCell>
+                        <Button
+                          component={Link}
+                          to={`/userEdit/${user.id}`}
+                          size="small"
+                          disabled={!currentUser?.role.includes("admin")}
+                        >
+                          <EditIcon />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>

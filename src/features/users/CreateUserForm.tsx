@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -37,9 +37,8 @@ export default function CreateUserForm(): JSX.Element {
     toast.success("User added successfully");
     navigate("/users");
   };
-  if (!currentUser?.role.includes("admin")) {
+  if (!currentUser) {
     navigate("/login");
-    return <div>Access Denied</div>;
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
