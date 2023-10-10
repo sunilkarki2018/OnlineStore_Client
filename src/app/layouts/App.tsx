@@ -9,7 +9,7 @@ export default function App() {
   return (
     <>
       <Header />
-      <Container>
+      <Container style={{ marginTop: '64px', padding: '16px'}}>
         <Outlet />
       </Container>
       <ToastContainer />

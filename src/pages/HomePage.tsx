@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Grid, Paper } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Paper, Typography } from "@mui/material";
 
 import useAppSelector from "../app/hooks/useAppSelector";
 import { AppState } from "../app/redux/store";
@@ -70,7 +70,10 @@ export const HomePage = () => {
   return (
     <>
       <Grid container columnSpacing={4}>
-        <Grid item xs={3}>
+        <Grid item xs={3} style={{ position: "fixed" }}>
+        <Typography variant="h6" gutterBottom>
+         Filter
+        </Typography>
           <Paper sx={{ mb: 2 }}>
             <ProductSearch onSearch={handleSearch} />
           </Paper>
@@ -80,6 +83,8 @@ export const HomePage = () => {
           <Paper sx={{ mb: 2 }}>
             <ProductSort onSort={sortHandler} />
           </Paper>
+        </Grid>
+        <Grid item xs={3}>          
         </Grid>
         <Grid item xs={9}>
           {productsList.length > 0 && (
