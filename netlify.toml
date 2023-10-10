@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"  # Replace with your build command
+  publish = "build"         # Replace with your build output directory
+
+[context.production.environment]
+  # Add environment variables for your production build if needed
+  REACT_APP_API_KEY = "your-api-key"
+
+[context.development.environment]
+  # Add environment variables for your development build if needed
+  REACT_APP_API_KEY = "your-dev-api-key"
