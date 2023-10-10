@@ -25,6 +25,8 @@ const rightLinks = [
   { title: "Register", path: "register" },
 ];
 
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
 export default function Header() {
   const { cartItems } = useAppSelector((state: AppState) => state.cart);
   const { currentUser } = useAppSelector((state: AppState) => state.user);
@@ -38,6 +40,7 @@ export default function Header() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Ecommerce
             </Typography>
+           
           </Box>
           <List sx={{ display: "flex" }}>
             {mainLinks.map(({ title, path }) => (

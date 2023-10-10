@@ -1,5 +1,5 @@
 # Front-end Project(Ecommerce Application)
-This is an Ecommerce application that allows users to manages products, application users and roles and cart items. The application supports adding, updating, creating and deleting products. It is buit using react typescript, redux toolkit for state management and materail UI for styling.
+This is an Ecommerce application that allows users to manage products, application's users and roles and cart items. The application supports adding, updating, creating and deleting products. It is buit using react typescript, redux toolkit for state management and materail UI for styling.
 
 ## Getting Started
 To start the project first clone the project from the repository and run the node command to start the application.
@@ -7,6 +7,11 @@ To start the project first clone the project from the repository and run the nod
 2. cd fs16_6-frontend-project
 2. git checkout develop
 3. npm start
+
+## Role
+The application has 3 roles and the access level of each role you can find in the image below.
+![Alt text](image.png)
+
 
 ![React](https://img.shields.io/badge/React-v.18-blue)
 ![Redux toolkit](https://img.shields.io/badge/RTK-v.1-purple)

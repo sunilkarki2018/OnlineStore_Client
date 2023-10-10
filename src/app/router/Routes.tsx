@@ -1,7 +1,6 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import App from "../layouts/App";
 import { HomePage } from "../../pages/HomePage";
-import { ContactPage } from "../../pages/ContactPage";
 import CartList from "../../features/cart/CartList";
 import Login from "../../features/users/Login";
 import Register from "../../features/users/Register";
@@ -15,6 +14,7 @@ import { UserPage } from "../../pages/UserPage";
 import CreateUserForm from "../../features/users/CreateUserForm";
 import NotFound from "../errors/NotFound";
 import EditUserForm from "../../features/users/EditUserForm";
+import ContactPage from "../../pages/ContactPage";
 export const router = createBrowserRouter([
   {
     path: "/",

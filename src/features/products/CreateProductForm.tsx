@@ -51,14 +51,8 @@ export default function CreateProductForm(): JSX.Element {
     dispatch(fetchAllCategoriesAsync());
   }, []);
 
-  if (
-    !(
-      currentUser?.role.includes("admin") ||
-      currentUser?.role.includes("customer")
-    )
-  ) {
+  if (!currentUser) {
     navigate("/login");
-    return <div>Access Denied</div>;
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

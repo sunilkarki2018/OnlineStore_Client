@@ -12,6 +12,7 @@ import { AppState } from "../../app/redux/store";
 import uploadFile from "../../app/functions/UploadFile";
 import { CreateUserInput } from "../../app/types/User/CreateUserInput";
 import { createUserAsync } from "../../app/redux/reducers/userReducer";
+import AccessDenied from "../../app/errors/AccessDenied";
 
 export default function CreateUserForm(): JSX.Element {
   const navigate = useNavigate();
@@ -37,6 +38,9 @@ export default function CreateUserForm(): JSX.Element {
     toast.success("User added successfully");
     navigate("/users");
   };
+  if (currentUser && currentUser?.role.includes("customer")) {
+    return <AccessDenied/>;
+  }
   if (!currentUser) {
     navigate("/login");
   }

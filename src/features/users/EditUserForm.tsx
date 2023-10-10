@@ -20,6 +20,7 @@ import {
 } from "../../app/redux/reducers/userReducer";
 import { Role, User } from "../../app/types/User/User";
 import ErrorMessage from "../../app/errors/ErrorMessage";
+import AccessDenied from "../../app/errors/AccessDenied";
 
 export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export default function EditProductForm(): JSX.Element {
   }, [dispatch, id, setValue]);
 
   if (currentUser && currentUser?.role.includes("customer")) {
-    return <div>Access Denied</div>;
+    return <AccessDenied/>;
   }
   if (!currentUser) {
     navigate("/login");

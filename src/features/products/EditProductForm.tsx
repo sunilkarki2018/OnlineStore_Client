@@ -21,6 +21,7 @@ import { AppState } from "../../app/redux/store";
 import uploadFile from "../../app/functions/UploadFile";
 import { Box, Typography } from "@mui/material";
 import ErrorMessage from "../../app/errors/ErrorMessage";
+import AccessDenied from "../../app/errors/AccessDenied";
 
 export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
@@ -51,10 +52,14 @@ export default function EditProductForm(): JSX.Element {
     });
   }, [dispatch, id, setValue]);
 
-  if (!currentUser?.role.includes("admin")) {
-    navigate("/login");
-    return <div>Access Denied</div>;
+ 
+  if (currentUser && currentUser?.role.includes("customer")) {
+    return <AccessDenied/>;
   }
+  if (!currentUser) {
+    navigate("/login");
+  }
+
 
   const handleFormSubmit = async (data: UpdateProductInput) => {
     if (images.length) {
