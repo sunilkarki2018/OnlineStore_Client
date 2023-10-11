@@ -15,6 +15,7 @@ export const ProductCardList = ({ products }: Props) => {
           key={product.id}
           item
           xs={4}
+          style={{ width: "300px", height: "300px" }}
         >
           <ProductCard product={product} />
         </Grid>

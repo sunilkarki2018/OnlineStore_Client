@@ -39,25 +39,25 @@ export default function ProductCard({ product }: Props) {
     height: "100%",
   };
 
-  const buttonContainerStyle = {
-    marginTop: "auto", // Push buttons to the bottom
-  };
+  /*  const buttonContainerStyle = {
+    marginTop: "auto",
+  }; */
   return (
     <Card sx={cardStyle}>
       <CardMedia
-        sx={{ height: 140 }}
+        sx={{ height: 150 }}
         image={product.images[0]}
         title="green iguana"
       />
-      <CardContent sx={{ height: 140 }}>
+      <CardContent sx={{ height: 50 }}>
         <Typography gutterBottom variant="h6" component="div">
-          {product.title} (${product.price})({product.category.name})
+          {product.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {product.description}
+          Price:${product.price} / Category:{product.category.name}
         </Typography>
       </CardContent>
-      <CardActions sx={buttonContainerStyle}>
+      <CardActions sx={{ height: 10 }}>
         <Button onClick={handleAddToCartClick} size="small">
           {isLoading ? "Loading..." : "Add"}
         </Button>

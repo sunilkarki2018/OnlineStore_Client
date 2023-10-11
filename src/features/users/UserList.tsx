@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   CircularProgress,
@@ -77,6 +78,7 @@ export default function UserList() {
             <Table>
               <TableHead>
                 <TableRow>
+                  <TableCell>Avatar</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Role</TableCell>
@@ -87,6 +89,13 @@ export default function UserList() {
                 {users &&
                   users.map((user) => (
                     <TableRow key={user.id}>
+                      <TableCell>
+                        <Avatar
+                          alt={user?.name || ""}
+                          src={user?.avatar || ""}
+                          sx={{ width: 50, height: 50 }}
+                        />
+                      </TableCell>
                       <TableCell>{user.name}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>

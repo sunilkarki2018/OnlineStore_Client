@@ -78,11 +78,8 @@ export const createUserAsync = createAsyncThunk<
   { rejectValue: string }
 >("createUserAsync", async (newUser, { rejectWithValue }) => {
   try {
-    const result = await axios.post<User>(
-      "https://api.escuelajs.co/api/v1/users/",
-      newUser
-    );
-    return result.data;
+    const result: User = await apis.User.add(newUser);
+    return result;
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);
@@ -158,7 +155,7 @@ const userSlice = createSlice({
       })
       .addCase(authenticateUserAsync.fulfilled, (state, action) => {
         state.currentUser = action.payload;
-       })
+      })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.users.push(action.payload);
       })

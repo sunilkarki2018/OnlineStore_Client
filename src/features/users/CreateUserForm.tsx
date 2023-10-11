@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import InputLabel from "@mui/material/InputLabel";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -13,6 +12,7 @@ import uploadFile from "../../app/functions/UploadFile";
 import { CreateUserInput } from "../../app/types/User/CreateUserInput";
 import { createUserAsync } from "../../app/redux/reducers/userReducer";
 import AccessDenied from "../../app/errors/AccessDenied";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function CreateUserForm(): JSX.Element {
   const navigate = useNavigate();
@@ -27,19 +27,20 @@ export default function CreateUserForm(): JSX.Element {
   const { currentUser } = useAppSelector((state: AppState) => state.user);
 
   const handleFormSubmit = async (data: CreateUserInput) => {
-    data.avatar = await uploadFile(images[0]);
-    data.avatar = "";
+    data.avatar =
+      images.length === 0
+        ? "https://i.imgur.com/nZnWUc0.jpeg"
+        : await uploadFile(images[0]);
     const result = await dispatch(createUserAsync(data));
     if (result.meta.requestStatus === "fulfilled") {
       toast.success("User added successfully");
     } else if (result.meta.requestStatus === "rejected") {
       toast.error("Error while adding User");
     }
-    toast.success("User added successfully");
     navigate("/users");
   };
   if (currentUser && currentUser?.role.includes("customer")) {
-    return <AccessDenied/>;
+    return <AccessDenied />;
   }
   if (!currentUser) {
     navigate("/login");
@@ -50,6 +51,10 @@ export default function CreateUserForm(): JSX.Element {
       setImages(Array.from(event.target.files));
     }
   };
+  let roles = [
+    { id: "customer", name: "customer" },
+    { id: "admin", name: "admin" },
+  ];
 
   return (
     <form
@@ -107,12 +112,34 @@ export default function CreateUserForm(): JSX.Element {
         )}
       />
 
+      <Controller
+        name="role"
+        control={control}
+        rules={{ required: "Role is required" }}
+        render={({ field }) => (
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Role</InputLabel>
+            <Select
+              label="Role"
+              {...field}
+              error={!!errors?.role}
+              value={field.value || ""}
+            >
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role.id}>
+                  {role.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+      />
+
       <InputLabel htmlFor="images">Select Image</InputLabel>
       <Controller
         name="avatar"
         control={control}
         defaultValue=""
-        rules={{ required: "Image is required" }}
         render={({ field }) => (
           <input type="file" onChange={handleFileChange} />
         )}
