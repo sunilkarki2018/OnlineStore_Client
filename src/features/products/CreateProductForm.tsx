@@ -9,6 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Box, Typography } from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import { createProductAsync } from "../../app/redux/reducers/productReducer";
@@ -20,11 +22,23 @@ import uploadFile from "../../app/functions/UploadFile";
 
 export default function CreateProductForm(): JSX.Element {
   const navigate = useNavigate();
+  const validationSchema = yup
+    .object({
+      title: yup.string().required("Title is is required"),
+      price: yup.number().required("Price field is required"),
+      description: yup.string().required("Description field is required"),
+      categoryId: yup.number().required("Category field is required"),
+      images: yup.array().required("Images is required"),
+    })
+    .required();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateProductInput>();
+  } = useForm<CreateProductInput>({
+    resolver: yupResolver(validationSchema),
+  });
 
   const [images, setImages] = useState<File[]>([]);
   const dispatch = useAppDispatch();

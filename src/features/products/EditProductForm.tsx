@@ -27,6 +27,8 @@ export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
   const { id } = useParams();
   const [images, setImages] = useState<File[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+
   const {
     control,
     handleSubmit,
@@ -47,19 +49,18 @@ export default function EditProductForm(): JSX.Element {
         setValue("update.description", item.description);
         setValue("update.categoryId", item.category.id);
         setValue("update.images", item.images);
+        setImageUrls(item.images);
         setValue("id", item.id);
       }
     });
   }, [dispatch, id, setValue]);
 
- 
   if (currentUser && currentUser?.role.includes("customer")) {
-    return <AccessDenied/>;
+    return <AccessDenied />;
   }
   if (!currentUser) {
     navigate("/login");
   }
-
 
   const handleFormSubmit = async (data: UpdateProductInput) => {
     if (images.length) {
@@ -121,6 +122,7 @@ export default function EditProductForm(): JSX.Element {
             />
           )}
         />
+
         <Controller
           name="update.price"
           control={control}
@@ -184,6 +186,14 @@ export default function EditProductForm(): JSX.Element {
         />
 
         <InputLabel htmlFor="images">Select Multiple Files</InputLabel>
+        {imageUrls.map((imageUrl, index) => (
+          <img
+            key={index}
+            src={imageUrl}
+            alt={`Image ${index}`}
+            style={{ width: "100px", height: "100px", margin: "10px" }}
+          />
+        ))}
         <Controller
           name="update.images"
           control={control}

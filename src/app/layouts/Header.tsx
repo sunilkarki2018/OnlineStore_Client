@@ -25,7 +25,7 @@ const rightLinks = [
   { title: "Register", path: "register" },
 ];
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
+const label = { inputProps: { "aria-label": "Switch demo" } };
 
 export default function Header() {
   const { cartItems } = useAppSelector((state: AppState) => state.cart);
@@ -38,9 +38,8 @@ export default function Header() {
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Ecommerce
+              Online Store
             </Typography>
-           
           </Box>
           <List sx={{ display: "flex" }}>
             {mainLinks.map(({ title, path }) => (
@@ -48,6 +47,11 @@ export default function Header() {
                 {title.toUpperCase()}
               </ListItem>
             ))}
+            {currentUser && (
+              <ListItem component={NavLink} to={"/profile"}>
+                PROFILE
+              </ListItem>
+            )}
             {currentUser && currentUser.role?.includes("admin") && (
               <ListItem component={NavLink} to={"/users"}>
                 USERS

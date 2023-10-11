@@ -4,31 +4,23 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
+import { Avatar, Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import useAppSelector from "../app/hooks/useAppSelector";
 import { AppState } from "../app/redux/store";
-import { Avatar, Grid } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import {
-  authenticateUserAsync,
-  fetchUsersAsync,
-} from "../app/redux/reducers/userReducer";
-import { useEffect } from "react";
-import useAppDispatch from "../app/hooks/useAppDispatch";
 
 export default function ProfilePage() {
   const { currentUser } = useAppSelector((state: AppState) => state.user);
   const navigate = useNavigate();
-  if (
-    !(
-      currentUser?.role.includes("admin") ||
-      currentUser?.role.includes("customer")
-    )
-  ) {
-    navigate("/login");
-    return <div>Access Denied</div>;
-  }
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <Grid container>

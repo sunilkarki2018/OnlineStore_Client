@@ -8,16 +8,22 @@ import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { logout } from "../redux/reducers/userReducer";
 import { clearCartItems } from "../redux/reducers/cartReducer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 
 export default function LoginMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clearCartItems());
+    navigate("/login");
   };
   const { currentUser } = useAppSelector((state: AppState) => state.user);
   const dispatch = useAppDispatch();
@@ -33,15 +39,7 @@ export default function LoginMenu() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem component={Link} to='/profile'>Profile</MenuItem>
-        <MenuItem
-          onClick={() => {
-            dispatch(logout());
-            dispatch(clearCartItems());
-          }}
-        >
-          Logout
-        </MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );

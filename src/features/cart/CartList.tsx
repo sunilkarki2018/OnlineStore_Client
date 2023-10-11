@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -28,6 +29,18 @@ export default function CartList() {
   const { cartItems } = useAppSelector((state: AppState) => state.cart);
 
   const dispatch = useAppDispatch();
+
+  if (cartItems.length === 0) {
+    return (
+      <>
+        <Paper elevation={3} style={{ padding: "2rem", textAlign: "center" }}>
+          <Typography variant="h4" gutterBottom>
+            Products not added in the cart
+          </Typography>
+        </Paper>
+      </>
+    );
+  }
 
   return (
     <>
