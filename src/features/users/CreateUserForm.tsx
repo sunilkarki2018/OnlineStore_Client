@@ -144,7 +144,6 @@ export default function CreateUserForm(): JSX.Element {
           <input type="file" onChange={handleFileChange} />
         )}
       />
-
       <Button type="submit" variant="contained" color="primary">
         Submit
       </Button>

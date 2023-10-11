@@ -12,6 +12,10 @@ To start the project first clone the project from the repository and run the nod
 The application has 3 roles and the access level of each role you can find in the image below.
 ![Alt text](image.png)
 
+## Usage
+The application can be checked in ![Deployment Link](https://bucolic-semifreddo-2378d4.netlify.app/)
+
+
 
 ![React](https://img.shields.io/badge/React-v.18-blue)
 ![Redux toolkit](https://img.shields.io/badge/RTK-v.1-purple)

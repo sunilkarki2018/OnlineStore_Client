@@ -19,7 +19,6 @@ import {
   updateUserAsync,
 } from "../../app/redux/reducers/userReducer";
 import { Role, User } from "../../app/types/User/User";
-import ErrorMessage from "../../app/errors/ErrorMessage";
 import AccessDenied from "../../app/errors/AccessDenied";
 
 export default function EditProductForm(): JSX.Element {
@@ -48,17 +47,15 @@ export default function EditProductForm(): JSX.Element {
   }, [dispatch, id, setValue]);
 
   if (currentUser && currentUser?.role.includes("customer")) {
-    return <AccessDenied/>;
+    return <AccessDenied />;
   }
   if (!currentUser) {
     navigate("/login");
   }
 
   const handleFormSubmit = async (data: UpdateUserInput) => {
-    let imageLocations: string = "";
     if (images.length > 0) {
-      imageLocations = await uploadFile(images[0]);
-      data.update.avatar = imageLocations;
+      data.update.avatar = await uploadFile(images[0]);
     }
     const result = await dispatch(updateUserAsync(data));
     if (result.meta.requestStatus === "fulfilled") {
@@ -108,7 +105,6 @@ export default function EditProductForm(): JSX.Element {
         render={({ field }) => (
           <TextField
             {...field}
-            label="Price"
             variant="outlined"
             fullWidth
             error={!!errors.update?.email}
