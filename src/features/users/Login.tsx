@@ -10,15 +10,13 @@ import {
   Typography,
 } from "@mui/material";
 import { FieldValues, useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { AppState } from "../../app/redux/store";
-import useAppSelector from "../../app/hooks/useAppSelector";
 import { loginUserAsync } from "../../app/redux/reducers/userReducer";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const navigate = useNavigate();
-  const location = useLocation();
   const {
     register,
     handleSubmit,
@@ -28,10 +26,17 @@ export default function Login() {
 
   async function submitForm(data: FieldValues) {
     try {
-      await dispatch(
+      const result = await dispatch(
         loginUserAsync({ email: data.username, password: data.password })
       );
-      navigate("/");
+
+      if (result.meta.requestStatus === "fulfilled") {
+        toast.success("User logged successfully");
+        navigate("/");
+      } else if (result.meta.requestStatus === "rejected") {
+        toast.error("User login failed");
+      }
+     
     } catch (error) {
       console.log(error);
     }

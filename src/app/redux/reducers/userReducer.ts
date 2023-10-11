@@ -109,10 +109,6 @@ export const fetchUserAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchProductAsync", async (id, { rejectWithValue }) => {
   try {
-    /*  const result = await axios.get<User>(
-      `https://api.escuelajs.co/api/v1/users/${id}`
-    );
-    return result.data; */
     const result = await apis.User.details(id);
     return result;
   } catch (e) {
@@ -146,6 +142,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUserAsync.fulfilled, (state, action) => {
         state.currentUser = action.payload;
+        state.error = "";
       })
       .addCase(loginUserAsync.rejected, (state, action) => {
         state.error = action.payload;
@@ -155,9 +152,11 @@ const userSlice = createSlice({
       })
       .addCase(authenticateUserAsync.fulfilled, (state, action) => {
         state.currentUser = action.payload;
+        state.error = "";
       })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.users.push(action.payload);
+        state.error = "";
       })
       .addCase(createUserAsync.rejected, (state, action) => {
         state.error = action.payload;

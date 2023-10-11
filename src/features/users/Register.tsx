@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { CreateUserInput } from "../../app/types/User/CreateUserInput";
 import { Controller, useForm } from "react-hook-form";
-import uploadFile from "../../app/functions/UploadFile";
+import uploadFile from "../../app/functions/uploadFile";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
@@ -41,10 +41,13 @@ export default function Register() {
 
   const handleFormSubmit = async (data: CreateUserInput) => {
     try {
-      data.avatar = await uploadFile(image[0]);
+      data.avatar =
+        image.length === 0
+          ? "https://i.imgur.com/nZnWUc0.jpeg"
+          : await uploadFile(image[0]);
       dispatch(createUserAsync(data));
       toast.success("User registered successfully");
-      navigate("/home");
+      navigate("/login");
     } catch (error) {
       toast.error("Error while adding user");
     }
@@ -124,7 +127,6 @@ export default function Register() {
             name="avatar"
             control={control}
             defaultValue=""
-            rules={{ required: "Image is required" }}
             render={({ field }) => (
               <input type="file" onChange={handleFileChange} />
             )}

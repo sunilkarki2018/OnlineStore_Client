@@ -18,7 +18,7 @@ import { fetchAllCategoriesAsync } from "../../app/redux/reducers/categoryReduce
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
 import { CreateProductInput } from "../../app/types/Product/CreateProductInput";
-import uploadFile from "../../app/functions/UploadFile";
+import uploadFile from "../../app/functions/uploadFile";
 
 export default function CreateProductForm(): JSX.Element {
   const navigate = useNavigate();

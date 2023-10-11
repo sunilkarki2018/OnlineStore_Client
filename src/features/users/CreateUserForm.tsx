@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
-import uploadFile from "../../app/functions/UploadFile";
+import uploadFile from "../../app/functions/uploadFile";
 import { CreateUserInput } from "../../app/types/User/CreateUserInput";
 import { createUserAsync } from "../../app/redux/reducers/userReducer";
 import AccessDenied from "../../app/errors/AccessDenied";

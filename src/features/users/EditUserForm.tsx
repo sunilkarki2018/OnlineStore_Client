@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import useAppDispatch from "../../app/hooks/useAppDispatch";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
-import uploadFile from "../../app/functions/UploadFile";
+import uploadFile from "../../app/functions/uploadFile";
 import { UpdateUserInput } from "../../app/types/User/UpdateUserInput";
 import {
   fetchUserAsync,

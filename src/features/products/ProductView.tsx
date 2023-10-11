@@ -67,6 +67,7 @@ export default function ProductDetails() {
         quantity: Number(inputValue),
       })
     );
+    setInputValue("");
     setTimeout(() => setIsLoading(false), debounceDelay);
   };
 

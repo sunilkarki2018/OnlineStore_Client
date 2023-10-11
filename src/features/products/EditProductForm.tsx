@@ -18,7 +18,7 @@ import { Product } from "../../app/types/Product/Product";
 import { UpdateProductInput } from "../../app/types/Product/UpdateProductInput";
 import useAppSelector from "../../app/hooks/useAppSelector";
 import { AppState } from "../../app/redux/store";
-import uploadFile from "../../app/functions/UploadFile";
+import uploadFile from "../../app/functions/uploadFile";
 import { Box, Typography } from "@mui/material";
 import ErrorMessage from "../../app/errors/ErrorMessage";
 import AccessDenied from "../../app/errors/AccessDenied";
