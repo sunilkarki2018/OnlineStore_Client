@@ -13,7 +13,7 @@ The application has 3 roles and the access level of each role you can find in th
 ![Alt text](image.png)
 
 ## Usage
-The application can be checked in ![Deployment Link](https://bucolic-semifreddo-2378d4.netlify.app/)
+The application can be checked in [Deployment Link](https://bucolic-semifreddo-2378d4.netlify.app/)
 
 
 
