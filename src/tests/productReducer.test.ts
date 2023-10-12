@@ -1,5 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
-import productReducer, {
+import {
   createProductAsync,
   deleteProductAsync,
   fetchAllProductsAsync,
@@ -85,7 +84,9 @@ describe("Test normal actions in productReducers", () => {
       },
     };
     const result = await store.dispatch(updateProductAsync(input));
-    expect(store.getState().productReducer.productsList[0].title).toBe("test product");
+    expect(store.getState().productReducer.productsList[0].title).toBe(
+      "test product"
+    );
     expect(store.getState().productReducer.productsList.length).toBe(3);
   });
 });

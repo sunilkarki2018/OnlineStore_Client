@@ -6,6 +6,7 @@ import userReducer from "../redux/reducers/userReducer";
 import cartReducer from "../redux/reducers/cartReducer";
 import { productsData } from "./data/productsData";
 import { usersData } from "./data/usersData";
+import categoryReducer from "../redux/reducers/categoryReducer";
 
 export const fakeStore = () => {
   return configureStore({
@@ -13,6 +14,7 @@ export const fakeStore = () => {
       productReducer,
       userReducer,
       cartReducer,
+      categoryReducer
     },
     preloadedState: {
       productReducer: {

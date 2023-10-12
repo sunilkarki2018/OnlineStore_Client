@@ -14,7 +14,6 @@ import CategorySearch from "../components/category/CategorySearch";
 import ProductSort from "../components/products/ProductSort";
 import useAppSelector from "../hooks/useAppSelector";
 import { AppState } from "../redux/store";
-import { Product } from "../types/Product/Product";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { fetchAllProductsAsync } from "../redux/reducers/productReducer";
 import { fetchAllCategoriesAsync } from "../redux/reducers/categoryReducer";
@@ -28,7 +27,6 @@ export const HomePage = () => {
   const { productsList, listLoading, error } = useAppSelector(
     (state: AppState) => state.product
   );
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchText, setSearchText] = useState("");
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [sortOrder, setSortOrder] = useState("");
