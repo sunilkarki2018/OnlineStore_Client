@@ -1,15 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Category } from "../../types/Category";
+import { Category } from "../../types/Category/Category";
 import { AxiosError } from "axios";
 import apis from "../../apis/urls";
+import { CategoryInitialState } from "../../types/Category/CategoryInitialState";
 
-interface CategoryState {
-  categories: Category[];
-  status: string;
-  error?: string;
-}
-
-const initialState: CategoryState = {
+const initialState: CategoryInitialState = {
   categories: [],
   status: "idle",
   error: "",

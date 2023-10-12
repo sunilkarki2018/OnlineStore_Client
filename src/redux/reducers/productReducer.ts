@@ -5,16 +5,9 @@ import { Product } from "../../types/Product/Product";
 import { CreateProductInput } from "../../types/Product/CreateProductInput";
 import { UpdateProductInput } from "../../types/Product/UpdateProductInput";
 import apis from "../../apis/urls";
+import { ProductInitialState } from "../../types/Product/ProductInitialState";
 
-interface ProductState {
-  productsList: Product[];
-  productsSingle: Product | null;
-  error?: string | null;
-  listLoading: boolean;
-  singleLoading: boolean;
-}
-
-const initialState: ProductState = {
+const initialState: ProductInitialState = {
   productsList: [],
   productsSingle: null,
   listLoading: false,

@@ -1,26 +1,56 @@
-# Front-end Project(Ecommerce Application)
-This is an Ecommerce application that allows users to manage products, application's users and roles and cart items. The application supports adding, updating, creating and deleting products. It is buit using react typescript, redux toolkit for state management and materail UI for styling.
+# Introduction
+
+It is an Ecommerce application that manages products, users and cart items. This application uses [https://fakeapi.platzi.com/](https://fakeapi.platzi.com/) as endpoint. It is deployed in netlify.[Deployment Link](https://bucolic-semifreddo-2378d4.netlify.app/)
 
 ## Getting Started
-To start the project first clone the project from the repository and run the node command to start the application.
+
+To start the project first clone the project from the repository and run the node commands.
+
 1. git clone https://github.com/sunilkarki2018/fs16_6-frontend-project.git
 2. cd fs16_6-frontend-project
-2. git checkout develop
-3. npm start
+3. git checkout develop
+4. npm install
+5. npm start
 
 ## Role
-The application has 3 roles and the access level of each role you can find in the image below.
+
 ![Alt text](image.png)
 
 ## Usage
-The application can be checked in [Deployment Link](https://bucolic-semifreddo-2378d4.netlify.app/)
+
+This application has 3 different modules. Below diagram shows all the methods supported by each modules.
+![ModuleDiagram](ApplicationDiagram.png)
+
+The application has 2 roles and the access level of each role you can find in the image below.
+![RoleDiagram](RoleLevel.png)
+
+## Architecture & Design
+
+## Folder Structure
 
 
+- `public/`
+  - `index.html`
 
-![React](https://img.shields.io/badge/React-v.18-blue)
-![Redux toolkit](https://img.shields.io/badge/RTK-v.1-purple)
-![TypeScript](https://img.shields.io/badge/TypeScript-v.4-green)
-![SASS](https://img.shields.io/badge/SASS-v.1-hotpink)
+- `src/`
+
+  - `components/`: All reusable React components are organized here.
+   - `cart`: The main header component.
+   - `category`: A sub-component for the logo.
+   - `errors`: A sub-component for navigation links.
+   - `products`: All reusable React components are organized here.
+   - `users`: A sub-component for navigation links.
+  - `hooks/`: All reusable React components are organized here.
+  - `images/`: All reusable React components are organized here.
+  - `layouts/`: All reusable React components are organized here.
+  - `pages/`: All reusable React components are organized here.
+  - `redux/`: All reusable React components are organized here.
+  - `router/`: A component directory for the header section.
+  - `tests/`: All reusable React components are organized here.
+  - `types/`: All reusable React components are organized here.
+  - `utils/`: All reusable React components are organized here.
+
+     
 
 This project requires implementation of TypeScript and SASS.
 

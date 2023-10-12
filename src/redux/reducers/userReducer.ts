@@ -1,15 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import { User } from "../../types/User/User";
 import { UserReducerState } from "../../types/User/UserReducerState";
 import { CreateUserInput } from "../../types/User/CreateUserInput";
 import { UpdateUserInput } from "../../types/User/UpdateUserInput";
 import apis from "../../apis/urls";
-
-interface UserCredential {
-  email: string;
-  password: string;
-}
+import { UserCredential } from "../../types/User/UserCredential";
 
 const initialState: UserReducerState = {
   users: [],
