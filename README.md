@@ -27,7 +27,7 @@ npm start: start application in local environment
 npm build: builds application
 npm test: run all test cases.
 
-# Features
+Features
 
 1. Create, add, edit and delete Products.
 2. Create, update users.
