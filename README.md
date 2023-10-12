@@ -12,10 +12,6 @@ To start the project first clone the project from the repository and run the nod
 4. npm install
 5. npm start
 
-## Role
-
-![Alt text](image.png)
-
 ## Usage
 
 This application has 3 different modules. Below diagram shows all the methods supported by each modules.
@@ -28,6 +24,96 @@ The application has 2 roles and the access level of each role you can find in th
 
 ## Folder Structure
 
+- public
+  - index.html
+- src
+  - apis
+    - urls.ts
+  - components
+    - cart
+      - AddressForm.tsx
+      - CartList.tsx
+      - CartSummary.tsx
+      - Checkout.tsx
+      - PaymentForm.tsx
+      - Review.tsx
+    - category
+      - CategorySearch.tsx
+    - products
+      - CreateProductForm.tsx
+      - EditProductForm.tsx
+      - ProductCard.tsx
+      - ProductCardList.tsx
+      - ProductSearch.tsx
+      - ProductSort.tsx
+      - ProductTableList.tsx
+      - ProductView.tsx
+    - users
+      - CreateUserForm.tsx
+      - EditUserForm.tsx
+      - Login.tsx
+      - Register.tsx
+      - UserList.tsx
+  - hooks
+    - useAppDispatch.ts
+    - useAppSelector.ts
+    - useDebounce.ts
+  - layout
+    - App.tsx
+    - Header.tsx
+    - LoginMenu.tsx
+  - pages
+    - ContactPage.tsx
+    - HomePage.tsx
+    - ProfilePage.tsx
+    - UserPage.tsx
+  - redux
+    - reducers
+      - cartReducer.ts
+      - categoryReducer.ts
+      - productReducer.ts
+      - userReducer.ts
+    - store.ts
+  - router
+    - Routes.tsx
+  - tests
+    - data
+    - shared
+      - productServer.ts
+      - userServer.ts
+    - cartReducer.ts
+    - fakeStore.ts
+    - productReducer.test.ts
+    - userReducer.test.ts
+  - types
+    - Cart
+    - Category
+    - Product
+    - User
+  - utils
+    - common.ts
+    - getFilteredAndSort.ts
+    - upLoad.ts
+
+
+
+
+
+  - components
+    - Brewery
+        - Brewery.tsx
+        - BrewerItem.tsx
+        - BreweryTable.tsx
+        - SearchBrewery.tsx
+    - contact
+        - Contact.tsx
+        - ContactForm.tsx
+    - home
+        - home.tsx
+  - index.tsx 
+- package.json
+- README.md
+- tsconfig.json
 
 - `public/`
   - `index.html`
