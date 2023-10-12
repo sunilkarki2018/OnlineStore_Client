@@ -6,7 +6,7 @@ It is an Ecommerce application designed as a frontend task at Integrify. This ap
 
 To start the project first clone the project from the repository and run the node commands.
 
-1. git clone https://github.com/sunilkarki2018/fs16_6-frontend-project.git
+1. git clone https://github.com/sunilkarki2018/EcommerceApp.git
 2. cd fs16_6-frontend-project
 3. git checkout develop
 4. npm install
