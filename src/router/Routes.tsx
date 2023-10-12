@@ -1,20 +1,22 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
+
 import App from "../layouts/App";
-import { HomePage } from "../../pages/HomePage";
-import CartList from "../../features/cart/CartList";
-import Login from "../../features/users/Login";
-import Register from "../../features/users/Register";
-import ProductView from "../../features/products/ProductView";
-import ProductTableList from "../../features/products/ProductTableList";
-import CreateProductForm from "../../features/products/CreateProductForm";
-import EditProductForm from "../../features/products/EditProductForm";
-import Checkout from "../../features/cart/Checkout";
-import ProfilePage from "../../pages/ProfilePage";
-import { UserPage } from "../../pages/UserPage";
-import CreateUserForm from "../../features/users/CreateUserForm";
-import NotFound from "../errors/NotFound";
-import EditUserForm from "../../features/users/EditUserForm";
-import ContactPage from "../../pages/ContactPage";
+import NotFound from "../components/errors/NotFound";
+import { HomePage } from "../pages/HomePage";
+import ProductView from "../components/products/ProductView";
+import ProductTableList from "../components/products/ProductTableList";
+import CreateProductForm from "../components/products/CreateProductForm";
+import CartList from "../components/cart/CartList";
+import Checkout from "../components/cart/Checkout";
+import Register from "../components/users/Register";
+import { UserPage } from "../pages/UserPage";
+import EditUserForm from "../components/users/EditUserForm";
+import EditProductForm from "../components/products/EditProductForm";
+import CreateUserForm from "../components/users/CreateUserForm";
+import ProfilePage from "../pages/ProfilePage";
+import Login from "../components/users/Login";
+import ContactPage from "../pages/ContactPage";
+
 export const router = createBrowserRouter([
   {
     path: "/",

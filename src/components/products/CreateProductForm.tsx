@@ -12,13 +12,14 @@ import { Box, Typography } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { createProductAsync } from "../../app/redux/reducers/productReducer";
-import { fetchAllCategoriesAsync } from "../../app/redux/reducers/categoryReducer";
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
-import { CreateProductInput } from "../../app/types/Product/CreateProductInput";
-import uploadFile from "../../app/functions/uploadFile";
+import { CreateProductInput } from "../../types/Product/CreateProductInput";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
+import uploadFile from "../../utils/uploadFile";
+import { createProductAsync } from "../../redux/reducers/productReducer";
+import { fetchAllCategoriesAsync } from "../../redux/reducers/categoryReducer";
+
 
 export default function CreateProductForm(): JSX.Element {
   const navigate = useNavigate();

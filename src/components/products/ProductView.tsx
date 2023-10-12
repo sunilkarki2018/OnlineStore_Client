@@ -16,15 +16,16 @@ import {
 import Carousel from "react-material-ui-carousel";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-import useAppSelector from "../../app/hooks/useAppSelector";
-import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { AppState } from "../../app/redux/store";
-import { fetchProductAsync } from "../../app/redux/reducers/productReducer";
-import ErrorMessage from "../../app/errors/ErrorMessage";
-import { addToCart } from "../../app/redux/reducers/cartReducer";
-import { isStringNotNullOrEmpty } from "../../app/functions/common";
 import { toast } from "react-toastify";
+
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { isStringNotNullOrEmpty } from "../../utils/common";
+import { fetchProductAsync } from "../../redux/reducers/productReducer";
+import ErrorMessage from "../errors/ErrorMessage";
+import { addToCart } from "../../redux/reducers/cartReducer";
+
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();

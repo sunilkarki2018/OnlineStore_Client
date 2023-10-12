@@ -16,14 +16,11 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link } from "react-router-dom";
 
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
-import {
-  addToCart,
-  removeFromCart,
-} from "../../app/redux/reducers/cartReducer";
-import useAppDispatch from "../../app/hooks/useAppDispatch";
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
+import useAppDispatch from "../../hooks/useAppDispatch";
 import CartSummary from "./CartSummary";
+import { addToCart, removeFromCart } from "../../redux/reducers/cartReducer";
 
 export default function CartList() {
   const { cartItems } = useAppSelector((state: AppState) => state.cart);

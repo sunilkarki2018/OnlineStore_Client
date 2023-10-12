@@ -11,9 +11,10 @@ import {
 } from "@mui/material";
 import { FieldValues, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { loginUserAsync } from "../../app/redux/reducers/userReducer";
 import { toast } from "react-toastify";
+
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { loginUserAsync } from "../../redux/reducers/userReducer";
 
 export default function Login() {
   const navigate = useNavigate();

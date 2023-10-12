@@ -6,8 +6,9 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
+
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
 
 export default function BasketSummary() {
   const { cartItems, loading } = useAppSelector(

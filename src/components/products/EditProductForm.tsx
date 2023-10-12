@@ -7,21 +7,21 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 
-import useAppDispatch from "../../app/hooks/useAppDispatch";
+import { UpdateProductInput } from "../../types/Product/UpdateProductInput";
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
+import useAppDispatch from "../../hooks/useAppDispatch";
 import {
   fetchProductAsync,
   updateProductAsync,
-} from "../../app/redux/reducers/productReducer";
-import { Product } from "../../app/types/Product/Product";
-import { UpdateProductInput } from "../../app/types/Product/UpdateProductInput";
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
-import uploadFile from "../../app/functions/uploadFile";
-import { Box, Typography } from "@mui/material";
-import ErrorMessage from "../../app/errors/ErrorMessage";
-import AccessDenied from "../../app/errors/AccessDenied";
+} from "../../redux/reducers/productReducer";
+import { Product } from "../../types/Product/Product";
+import AccessDenied from "../errors/AccessDenied";
+import uploadFile from "../../utils/uploadFile";
+import ErrorMessage from "../errors/ErrorMessage";
 
 export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();

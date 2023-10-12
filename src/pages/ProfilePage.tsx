@@ -1,16 +1,15 @@
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import { Avatar, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import useAppSelector from "../app/hooks/useAppSelector";
-import { AppState } from "../app/redux/store";
+
+import useAppSelector from "../hooks/useAppSelector";
+import { AppState } from "../redux/store";
 
 export default function ProfilePage() {
   const { currentUser } = useAppSelector((state: AppState) => state.user);
@@ -53,7 +52,4 @@ export default function ProfilePage() {
       </Grid>
     </Grid>
   );
-}
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
 }

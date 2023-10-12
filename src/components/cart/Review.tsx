@@ -4,8 +4,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
 
 const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
 const payments = [

@@ -9,17 +9,16 @@ import MenuItem from "@mui/material/MenuItem";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import useAppDispatch from "../../app/hooks/useAppDispatch";
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
-import uploadFile from "../../app/functions/uploadFile";
-import { UpdateUserInput } from "../../app/types/User/UpdateUserInput";
-import {
-  fetchUserAsync,
-  updateUserAsync,
-} from "../../app/redux/reducers/userReducer";
-import { Role, User } from "../../app/types/User/User";
-import AccessDenied from "../../app/errors/AccessDenied";
+import { UpdateUserInput } from "../../types/User/UpdateUserInput";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
+import { fetchUserAsync, updateUserAsync } from "../../redux/reducers/userReducer";
+import { User } from "../../types/User/User";
+import AccessDenied from "../errors/AccessDenied";
+import uploadFile from "../../utils/uploadFile";
+
+
 
 export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();

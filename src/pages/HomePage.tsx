@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Grid, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  Pagination,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 
-import useAppSelector from "../app/hooks/useAppSelector";
-import { AppState } from "../app/redux/store";
-import useAppDispatch from "../app/hooks/useAppDispatch";
-import ProductSearch from "../features/products/ProductSearch";
-import { fetchAllProductsAsync } from "../app/redux/reducers/productReducer";
-import { ProductCardList } from "../features/products/ProductCardList";
-import { fetchAllCategoriesAsync } from "../app/redux/reducers/categoryReducer";
-import CategorySearch from "../features/category/CategorySearch";
-import ProductSort from "../features/products/ProductSort";
-import { executeSearchandSort } from "../app/functions/getFilteredAndSort";
-import { Product } from "../app/types/Product/Product";
-import ErrorMessage from "../app/errors/ErrorMessage";
+import { ProductCardList } from "../components/products/ProductCardList";
+import CategorySearch from "../components/category/CategorySearch";
+import ProductSort from "../components/products/ProductSort";
+import useAppSelector from "../hooks/useAppSelector";
+import { AppState } from "../redux/store";
+import { Product } from "../types/Product/Product";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { fetchAllProductsAsync } from "../redux/reducers/productReducer";
+import { fetchAllCategoriesAsync } from "../redux/reducers/categoryReducer";
+import { executeSearchandSort } from "../utils/getFilteredAndSort";
+import ErrorMessage from "../components/errors/ErrorMessage";
+import ProductSearch from "../components/products/ProductSearch";
+
+const itemsPerPage = 20;
 
 export const HomePage = () => {
   const { productsList, listLoading, error } = useAppSelector(
@@ -23,6 +33,8 @@ export const HomePage = () => {
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [sortOrder, setSortOrder] = useState("");
 
+  const [page, setPage] = useState(1);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -30,15 +42,12 @@ export const HomePage = () => {
     dispatch(fetchAllCategoriesAsync());
   }, []);
 
-  useEffect(() => {
-    const filteredResult = executeSearchandSort(
-      productsList,
-      searchText,
-      categoryId,
-      sortOrder
-    );
-    setFilteredProducts(filteredResult);
-  }, [productsList, searchText, categoryId, sortOrder]);
+  const filteredResult = executeSearchandSort(
+    productsList,
+    searchText,
+    categoryId,
+    sortOrder
+  );
 
   if (listLoading)
     return (
@@ -67,13 +76,21 @@ export const HomePage = () => {
     setSortOrder(sortOrder);
   };
 
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedItems = filteredResult.slice(startIndex, endIndex);
+
   return (
     <>
       <Grid container columnSpacing={4}>
         <Grid item xs={3} style={{ position: "fixed" }}>
-        <Typography variant="h6" gutterBottom>
-         Filter
-        </Typography>
+          <Typography variant="h6" gutterBottom>
+            Filter
+          </Typography>
           <Paper sx={{ mb: 2 }}>
             <ProductSearch onSearch={handleSearch} />
           </Paper>
@@ -84,12 +101,21 @@ export const HomePage = () => {
             <ProductSort onSort={sortHandler} />
           </Paper>
         </Grid>
-        <Grid item xs={3}>          
-        </Grid>
+        <Grid item xs={3}></Grid>
         <Grid item xs={9}>
           {productsList.length > 0 && (
-            <ProductCardList products={filteredProducts} />
+            <ProductCardList products={displayedItems} />
           )}
+        </Grid>
+        <Grid item xs={3}></Grid>
+        <Grid item xs={6}>
+          <Stack spacing={2} justifyContent="center">
+            <Pagination
+              count={Math.ceil(filteredResult.length / itemsPerPage)}
+              page={page}
+              onChange={handleChange}
+            />
+          </Stack>
         </Grid>
       </Grid>
     </>

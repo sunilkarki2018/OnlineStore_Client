@@ -1,6 +1,7 @@
-import { debounce, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
-import useDebounce from "../../app/hooks/useDebounce";
+import { TextField } from "@mui/material";
+import { useState } from "react";
+
+import useDebounce from "../../hooks/useDebounce";
 
 interface Props {
   onSearch: (value: string) => void;

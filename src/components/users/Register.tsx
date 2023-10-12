@@ -8,17 +8,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { CreateUserInput } from "../../app/types/User/CreateUserInput";
-import { Controller, useForm } from "react-hook-form";
-import uploadFile from "../../app/functions/uploadFile";
 import { toast } from "react-toastify";
+import { Controller, useForm } from "react-hook-form";
 import { useState } from "react";
-import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { createUserAsync } from "../../app/redux/reducers/userReducer";
 import { useNavigate } from "react-router-dom";
-import ErrorMessage from "../../app/errors/ErrorMessage";
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
+
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
+import { CreateUserInput } from "../../types/User/CreateUserInput";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import ErrorMessage from "../errors/ErrorMessage";
+import uploadFile from "../../utils/uploadFile";
+import { createUserAsync } from "../../redux/reducers/userReducer";
+
 
 export default function Register() {
   const [image, setImage] = useState<File[]>([]);

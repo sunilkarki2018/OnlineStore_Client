@@ -4,11 +4,12 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import useAppDispatch from "../../app/hooks/useAppDispatch";
-import { addToCart } from "../../app/redux/reducers/cartReducer";
-import { Link } from "react-router-dom";
-import { Product } from "../../app/types/Product/Product";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
+import { Product } from "../../types/Product/Product";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { addToCart } from "../../redux/reducers/cartReducer";
 
 interface Props {
   product: Product;
@@ -39,9 +40,6 @@ export default function ProductCard({ product }: Props) {
     height: "100%",
   };
 
-  /*  const buttonContainerStyle = {
-    marginTop: "auto",
-  }; */
   return (
     <Card sx={cardStyle}>
       <CardMedia

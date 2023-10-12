@@ -4,11 +4,10 @@ import { PersistGate } from "redux-persist/integration/react";
 import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import App from "./app/layouts/App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
-import { router } from "./app/router/Routes";
-import store, { persistor } from "./app/redux/store";
+import store, { persistor } from "./redux/store";
+import { router } from "./router/Routes";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

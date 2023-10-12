@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Box,
   Button,
@@ -18,15 +19,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
-import { useEffect, useState } from "react";
-import useAppDispatch from "../../app/hooks/useAppDispatch";
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
+import useAppDispatch from "../../hooks/useAppDispatch";
 import {
   deleteProductAsync,
   fetchAllProductsAsync,
-} from "../../app/redux/reducers/productReducer";
-import ErrorMessage from "../../app/errors/ErrorMessage";
+} from "../../redux/reducers/productReducer";
+import ErrorMessage from "../errors/ErrorMessage";
 
 export default function ProductTableList() {
   const { productsList, listLoading, error } = useAppSelector(
@@ -63,21 +63,18 @@ export default function ProductTableList() {
   return (
     <>
       <Container>
-        <Button
-          component={Link}
-          to={`/productCreate`}
-          variant="contained"
-          color="primary"
-          style={{ marginBottom: "40px" }}
-          disabled={
-            !(
-              currentUser?.role.includes("admin") ||
-              currentUser?.role.includes("customer")
-            )
-          }
-        >
-          Add Product
-        </Button>
+        {currentUser?.role.includes("admin") && (
+          <Button
+            component={Link}
+            to={`/productCreate`}
+            variant="contained"
+            color="primary"
+            style={{ marginBottom: "40px" }}
+          >
+            Add Product
+          </Button>
+        )}
+
         <Typography variant="h4" gutterBottom>
           Product List
         </Typography>
@@ -89,8 +86,12 @@ export default function ProductTableList() {
                   <TableCell>Title</TableCell>
                   <TableCell>Price</TableCell>
                   <TableCell>Description</TableCell>
-                  <TableCell>Delete</TableCell>
-                  <TableCell>Update</TableCell>
+                  {currentUser?.role.includes("admin") && (
+                    <>
+                      <TableCell>Delete</TableCell>
+                      <TableCell>Update</TableCell>
+                    </>
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -100,23 +101,27 @@ export default function ProductTableList() {
                     <TableCell>{product.price}</TableCell>
                     <TableCell>{product.description}</TableCell>
                     <TableCell>
-                      <Button
-                        size="small"
-                        onClick={() => handleDelete(product.id)}
-                        disabled={!currentUser?.role.includes("admin")}
-                      >
-                        <DeleteIcon />
-                      </Button>
+                      {currentUser?.role.includes("admin") && (
+                        <Button
+                          size="small"
+                          onClick={() => handleDelete(product.id)}
+                          disabled={!currentUser?.role.includes("admin")}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      )}
                     </TableCell>
                     <TableCell>
-                      <Button
-                        component={Link}
-                        to={`/productEdit/${product.id}`}
-                        size="small"
-                        disabled={!currentUser?.role.includes("admin")}
-                      >
-                        <EditIcon />
-                      </Button>
+                      {currentUser?.role.includes("admin") && (
+                        <Button
+                          component={Link}
+                          to={`/productEdit/${product.id}`}
+                          size="small"
+                          disabled={!currentUser?.role.includes("admin")}
+                        >
+                          <EditIcon />
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

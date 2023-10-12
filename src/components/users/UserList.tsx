@@ -14,17 +14,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link, useNavigate } from "react-router-dom";
-import useAppSelector from "../../app/hooks/useAppSelector";
-import { AppState } from "../../app/redux/store";
 import { useEffect } from "react";
-import useAppDispatch from "../../app/hooks/useAppDispatch";
-import {
-  authenticateUserAsync,
-  fetchUsersAsync,
-} from "../../app/redux/reducers/userReducer";
-import ErrorMessage from "../../app/errors/ErrorMessage";
+import { Link, useNavigate } from "react-router-dom";
+
+import EditIcon from "@mui/icons-material/Edit";
+import useAppSelector from "../../hooks/useAppSelector";
+import { AppState } from "../../redux/store";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { fetchUsersAsync } from "../../redux/reducers/userReducer";
+import ErrorMessage from "../errors/ErrorMessage";
+import AccessDenied from "../errors/AccessDenied";
 
 export default function UserList() {
   const { users, currentUser, loading, error } = useAppSelector(
@@ -36,8 +35,9 @@ export default function UserList() {
     dispatch(fetchUsersAsync());
   }, [token]);
   const navigate = useNavigate();
-  if (currentUser && !currentUser?.role.includes("admin")) {
-    return <div>Access Denied</div>;
+  
+  if (currentUser && currentUser?.role.includes("customer")) {
+    return <AccessDenied />;
   }
   if (!currentUser) {
     navigate("/login");
@@ -61,15 +61,18 @@ export default function UserList() {
   return (
     <>
       <Container>
-        <Button
-          component={Link}
-          to={`/userCreate`}
-          variant="contained"
-          color="primary"
-          style={{ marginBottom: "40px" }}
-        >
-          Add User
-        </Button>
+        {currentUser?.role.includes("admin") && (
+          <Button
+            component={Link}
+            to="/userCreate"
+            variant="contained"
+            color="primary"
+            style={{ marginBottom: "40px" }}
+          >
+            Add User
+          </Button>
+        )}
+
         <Typography variant="h4" gutterBottom>
           Users List
         </Typography>
@@ -100,14 +103,16 @@ export default function UserList() {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>
-                        <Button
-                          component={Link}
-                          to={`/userEdit/${user.id}`}
-                          size="small"
-                          disabled={!currentUser?.role.includes("admin")}
-                        >
-                          <EditIcon />
-                        </Button>
+                        {currentUser?.role.includes("admin") && (
+                          <Button
+                            component={Link}
+                            to={`/userEdit/${user.id}`}
+                            size="small"
+                            disabled={!currentUser?.role.includes("admin")}
+                          >
+                            <EditIcon />
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
