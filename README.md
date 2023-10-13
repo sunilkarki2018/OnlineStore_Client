@@ -44,7 +44,7 @@ This application can be mainly divided into 3 modules. Below diagram shows all t
 ![ModuleDiagram](ApplicationDiagram.png)
 
 The application has 2 roles and the access level of each role you can find in the image below.
-![RoleDiagram](RoleDiagram-1.png)
+![Alt text](RoleDiagram-1.png)
 
 ## Project Structure
 
