@@ -63,6 +63,10 @@ The application has 2 roles and the access level of each role you can find in th
       - Review.tsx
     - category
       - CategorySearch.tsx
+    - errors
+      - AccessDenied.tsx
+      - ErrorMessage.tsx
+      - NotFound.tsx
     - products
       - CreateProductForm.tsx
       - EditProductForm.tsx

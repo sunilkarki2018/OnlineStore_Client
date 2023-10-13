@@ -1,5 +1,5 @@
 import UserList from "../components/users/UserList";
 
-export const UserPage = () => {
+export function UserPage() {
   return <UserList />;
-};
+}

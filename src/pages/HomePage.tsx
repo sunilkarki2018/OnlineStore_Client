@@ -23,7 +23,7 @@ import ProductSearch from "../components/products/ProductSearch";
 
 const itemsPerPage = 20;
 
-export const HomePage = () => {
+export function HomePage() {
   const { productsList, listLoading, error } = useAppSelector(
     (state: AppState) => state.product
   );
@@ -106,7 +106,7 @@ export const HomePage = () => {
           )}
         </Grid>
         <Grid item xs={3}></Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} style={{ marginTop: "20px" }}>
           <Stack spacing={2} justifyContent="center">
             <Pagination
               count={Math.ceil(filteredResult.length / itemsPerPage)}
@@ -118,4 +118,4 @@ export const HomePage = () => {
       </Grid>
     </>
   );
-};
+}
