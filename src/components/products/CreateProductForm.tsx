@@ -19,6 +19,7 @@ import { AppState } from "../../redux/store";
 import uploadFile from "../../utils/uploadFile";
 import { createProductAsync } from "../../redux/reducers/productReducer";
 import { fetchAllCategoriesAsync } from "../../redux/reducers/categoryReducer";
+import AccessDenied from "../errors/AccessDenied";
 
 
 export default function CreateProductForm(): JSX.Element {
@@ -65,6 +66,10 @@ export default function CreateProductForm(): JSX.Element {
   useEffect(() => {
     dispatch(fetchAllCategoriesAsync());
   }, []);
+
+  if (currentUser && currentUser?.role.includes("customer")) {
+    return <AccessDenied />;
+  }
 
   if (!currentUser) {
     navigate("/login");
