@@ -43,10 +43,8 @@ export const fetchProductAsync = createAsyncThunk<
     //const result: Product = await apis.Product.details(id);
     //return result;
 
-    console.log("ProductId:",id);
     const response = await axios.get(`http://localhost:5238/api/v1/products/${id}`);    
     const result: Product =response.data
-    console.log("Productresult:",result);
     return result;
 
     //http://localhost:5238/api/v1/products/088cd42b-8266-49ee-8823-3f52e412355d
@@ -72,10 +70,10 @@ export const createProductAsync = createAsyncThunk<
 });
 
 export const deleteProductAsync = createAsyncThunk<
-  number,
-  number,
+  string,
+  string,
   { rejectValue: string }
->("deleteProductAsync", async (id: number, { rejectWithValue }) => {
+>("deleteProductAsync", async (id: string, { rejectWithValue }) => {
   try {
     const result: boolean = await apis.Product.delete(id);
     if (!result) {

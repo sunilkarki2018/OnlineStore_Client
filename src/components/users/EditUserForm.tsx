@@ -34,13 +34,12 @@ export default function EditProductForm(): JSX.Element {
   const { currentUser } = useAppSelector((state: AppState) => state.user);
 
   useEffect(() => {
-    dispatch(fetchUserAsync(+id!)).then((userData) => {
+    dispatch(fetchUserAsync(id!)).then((userData) => {
       const item = userData.payload as User;
-      setValue("update.name", item.name);
+      setValue("update.name", item.firstName);
       setValue("update.email", item.email);
-      setValue("update.password", item.password);
       setValue("update.role", item.role);
-      setValue("update.avatar", item.avatar);
+      setValue("update.avatar", item.avatar.data);
       setValue("id", item.id);
     });
   }, [dispatch, id, setValue]);

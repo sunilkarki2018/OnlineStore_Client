@@ -94,12 +94,12 @@ export default function UserList() {
                     <TableRow key={user.id}>
                       <TableCell>
                         <Avatar
-                          alt={user?.name || ""}
-                          src={user?.avatar || ""}
+                          alt={user?.firstName || ""}
+                          src={user?.avatar.data || ""}
                           sx={{ width: 50, height: 50 }}
                         />
                       </TableCell>
-                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.firstName}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>

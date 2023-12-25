@@ -27,16 +27,18 @@ import {
   fetchAllProductsAsync,
 } from "../../redux/reducers/productReducer";
 import ErrorMessage from "../errors/ErrorMessage";
+import { fetchAllProductLinesAsync } from "../../redux/reducers/productLineReducer";
 
 export default function ProductTableList() {
-  const { productsList, listLoading, error } = useAppSelector(
-    (state: AppState) => state.product
+  const { productLinesList, listLoading, error } = useAppSelector(
+    (state: AppState) => state.productLine
   );
   const { currentUser } = useAppSelector((state: AppState) => state.user);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchAllProductsAsync());
+    dispatch(fetchAllProductLinesAsync());
   }, []);
+  console.log("userInfo",currentUser);
 
   const navigate = useNavigate();
   if (listLoading)
@@ -53,7 +55,7 @@ export default function ProductTableList() {
     );
   if (error) return <ErrorMessage message={error} />;
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     dispatch(deleteProductAsync(id)).then(() => {
       toast.info("Product deleted successfully");
       dispatch(fetchAllProductsAsync());
@@ -63,7 +65,7 @@ export default function ProductTableList() {
   return (
     <>
       <Container>
-        {currentUser?.role.includes("admin") && (
+        {currentUser?.role.includes("Admin") && (
           <Button
             component={Link}
             to={`/productCreate`}
@@ -86,7 +88,7 @@ export default function ProductTableList() {
                   <TableCell>Title</TableCell>
                   <TableCell>Price</TableCell>
                   <TableCell>Description</TableCell>
-                  {currentUser?.role.includes("admin") && (
+                  {currentUser?.role.includes("Admin") && (
                     <>
                       <TableCell>Delete</TableCell>
                       <TableCell>Update</TableCell>
@@ -95,29 +97,29 @@ export default function ProductTableList() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {productsList.map((product) => (
-                  <TableRow key={product.id}>
-                    <TableCell>{product.productLine.title}</TableCell>
-                    <TableCell>{product.productLine.price}</TableCell>
-                    <TableCell>{product.productLine.description}</TableCell>
+                {productLinesList.map((productLine) => (
+                  <TableRow key={productLine.id}>
+                    <TableCell>{productLine.title}</TableCell>
+                    <TableCell>{productLine.price}</TableCell>
+                    <TableCell>{productLine.description}</TableCell>
                     <TableCell>
-                      {currentUser?.role.includes("admin") && (
+                      {currentUser?.role.includes("Admin") && (
                         <Button
                           size="small"
-                          onClick={() => handleDelete(product.id)}
-                          disabled={!currentUser?.role.includes("admin")}
+                          onClick={() => handleDelete(productLine.id)}
+                          disabled={!currentUser?.role.includes("Admin")}
                         >
                           <DeleteIcon />
                         </Button>
                       )}
                     </TableCell>
                     <TableCell>
-                      {currentUser?.role.includes("admin") && (
+                      {currentUser?.role.includes("Admin") && (
                         <Button
                           component={Link}
-                          to={`/productEdit/${product.id}`}
+                          to={`/productLineEdit/${productLine.id}`}
                           size="small"
-                          disabled={!currentUser?.role.includes("admin")}
+                          disabled={!currentUser?.role.includes("Admin")}
                         >
                           <EditIcon />
                         </Button>

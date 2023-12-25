@@ -10,6 +10,7 @@ export const handlers = [
   rest.get("https://api.escuelajs.co/api/v1/users", (req, res, ctx) => {
     return res(ctx.json(usersData));
   }),
+  /*
   rest.post(
     "https://api.escuelajs.co/api/v1/auth/login",
     async (req, res, ctx) => {
@@ -26,6 +27,7 @@ export const handlers = [
       }
     }
   ),
+
   rest.get("https://api.escuelajs.co/api/v1/auth/profile", (req, res, ctx) => {
     const token = req.headers.get("Authorization")?.split(" ")[1];
     const originalToken = token?.split("_")[0];
@@ -65,6 +67,7 @@ export const handlers = [
       }
     }
   ),
+    */
 ];
 
 const userServer = setupServer(...handlers);

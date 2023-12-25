@@ -1,8 +1,9 @@
 import { User } from "../../types/User/User";
 
 export const usersData: User[] = [
+  /*
   {
-    id: 1,
+    id: "1",
     email: "john@mail.com",
     password: "changeme",
     name: "Jhon",
@@ -10,7 +11,7 @@ export const usersData: User[] = [
     avatar: "https://i.imgur.com/DumuKkD.jpeg",
   },
   {
-    id: 2,
+    id: "2",
     email: "maria@mail.com",
     password: "12345",
     name: "Maria",
@@ -18,11 +19,12 @@ export const usersData: User[] = [
     avatar: "https://i.imgur.com/00qWleT.jpeg",
   },
   {
-    id: 3,
+    id: "3",
     email: "admin@mail.com",
     password: "admin123",
     name: "Admin",
     role: "admin",
     avatar: "https://i.imgur.com/5mPmJYO.jpeg",
   },
+  */
 ];

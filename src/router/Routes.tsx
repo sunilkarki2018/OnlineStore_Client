@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
       { path: "productLines/:id", element: <ProductView /> },
       { path: "product", element: <ProductTableList /> },
       { path: "productCreate", element: <CreateProductForm /> },
-      { path: "productEdit/:id", element: <EditProductForm /> },
+      { path: "productLineEdit/:id", element: <EditProductForm /> },
       { path: "cartList", element: <CartList /> },
       { path: "checkout", element: <Checkout /> },
       { path: "contact", element: <ContactPage /> },

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { User } from "../../types/User/User";
 import { UserReducerState } from "../../types/User/UserReducerState";
 import { CreateUserInput } from "../../types/User/CreateUserInput";
@@ -33,11 +33,13 @@ export const loginUserAsync = createAsyncThunk<
   { rejectValue: string }
 >("loginUserAsync", async (cred, { rejectWithValue, dispatch }) => {
   try {
-    const result = await apis.User.login(cred);
-    const { access_token } = result;
-    const authenticatedResult = await dispatch(
-      authenticateUserAsync(access_token)
-    );
+    //const result = await apis.User.login(cred);
+    const result = await axios.post(
+      "http://localhost:5238/api/v1/auth",cred
+    );    
+    console.log("result after user login",result.data);
+    //const { access_token } = result;
+    const authenticatedResult = await dispatch(authenticateUserAsync(result.data));
 
     if (
       typeof authenticatedResult.payload === "string" ||
@@ -45,7 +47,7 @@ export const loginUserAsync = createAsyncThunk<
     ) {
       throw Error(authenticatedResult.payload || "Cannot login");
     } else {
-      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("access_token", result.data);
       return authenticatedResult.payload as User;
     }
   } catch (e) {
@@ -60,7 +62,17 @@ export const authenticateUserAsync = createAsyncThunk<
   { rejectValue: string }
 >("authenticateUserAsync", async (access_token, { rejectWithValue }) => {
   try {
-    const result: User = await apis.User.profile(access_token);
+    //const result: User = await apis.User.profile(access_token);
+    const response = await axios.get(
+      "http://localhost:5238/api/v1/auth/get-profile",
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    const result: User = response.data;
+    console.log("result after user dataa",result);
     return result;
   } catch (e) {
     const error = e as Error;
@@ -101,7 +113,7 @@ export const updateUserAsync = createAsyncThunk<
 
 export const fetchUserAsync = createAsyncThunk<
   User,
-  number,
+  string,
   { rejectValue: string }
 >("fetchProductAsync", async (id, { rejectWithValue }) => {
   try {

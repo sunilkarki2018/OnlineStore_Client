@@ -25,8 +25,8 @@ export default function ProfilePage() {
     <Grid container>
       <Grid item xs={12} md={4}>
         <Avatar
-          alt={currentUser?.name || ""}
-          src={currentUser?.avatar || ""}
+          alt={currentUser?.firstName || ""}
+          src={currentUser?.avatar.data || ""}
           sx={{ width: 150, height: 150, marginLeft: 10 }}
         />
       </Grid>
@@ -36,7 +36,7 @@ export default function ProfilePage() {
             <TableBody sx={{ fontSize: "1.1em" }}>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>{currentUser?.name}</TableCell>
+                <TableCell>{currentUser?.firstName}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Email</TableCell>

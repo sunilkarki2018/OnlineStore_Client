@@ -20,7 +20,6 @@ export const fetchAllProductLinesAsync = createAsyncThunk<
   try {
     const response = await axios.get('http://localhost:5238/api/v1/productlines');    
     const result: ProductLine[] =response.data
-    console.log("ProductLines:",result);
     return result;
 
   } catch (e) {

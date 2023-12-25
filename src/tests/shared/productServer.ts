@@ -17,7 +17,7 @@ export const handlers = [
     (req, res, ctx) => {
       const { id } = req.params;
       const productIndex = productsData.findIndex(
-        (product) => product.id === Number(id)
+        (product) => product.id === id
       );
       if (productIndex !== -1) {
         return res(ctx.json(true));
@@ -66,7 +66,7 @@ export const handlers = [
     async (req, res, ctx) => {
       const input: UpdateProductInput = await req.json();
       const { id } = req.params;
-      const findIndex = productsData.findIndex((i) => i.id === Number(id));
+      const findIndex = productsData.findIndex((i) => i.id === id);
       if (findIndex > -1) {
         return res(
           ctx.json({

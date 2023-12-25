@@ -2,7 +2,7 @@ import { Category } from "../Category/Category";
 import { ProductLine } from "./ProductLine";
 
 export interface Product {
-  id: number;
+  id: string;
   inventory: number;
   productLine: ProductLine;
   productSize?: ProductLine | null;

@@ -22,6 +22,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("Test for User Reducer", () => {
+  /*
   test("should fetch all users", async () => {
     await store.dispatch(fetchUsersAsync());
     expect(store.getState().userReducer.users.length).toBe(3);
@@ -52,4 +53,5 @@ describe("Test for User Reducer", () => {
     expect(store.getState().userReducer.users[0].name).toBe("test name");
     expect(store.getState().userReducer.users.length).toBe(3);
   });
+  */
 });

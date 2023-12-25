@@ -23,11 +23,11 @@ const requests = {
 
 const Product = {
   list: () => requests.get("products"),
-  details: (id: number) => requests.get(`products/${id}`),
+  details: (id: string) => requests.get(`products/${id}`),
   add: (productData: {}) => requests.post("products", productData),
-  update: (id: number, productData: {}) =>
+  update: (id: string, productData: {}) =>
     requests.put(`products/${id}`, productData),
-  delete: (id: number) => requests.del(`products/${id}`),
+  delete: (id: string) => requests.del(`products/${id}`),
 };
 
 const Category = {
@@ -36,13 +36,13 @@ const Category = {
 
 const User = {
   list: () => requests.get("users"),
-  details: (id: number) => requests.get(`users/${id}`),
+  details: (id: string) => requests.get(`users/${id}`),
   login: (userData: {}) => requests.post("auth/login", userData),
   profile: (headerData: string) =>
     requests.getAuth("auth/profile", headerData),
   add: (userData: {}) => requests.post("users", userData),
-  update: (id: number, userData: {}) => requests.put(`users/${id}`, userData),
-  delete: (id: number) => requests.del(`users/${id}`),
+  update: (id: string, userData: {}) => requests.put(`users/${id}`, userData),
+  delete: (id: string) => requests.del(`users/${id}`),
 };
 
 const apis = {

@@ -3,5 +3,5 @@ import { Role } from "./User";
 
 export interface UpdateUserInput {
   update: Partial<CreateUserInput>;
-  id: number;
+  id: string;
 }
