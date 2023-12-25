@@ -9,16 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 
-import { ProductCardList } from "../components/products/ProductCardList";
+import { ProductCardList } from "../components/productLines/ProductCardList";
 import CategorySearch from "../components/category/CategorySearch";
-import ProductSort from "../components/products/ProductSort";
+import ProductSort from "../components/productLines/ProductSort";
 import useAppSelector from "../hooks/useAppSelector";
 import { AppState } from "../redux/store";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { fetchAllCategoriesAsync } from "../redux/reducers/categoryReducer";
 //import { executeSearchandSort } from "../utils/getFilteredAndSort";
 import ErrorMessage from "../components/errors/ErrorMessage";
-import ProductSearch from "../components/products/ProductSearch";
+import ProductSearch from "../components/productLines/ProductSearch";
 import { fetchAllProductLinesAsync } from "../redux/reducers/productLineReducer";
 
 const itemsPerPage = 20;

@@ -2,6 +2,6 @@ export interface CreateProductInput {
     title: string;
     price: number;
     description: string;
-    categoryId: number;
+    categoryId: string;
     images: string[];
   }

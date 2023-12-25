@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { Product } from "../../types/Product/Product";
-import { ProductLine } from "../../types/Product/ProductLine";
+import { ProductLine } from "../../types/ProductLine/ProductLine";
 
 interface Props {
   productLines: ProductLine[];

@@ -22,12 +22,11 @@ import { toast } from "react-toastify";
 import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
-import {
-  deleteProductAsync,
-  fetchAllProductsAsync,
-} from "../../redux/reducers/productReducer";
 import ErrorMessage from "../errors/ErrorMessage";
-import { fetchAllProductLinesAsync } from "../../redux/reducers/productLineReducer";
+import {
+  deleteProductLineAsync,
+  fetchAllProductLinesAsync,
+} from "../../redux/reducers/productLineReducer";
 
 export default function ProductTableList() {
   const { productLinesList, listLoading, error } = useAppSelector(
@@ -38,7 +37,6 @@ export default function ProductTableList() {
   useEffect(() => {
     dispatch(fetchAllProductLinesAsync());
   }, []);
-  console.log("userInfo",currentUser);
 
   const navigate = useNavigate();
   if (listLoading)
@@ -56,19 +54,18 @@ export default function ProductTableList() {
   if (error) return <ErrorMessage message={error} />;
 
   const handleDelete = (id: string) => {
-    dispatch(deleteProductAsync(id)).then(() => {
-      toast.info("Product deleted successfully");
-      dispatch(fetchAllProductsAsync());
+    dispatch(deleteProductLineAsync(id)).then(() => {
+      toast.info("Product Line deleted successfully");
+      dispatch(fetchAllProductLinesAsync());
     });
   };
-
   return (
     <>
       <Container>
         {currentUser?.role.includes("Admin") && (
           <Button
             component={Link}
-            to={`/productCreate`}
+            to={`/productLineCreate`}
             variant="contained"
             color="primary"
             style={{ marginBottom: "40px" }}

@@ -20,7 +20,8 @@ import uploadFile from "../../utils/uploadFile";
 import { createProductAsync } from "../../redux/reducers/productReducer";
 import { fetchAllCategoriesAsync } from "../../redux/reducers/categoryReducer";
 import AccessDenied from "../errors/AccessDenied";
-
+import { createProductLineAsync } from "../../redux/reducers/productLineReducer";
+import { CreateProductLineInput } from "../../types/ProductLine/CreateProductLineInput";
 
 export default function CreateProductForm(): JSX.Element {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function CreateProductForm(): JSX.Element {
       title: yup.string().required("Title is is required"),
       price: yup.number().required("Price field is required"),
       description: yup.string().required("Description field is required"),
-      categoryId: yup.number().required("Category field is required"),
+      categoryId: yup.string().required("Category field is required"),
       images: yup.array().required("Images is required"),
     })
     .required();
@@ -38,7 +39,7 @@ export default function CreateProductForm(): JSX.Element {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateProductInput>({
+  } = useForm<CreateProductLineInput>({
     resolver: yupResolver(validationSchema),
   });
 
@@ -46,20 +47,34 @@ export default function CreateProductForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state: AppState) => state.user);
 
-  const handleFormSubmit = async (data: CreateProductInput) => {
+  const handleFormSubmit = async (data: CreateProductLineInput) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("price", data.price.toString());
+    formData.append("description", data.description);
+    formData.append("categoryId", data.categoryId);
+
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
+    }
+    
+
+    /*
     let imageLocations: string[] = new Array(images.length);
     for (let i = 0; i < images.length; i++) {
       imageLocations[i] = await uploadFile(images[i]);
     }
     data.images = imageLocations;
-
-    const result = await dispatch(createProductAsync(data));
+    */
+    console.log("before", data);
+    const result = await dispatch(createProductLineAsync(data));
+    console.log(result);
     if (result.meta.requestStatus === "fulfilled") {
-      toast.success("Product added successfully");
+      toast.success("Product Line added successfully");
     } else if (result.meta.requestStatus === "rejected") {
-      toast.error("Error while adding product");
+      toast.error("Error while adding product Line");
     }
-    navigate("/product");
+    navigate("/productLine");
   };
   const { categories } = useAppSelector((state: AppState) => state.category);
 
@@ -76,8 +91,9 @@ export default function CreateProductForm(): JSX.Element {
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setImages(Array.from(event.target.files));
+    const selectedFiles = event.target.files;
+    if (selectedFiles) {
+      setImages(Array.from(selectedFiles));
     }
   };
 
@@ -200,7 +216,7 @@ export default function CreateProductForm(): JSX.Element {
         </Button>
         <Button
           component={Link}
-          to={`/product`}
+          to={`/productLine`}
           size="small"
           variant="contained"
           color="primary"

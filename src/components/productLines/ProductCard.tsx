@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { addToCart } from "../../redux/reducers/cartReducer";
-import { ProductLine } from "../../types/Product/ProductLine";
+import { ProductLine } from "../../types/ProductLine/ProductLine";
 
 interface Props {
   productLine: ProductLine;

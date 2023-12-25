@@ -37,7 +37,6 @@ export const loginUserAsync = createAsyncThunk<
     const result = await axios.post(
       "http://localhost:5238/api/v1/auth",cred
     );    
-    console.log("result after user login",result.data);
     //const { access_token } = result;
     const authenticatedResult = await dispatch(authenticateUserAsync(result.data));
 

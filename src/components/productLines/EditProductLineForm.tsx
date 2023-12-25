@@ -10,18 +10,16 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 
-import { UpdateProductInput } from "../../types/Product/UpdateProductInput";
 import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
-import {
-  fetchProductAsync,
-  updateProductAsync,
-} from "../../redux/reducers/productReducer";
-import { Product } from "../../types/Product/Product";
+import { updateProductAsync } from "../../redux/reducers/productReducer";
 import AccessDenied from "../errors/AccessDenied";
 import uploadFile from "../../utils/uploadFile";
 import ErrorMessage from "../errors/ErrorMessage";
+import { fetchProductLineAsync } from "../../redux/reducers/productLineReducer";
+import { ProductLine } from "../../types/ProductLine/ProductLine";
+import { UpdateProductLineInput } from "../../types/ProductLine/UpdateProductLineInput";
 
 export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
@@ -34,19 +32,19 @@ export default function EditProductForm(): JSX.Element {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<UpdateProductInput>();
+  } = useForm<UpdateProductLineInput>();
   const { categories } = useAppSelector((state: AppState) => state.category);
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state: AppState) => state.user);
-  const { error } = useAppSelector((state: AppState) => state.product);
+  const { error } = useAppSelector((state: AppState) => state.productLine);
 
   useEffect(() => {
-    dispatch(fetchProductAsync(id!)).then((productData) => {
+    dispatch(fetchProductLineAsync(id!)).then((productData) => {
       if (productData.meta.requestStatus === "fulfilled") {
-        const item = productData.payload as Product;
-        setValue("update.title", item.productLine.title);
-        setValue("update.price", item.productLine.price);
-        setValue("update.description", item.productLine.description);
+        const item = productData.payload as ProductLine;
+        setValue("update.title", item.title);
+        setValue("update.price", item.price);
+        setValue("update.description", item.description);
         setValue("update.categoryId", item.category.id);
         //setValue("update.images", item.images);
         //setImageUrls(item.images);
@@ -62,7 +60,7 @@ export default function EditProductForm(): JSX.Element {
     navigate("/login");
   }
 
-  const handleFormSubmit = async (data: UpdateProductInput) => {
+  const handleFormSubmit = async (data: UpdateProductLineInput) => {
     if (images.length) {
       let imageLocations: string[] = new Array(images.length);
       for (let i = 0; i < images.length; i++) {
@@ -76,7 +74,7 @@ export default function EditProductForm(): JSX.Element {
     } else if (result.meta.requestStatus === "rejected") {
       toast.error("Error while updating product");
     }
-    navigate("/product");
+    navigate("/productLine");
   };
 
   if (error) return <ErrorMessage message={error} />;

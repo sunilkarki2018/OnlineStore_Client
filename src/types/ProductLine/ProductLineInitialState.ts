@@ -1,4 +1,4 @@
-import { ProductLine } from "../Product/ProductLine";
+import { ProductLine } from "./ProductLine";
 
 export interface ProductLineInitialState {
     productLinesList: ProductLine[];
