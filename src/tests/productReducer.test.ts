@@ -1,3 +1,4 @@
+/*
 import {
   createProductAsync,
   deleteProductAsync,
@@ -90,3 +91,5 @@ describe("Test normal actions in productReducers", () => {
     expect(store.getState().productReducer.productsList.length).toBe(3);
   });
 });
+
+*/

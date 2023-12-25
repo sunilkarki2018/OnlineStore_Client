@@ -1,6 +1,8 @@
 import { Product } from "../../types/Product/Product";
 
+
 export const productsData: Product[] = [
+  /*
   {
     id: 1,
     title: "yes",
@@ -12,9 +14,7 @@ export const productsData: Product[] = [
     category: {
       id: 3,
       name: "Clothe555",
-      image: "https://picsum.photos/640/640?r=1389",
-      creationAt: "2023-09-27T14:46:55.000Z",
-      updatedAt: "2023-09-28T08:09:34.000Z",
+      image: "https://picsum.photos/640/640?r=1389"
     },
   },
   {
@@ -29,9 +29,7 @@ export const productsData: Product[] = [
     category: {
       id: 2,
       name: "Shoes",
-      image: "https://picsum.photos/640/640?r=2293",
-      creationAt: "2023-09-27T14:46:55.000Z",
-      updatedAt: "2023-09-27T14:46:55.000Z",
+      image: "https://picsum.photos/640/640?r=2293"
     },
   },
   {
@@ -46,9 +44,9 @@ export const productsData: Product[] = [
     category: {
       id: 1,
       name: "Clothe555",
-      image: "https://picsum.photos/640/640?r=1389",
-      creationAt: "2023-09-27T14:46:55.000Z",
-      updatedAt: "2023-09-28T08:09:34.000Z",
+      image: "https://picsum.photos/640/640?r=1389"
     },
   },
+  */
 ];
+

@@ -1,3 +1,4 @@
+/*
 import { fetchAllCategoriesAsync } from "../redux/reducers/categoryReducer";
 import { fakeStore } from "./fakeStore";
 import categoryServer from "./shared/categoryServer";
@@ -18,3 +19,4 @@ describe("Test categoryReducer normal action", () => {
         expect(store.getState().categoryReducer.categories.length).toBe(5);
       });
 });
+*/

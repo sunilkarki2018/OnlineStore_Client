@@ -25,7 +25,7 @@ const cartSlice = createSlice({
     },
     removeFromCart: (
       state,
-      action: PayloadAction<{ itemId: number; quantityToRemove: number }>
+      action: PayloadAction<{ itemId: string; quantityToRemove: number }>
     ) => {
       const { itemId, quantityToRemove } = action.payload;
       const itemToRemove = state.cartItems.find((item) => item.id === itemId);

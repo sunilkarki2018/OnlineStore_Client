@@ -22,20 +22,20 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { isStringNotNullOrEmpty } from "../../utils/common";
-import { fetchProductAsync } from "../../redux/reducers/productReducer";
 import ErrorMessage from "../errors/ErrorMessage";
 import { addToCart } from "../../redux/reducers/cartReducer";
+import { fetchProductLineAsync } from "../../redux/reducers/productLineReducer";
 
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { singleLoading, productsSingle, error } = useAppSelector(
-    (state: AppState) => state.product
+  const { productLinesList, productLineSingle,singleLoading,listLoading, error } = useAppSelector(
+    (state: AppState) => state.productLine
   );
   const { cartItems } = useAppSelector((state: AppState) => state.cart);
-  const stock = cartItems.find((item) => item.id === Number(id))?.quantity;
+  const stock = cartItems.find((item) => item.id === id)?.quantity;
   const dispatch = useAppDispatch();
 
   const handleAddToCartClick = () => {
@@ -62,9 +62,9 @@ export default function ProductDetails() {
     }
     dispatch(
       addToCart({
-        id: productsSingle!.id,
-        title: productsSingle!.title,
-        price: productsSingle!.price,
+        id: productLineSingle!.id,
+        title: productLineSingle!.title,
+        price: productLineSingle!.price,
         quantity: Number(inputValue),
       })
     );
@@ -73,7 +73,7 @@ export default function ProductDetails() {
   };
 
   useEffect(() => {
-    dispatch(fetchProductAsync(Number(id!)));
+    dispatch(fetchProductLineAsync(id!));
   }, [id]);
 
   if (singleLoading)
@@ -94,11 +94,12 @@ export default function ProductDetails() {
     <Grid container spacing={6}>
       <Grid item xs={6}>
         <Carousel>
-          {productsSingle?.images.map((image, index) => (
+          {productLineSingle?.images?.map((image, index) => (
             <img
               key={index}
-              src={image}
-              alt={`${productsSingle?.title} Image ${index + 1}`}
+              //src={image}
+              src={"https://picsum.photos/640/640?r=1389"}
+              alt={`${productLineSingle.title} Image ${index + 1}`}
               style={{ width: "80%", height: "80%" }}
             />
           ))}
@@ -112,15 +113,15 @@ export default function ProductDetails() {
             <TableBody sx={{ fontSize: "1.1em" }}>
               <TableRow>
                 <TableCell>Title</TableCell>
-                <TableCell>{productsSingle?.title}</TableCell>
+                <TableCell>{productLineSingle?.title}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Price</TableCell>
-                <TableCell>{productsSingle?.price}</TableCell>
+                <TableCell>{productLineSingle?.price}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Description</TableCell>
-                <TableCell>{productsSingle?.description}</TableCell>
+                <TableCell>{productLineSingle?.description}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

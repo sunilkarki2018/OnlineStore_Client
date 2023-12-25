@@ -21,8 +21,13 @@ export const fetchAllProductsAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchAllProductsAsync", async (_, { rejectWithValue }) => {
   try {
-    const result: Product[] = await apis.Product.list();
+    //const result: Product[] = await apis.Product.list();
+    //return result;
+
+    const response = await axios.get('http://localhost:5238/api/v1/products');    
+    const result: Product[] =response.data
     return result;
+
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);
@@ -31,12 +36,21 @@ export const fetchAllProductsAsync = createAsyncThunk<
 
 export const fetchProductAsync = createAsyncThunk<
   Product,
-  number,
+  string,
   { rejectValue: string }
 >("fetchProductAsync", async (id, { rejectWithValue }) => {
   try {
-    const result: Product = await apis.Product.details(id);
+    //const result: Product = await apis.Product.details(id);
+    //return result;
+
+    console.log("ProductId:",id);
+    const response = await axios.get(`http://localhost:5238/api/v1/products/${id}`);    
+    const result: Product =response.data
+    console.log("Productresult:",result);
     return result;
+
+    //http://localhost:5238/api/v1/products/088cd42b-8266-49ee-8823-3f52e412355d
+   
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);

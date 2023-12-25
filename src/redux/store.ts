@@ -20,6 +20,7 @@ import {
 } from "redux-persist";
 import productReducer from "./reducers/productReducer";
 import categoryReducer from "./reducers/categoryReducer";
+import productLineReducer from "./reducers/productLineReducer";
 
 const persisConfig: PersistConfig<any> = {
   key: "root",
@@ -29,6 +30,7 @@ const persisConfig: PersistConfig<any> = {
 };
 
 const rootReducer = combineReducers({
+  productLine: productLineReducer,
   product: productReducer,
   cart: cartReducer,
   user: userReducer,

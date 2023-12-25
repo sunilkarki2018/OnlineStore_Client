@@ -26,7 +26,7 @@ export const handlers = [
       }
     }
   ),
-
+/*
   rest.post(
     "https://api.escuelajs.co/api/v1/products/",
     async (req, res, ctx) => {
@@ -59,6 +59,7 @@ export const handlers = [
       }
     }
   ),
+  */
 
   rest.put(
     "https://api.escuelajs.co/api/v1/products/:id",

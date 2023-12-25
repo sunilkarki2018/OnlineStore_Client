@@ -7,15 +7,15 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Product } from "../../types/Product/Product";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { addToCart } from "../../redux/reducers/cartReducer";
+import { ProductLine } from "../../types/Product/ProductLine";
 
 interface Props {
-  product: Product;
+  productLine: ProductLine;
 }
 
-export default function ProductCard({ product }: Props) {
+export default function ProductCard({ productLine }: Props) {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,9 +27,9 @@ export default function ProductCard({ product }: Props) {
     const debounceDelay = 500;
     dispatch(
       addToCart({
-        id: product.id,
-        title: product.title,
-        price: product.price,
+        id: productLine.id,
+        title: productLine.title,
+        price: productLine.price,
         quantity: 1,
       })
     );
@@ -44,22 +44,23 @@ export default function ProductCard({ product }: Props) {
     <Card sx={cardStyle}>
       <CardMedia
         sx={{ height: 150 }}
-        image={product.images[0]}
+        //image={product.images[0]}
+        image="https://picsum.photos/640/640?r=1389"
         title="green iguana"
       />
       <CardContent sx={{ height: 50 }}>
         <Typography gutterBottom variant="h6" component="div">
-          {product.title}
+          {productLine.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Price:${product.price} / Category:{product.category.name}
+          Price:${productLine.price}
         </Typography>
       </CardContent>
       <CardActions sx={{ height: 10 }}>
         <Button onClick={handleAddToCartClick} size="small">
           {isLoading ? "Loading..." : "Add"}
         </Button>
-        <Button component={Link} to={`/product/${product.id}`} size="small">
+        <Button component={Link} to={`/productLines/${productLine.id}`} size="small">
           View
         </Button>
       </CardActions>

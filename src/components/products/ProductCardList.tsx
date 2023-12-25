@@ -2,22 +2,23 @@ import React from "react";
 import { Grid } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { Product } from "../../types/Product/Product";
+import { ProductLine } from "../../types/Product/ProductLine";
 
 interface Props {
-  products: Product[];
+  productLines: ProductLine[];
 }
 
-export const ProductCardList = ({ products }: Props) => {
+export const ProductCardList = ({ productLines }: Props) => {
   return (
     <Grid container spacing={4}>
-      {products.map((product) => (
+      {productLines.map((productLine) => (
         <Grid
-          key={product.id}
+          key={productLine.id}
           item
           xs={4}
           style={{ width: "300px", height: "300px" }}
         >
-          <ProductCard product={product} />
+          <ProductCard productLine={productLine} />
         </Grid>
       ))}
     </Grid>

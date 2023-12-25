@@ -41,15 +41,15 @@ export default function EditProductForm(): JSX.Element {
   const { error } = useAppSelector((state: AppState) => state.product);
 
   useEffect(() => {
-    dispatch(fetchProductAsync(+id!)).then((productData) => {
+    dispatch(fetchProductAsync(id!)).then((productData) => {
       if (productData.meta.requestStatus === "fulfilled") {
         const item = productData.payload as Product;
-        setValue("update.title", item.title);
-        setValue("update.price", item.price);
-        setValue("update.description", item.description);
+        setValue("update.title", item.productLine.title);
+        setValue("update.price", item.productLine.price);
+        setValue("update.description", item.productLine.description);
         setValue("update.categoryId", item.category.id);
-        setValue("update.images", item.images);
-        setImageUrls(item.images);
+        //setValue("update.images", item.images);
+        //setImageUrls(item.images);
         setValue("id", item.id);
       }
     });

@@ -1,13 +1,16 @@
 import { Product } from "../types/Product/Product";
 import {  isNumberNotNullOrZero, isStringNotNullOrEmpty } from "./common";
 
-
+/*
 export const executeSearchandSort = (
   productsList: Product[],
   searchText: string,
   categoryId: number | null,
   sortOrder: string
 ): Product[] => {
+
+
+
   let filteredResult;
   if (isStringNotNullOrEmpty(searchText) && isNumberNotNullOrZero(categoryId)) {
     filteredResult = productsList.filter(
@@ -32,9 +35,12 @@ export const executeSearchandSort = (
   } else if (sortOrder === "desc") {
     sortedResult = [...filteredResult].sort((a, b) => b.price - a.price);
   } else {
-    sortedResult = filteredResult;
+    sortedResult = [...filteredResult];
   }
   return sortedResult;
+
+
+
 };
 
-
+*/

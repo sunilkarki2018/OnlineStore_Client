@@ -97,9 +97,9 @@ export default function ProductTableList() {
               <TableBody>
                 {productsList.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell>{product.title}</TableCell>
-                    <TableCell>{product.price}</TableCell>
-                    <TableCell>{product.description}</TableCell>
+                    <TableCell>{product.productLine.title}</TableCell>
+                    <TableCell>{product.productLine.price}</TableCell>
+                    <TableCell>{product.productLine.description}</TableCell>
                     <TableCell>
                       {currentUser?.role.includes("admin") && (
                         <Button
