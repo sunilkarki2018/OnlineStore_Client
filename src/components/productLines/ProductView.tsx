@@ -26,14 +26,17 @@ import ErrorMessage from "../errors/ErrorMessage";
 import { addToCart } from "../../redux/reducers/cartReducer";
 import { fetchProductLineAsync } from "../../redux/reducers/productLineReducer";
 
-
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { productLinesList, productLineSingle,singleLoading,listLoading, error } = useAppSelector(
-    (state: AppState) => state.productLine
-  );
+  const {
+    productLinesList,
+    productLineSingle,
+    singleLoading,
+    listLoading,
+    error,
+  } = useAppSelector((state: AppState) => state.productLine);
   const { cartItems } = useAppSelector((state: AppState) => state.cart);
   const stock = cartItems.find((item) => item.id === id)?.quantity;
   const dispatch = useAppDispatch();
@@ -94,11 +97,10 @@ export default function ProductDetails() {
     <Grid container spacing={6}>
       <Grid item xs={6}>
         <Carousel>
-          {productLineSingle?.images?.map((image, index) => (
+          {productLineSingle?.imageReadDTOs?.map((image, index) => (
             <img
               key={index}
-              //src={image}
-              src={"https://picsum.photos/640/640?r=1389"}
+              src={`data:image/jpg;base64,${image.imgBase64Data}`}
               alt={`${productLineSingle.title} Image ${index + 1}`}
               style={{ width: "80%", height: "80%" }}
             />

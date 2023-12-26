@@ -3,6 +3,7 @@ import { ProductLine } from "../../types/ProductLine/ProductLine";
 import axios, { AxiosError } from "axios";
 import { ProductLineInitialState } from "../../types/ProductLine/ProductLineInitialState";
 import { CreateProductLineInput } from "../../types/ProductLine/CreateProductLineInput";
+import { UpdateProductLineInput } from "../../types/ProductLine/UpdateProductLineInput";
 
 const initialState: ProductLineInitialState = {
   productLinesList: [],
@@ -35,12 +36,10 @@ export const fetchProductLineAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchProductLineAsync", async (id, { rejectWithValue }) => {
   try {
-    console.log("ProductLine_Id:", id);
     const response = await axios.get(
       `http://localhost:5238/api/v1/productlines/${id}`
     );
     const result: ProductLine = response.data;
-    console.log("ProductLine_result:", result);
     return result;
 
     //http://localhost:5238/api/v1/products/088cd42b-8266-49ee-8823-3f52e412355d
@@ -52,12 +51,11 @@ export const fetchProductLineAsync = createAsyncThunk<
 
 export const createProductLineAsync = createAsyncThunk<
   ProductLine,
-  CreateProductLineInput,
+  FormData,
   { rejectValue: string }
 >("createProductLineAsync", async (newProductLine, { rejectWithValue }) => {
   try {
     const access_token = localStorage.getItem("access_token");
-    console.log("Before call:", newProductLine);
     const response = await axios.post(
       "http://localhost:5238/api/v1/productlines",
       newProductLine,
@@ -69,6 +67,33 @@ export const createProductLineAsync = createAsyncThunk<
     );
     const result: ProductLine = response.data;
     return result;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
+  }
+});
+
+export const updateProductLineAsync = createAsyncThunk<
+  string,
+  UpdateProductLineInput,
+  { rejectValue: string }
+>("updateProductLineAsync", async (updateProductInput: UpdateProductLineInput, { rejectWithValue }) => {
+  try {
+    const access_token = localStorage.getItem("access_token");
+    const response = await axios.patch(
+      `http://localhost:5238/api/v1/productlines/${updateProductInput.id}`,
+      updateProductInput,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    const result: boolean = response.data;
+    if (!result) {
+      throw new Error("Cannot update");
+    }
+    return updateProductInput.id;
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);
@@ -169,6 +194,22 @@ const productLineSlice = createSlice({
     });
     builder.addCase(deleteProductLineAsync.rejected, (state, action) => {
       state.error = action.payload;
+    });
+
+    builder.addCase(updateProductLineAsync.fulfilled, (state, action) => {
+     console.log("after fulfilled,",action.payload);
+     /*  
+      const foundIndex = state.productLinesList.findIndex(
+        (p) => p.id === action.payload.id
+      );
+   
+    if (foundIndex >= 0) {
+        state.productLinesList[foundIndex] = action.payload;
+      }
+      */
+    });
+    builder.addCase(updateProductLineAsync.rejected, (state, action) => {
+      state.error = action.payload as string;
     });
   },
 });

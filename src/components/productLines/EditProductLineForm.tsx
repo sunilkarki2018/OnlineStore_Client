@@ -13,13 +13,15 @@ import { toast } from "react-toastify";
 import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
-import { updateProductAsync } from "../../redux/reducers/productReducer";
 import AccessDenied from "../errors/AccessDenied";
-import uploadFile from "../../utils/uploadFile";
 import ErrorMessage from "../errors/ErrorMessage";
-import { fetchProductLineAsync } from "../../redux/reducers/productLineReducer";
+import {
+  fetchProductLineAsync,
+  updateProductLineAsync,
+} from "../../redux/reducers/productLineReducer";
 import { ProductLine } from "../../types/ProductLine/ProductLine";
 import { UpdateProductLineInput } from "../../types/ProductLine/UpdateProductLineInput";
+import { fetchAllCategoriesAsync } from "../../redux/reducers/categoryReducer";
 
 export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
@@ -40,12 +42,14 @@ export default function EditProductForm(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchProductLineAsync(id!)).then((productData) => {
+      console.log("Test Id:", id);
+      console.log("Test ProductLine:", productData);
       if (productData.meta.requestStatus === "fulfilled") {
         const item = productData.payload as ProductLine;
-        setValue("update.title", item.title);
-        setValue("update.price", item.price);
-        setValue("update.description", item.description);
-        setValue("update.categoryId", item.category.id);
+        setValue("title", item.title);
+        setValue("price", item.price);
+        setValue("description", item.description);
+        setValue("categoryId", item.categoryId);
         //setValue("update.images", item.images);
         //setImageUrls(item.images);
         setValue("id", item.id);
@@ -53,7 +57,11 @@ export default function EditProductForm(): JSX.Element {
     });
   }, [dispatch, id, setValue]);
 
-  if (currentUser && currentUser?.role.includes("customer")) {
+  useEffect(() => {
+    dispatch(fetchAllCategoriesAsync());
+  }, []);
+
+  if (currentUser && currentUser?.role.includes("Customer")) {
     return <AccessDenied />;
   }
   if (!currentUser) {
@@ -61,6 +69,7 @@ export default function EditProductForm(): JSX.Element {
   }
 
   const handleFormSubmit = async (data: UpdateProductLineInput) => {
+    /*
     if (images.length) {
       let imageLocations: string[] = new Array(images.length);
       for (let i = 0; i < images.length; i++) {
@@ -68,11 +77,13 @@ export default function EditProductForm(): JSX.Element {
       }
       data.update.images = imageLocations;
     }
-    const result = await dispatch(updateProductAsync(data));
+    */
+    console.log("after submit:", data);
+    const result = await dispatch(updateProductLineAsync(data));
     if (result.meta.requestStatus === "fulfilled") {
-      toast.success("Product updated successfully");
+      toast.success("Product Line updated successfully");
     } else if (result.meta.requestStatus === "rejected") {
-      toast.error("Error while updating product");
+      toast.error("Error while updating Product Line");
     }
     navigate("/productLine");
   };
@@ -104,7 +115,7 @@ export default function EditProductForm(): JSX.Element {
         sx={{ mt: 1 }}
       >
         <Controller
-          name="update.title"
+          name="title"
           control={control}
           defaultValue=""
           rules={{ required: "Title is required" }}
@@ -115,14 +126,14 @@ export default function EditProductForm(): JSX.Element {
               variant="outlined"
               margin="normal"
               fullWidth
-              error={!!errors.update?.title}
-              helperText={errors.update?.title?.message}
+              error={!!errors.title}
+              helperText={errors.title?.message}
             />
           )}
         />
 
         <Controller
-          name="update.price"
+          name="price"
           control={control}
           defaultValue={0}
           rules={{
@@ -136,13 +147,13 @@ export default function EditProductForm(): JSX.Element {
               variant="outlined"
               margin="normal"
               fullWidth
-              error={!!errors.update?.price}
-              helperText={errors.update?.price?.message}
+              error={!!errors.price}
+              helperText={errors.price?.message}
             />
           )}
         />
         <Controller
-          name="update.description"
+          name="description"
           control={control}
           defaultValue=""
           rules={{ required: "Description is required" }}
@@ -155,13 +166,13 @@ export default function EditProductForm(): JSX.Element {
               fullWidth
               multiline
               rows={4}
-              error={!!errors.update?.description}
-              helperText={errors.update?.description?.message}
+              error={!!errors.description}
+              helperText={errors.description?.message}
             />
           )}
         />
         <Controller
-          name="update.categoryId"
+          name="categoryId"
           control={control}
           rules={{ required: "Category is required" }}
           render={({ field }) => (
@@ -170,10 +181,10 @@ export default function EditProductForm(): JSX.Element {
               <Select
                 label="Category"
                 {...field}
-                error={!!errors.update?.categoryId}
+                error={!!errors.categoryId}
                 value={field.value || ""}
               >
-                {categories.map((category) => (
+                {categories?.map((category) => (
                   <MenuItem key={category.id} value={category.id}>
                     {category.name}
                   </MenuItem>
@@ -183,7 +194,8 @@ export default function EditProductForm(): JSX.Element {
           )}
         />
 
-        <InputLabel htmlFor="images">Select Multiple Files</InputLabel>
+        {/*
+<InputLabel htmlFor="images">Select Multiple Files</InputLabel>
         {imageUrls.map((imageUrl, index) => (
           <img
             key={index}
@@ -193,7 +205,7 @@ export default function EditProductForm(): JSX.Element {
           />
         ))}
         <Controller
-          name="update.images"
+          name="images"
           control={control}
           render={({ field }) => (
             <input
@@ -205,6 +217,8 @@ export default function EditProductForm(): JSX.Element {
           )}
         />
 
+*/}
+
         <Button
           type="submit"
           variant="contained"
@@ -215,7 +229,7 @@ export default function EditProductForm(): JSX.Element {
         </Button>
         <Button
           component={Link}
-          to={`/product`}
+          to={`/productLine`}
           size="small"
           variant="contained"
           color="primary"

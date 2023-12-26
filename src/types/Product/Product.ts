@@ -9,5 +9,4 @@ export interface Product {
   productLineId: string;
   productSizeId?: string | null;
   category:Category;
-  images:Image[];
   }

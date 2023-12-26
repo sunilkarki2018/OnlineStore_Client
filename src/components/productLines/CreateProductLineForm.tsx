@@ -12,12 +12,9 @@ import { Box, Typography } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import { CreateProductInput } from "../../types/Product/CreateProductInput";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
-import uploadFile from "../../utils/uploadFile";
-import { createProductAsync } from "../../redux/reducers/productReducer";
 import { fetchAllCategoriesAsync } from "../../redux/reducers/categoryReducer";
 import AccessDenied from "../errors/AccessDenied";
 import { createProductLineAsync } from "../../redux/reducers/productLineReducer";
@@ -66,8 +63,8 @@ export default function CreateProductForm(): JSX.Element {
     }
     data.images = imageLocations;
     */
-    console.log("before", data);
-    const result = await dispatch(createProductLineAsync(data));
+    console.log("before", formData);
+    const result = await dispatch(createProductLineAsync(formData));
     console.log(result);
     if (result.meta.requestStatus === "fulfilled") {
       toast.success("Product Line added successfully");

@@ -1,6 +1,10 @@
 import { CreateProductLineInput } from "./CreateProductLineInput";
 
 export interface UpdateProductLineInput {
-  update: Partial<CreateProductLineInput>;
+  title: string;
+  price: number;
+  description: string;
+  categoryId: string;
+  images: string[];
   id: string;
 }
