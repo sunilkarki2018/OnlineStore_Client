@@ -61,10 +61,27 @@ export const createProductAsync = createAsyncThunk<
   { rejectValue: string }
 >("createProductAsync", async (newProduct, { rejectWithValue }) => {
   try {
-    const result: Product = await apis.Product.add(newProduct);
+
+    const access_token = localStorage.getItem("access_token");
+    console.log("access_token: ",access_token);
+    const response = await axios.post(
+      "http://localhost:5238/api/v1/products",
+      newProduct,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    debugger;
+    console.log("response>",response);
+    const result: Product = response.data;
     return result;
+    //const result: Product = await apis.Product.add(newProduct);
+    //return result;
   } catch (e) {
     const error = e as AxiosError;
+    console.log("error.message:",error.message);
     return rejectWithValue(error.message);
   }
 });
@@ -157,6 +174,7 @@ const productsSlice = createSlice({
     });
 
     builder.addCase(createProductAsync.fulfilled, (state, action) => {
+      debugger;
       state.productsList.push(action.payload);
     });
     builder.addCase(createProductAsync.rejected, (state, action) => {

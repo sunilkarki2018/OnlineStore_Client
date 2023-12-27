@@ -22,8 +22,8 @@ import {
   fetchAllProductLinesAsync,
 } from "../../redux/reducers/productLineReducer";
 import { CreateProductInput } from "../../types/Product/CreateProductInput";
-import { fetchAllProductsAsync } from "../../redux/reducers/productReducer";
 import { fetchAllProductSizesAsync } from "../../redux/reducers/productSizeReducer";
+import { createProductAsync } from "../../redux/reducers/productReducer";
 
 export default function CreateProductForm(): JSX.Element {
   const navigate = useNavigate();
@@ -31,8 +31,6 @@ export default function CreateProductForm(): JSX.Element {
     .object({
       inventory: yup.number().required("Inventory is is required"),
       productLineId: yup.string().required("Product Line is required"),
-      //productSizeId: yup.string().required("Product Size field is required"),
-      categoryId: yup.string().required("Category field is required"),
     })
     .required();
 
@@ -49,18 +47,19 @@ export default function CreateProductForm(): JSX.Element {
   const { productLinesList } = useAppSelector(
     (state: AppState) => state.productLine
   );
-  const { productSizes } = useAppSelector((state: AppState) => state.productSize);
-
+  const { productSizes } = useAppSelector(
+    (state: AppState) => state.productSize
+  );
+  
+  console.log("productSizes:", productSizes);
   const handleFormSubmit = async (data: CreateProductInput) => {
     const formData = new FormData();
     formData.append("inventory", data.inventory.toString());
     formData.append("productLineId", data.productLineId);
     if (data.productSizeId)
       formData.append("productSizeId", data.productSizeId);
-    formData.append("categoryId", data.categoryId);
 
-    console.log("before submit:", formData);
-    const result = await dispatch(createProductLineAsync(formData));
+    const result = await dispatch(createProductAsync(data));
     if (result.meta.requestStatus === "fulfilled") {
       toast.success("Product added successfully");
     } else if (result.meta.requestStatus === "rejected") {
@@ -71,7 +70,6 @@ export default function CreateProductForm(): JSX.Element {
   const { categories } = useAppSelector((state: AppState) => state.category);
 
   useEffect(() => {
-    dispatch(fetchAllCategoriesAsync());
     dispatch(fetchAllProductLinesAsync());
     dispatch(fetchAllProductSizesAsync());
   }, []);
@@ -106,13 +104,13 @@ export default function CreateProductForm(): JSX.Element {
           name="inventory"
           control={control}
           rules={{
-            required: "Price is required",
+            required: "Inventory is required",
             pattern: /^\d+(\.\d{1,2})?$/,
           }}
           render={({ field }) => (
             <TextField
               {...field}
-              label="Price"
+              label="Inventory"
               variant="outlined"
               margin="normal"
               fullWidth
@@ -128,14 +126,14 @@ export default function CreateProductForm(): JSX.Element {
           rules={{ required: "productLine is required" }}
           render={({ field }) => (
             <FormControl fullWidth margin="normal" variant="outlined">
-              <InputLabel>Category</InputLabel>
+              <InputLabel>ProductLine</InputLabel>
               <Select
                 label="ProductLine"
                 {...field}
-                error={!!errors.categoryId}
+                error={!!errors.productLineId}
               >
                 {productLinesList.map((item) => (
-                  <MenuItem key={item.id} value={item.title}>
+                  <MenuItem key={item.id} value={item.id}>
                     {item.title}
                   </MenuItem>
                 ))}
@@ -156,26 +154,8 @@ export default function CreateProductForm(): JSX.Element {
                 error={!!errors.productSizeId}
               >
                 {productSizes.map((item) => (
-                  <MenuItem key={item.id} value={item.value}>
-                    {item.value}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-        />
-
-        <Controller
-          name="categoryId"
-          control={control}
-          rules={{ required: "Category is required" }}
-          render={({ field }) => (
-            <FormControl fullWidth margin="normal" variant="outlined">
-              <InputLabel>Category</InputLabel>
-              <Select label="Category" {...field} error={!!errors.categoryId}>
-                {categories.map((item) => (
                   <MenuItem key={item.id} value={item.id}>
-                    {item.name}
+                    {item.value}
                   </MenuItem>
                 ))}
               </Select>
