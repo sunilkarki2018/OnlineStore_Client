@@ -21,7 +21,6 @@ import ErrorMessage from "../errors/ErrorMessage";
 import uploadFile from "../../utils/uploadFile";
 import { createUserAsync } from "../../redux/reducers/userReducer";
 
-
 export default function Register() {
   const [image, setImage] = useState<File[]>([]);
   const { error } = useAppSelector((state: AppState) => state.user);
@@ -47,7 +46,7 @@ export default function Register() {
         image.length === 0
           ? "https://i.imgur.com/nZnWUc0.jpeg"
           : await uploadFile(image[0]);
-      dispatch(createUserAsync(data));
+      //dispatch(createUserAsync(data));
       toast.success("User registered successfully");
       navigate("/login");
     } catch (error) {
@@ -75,51 +74,52 @@ export default function Register() {
           sx={{ mt: 1 }}
         >
           <Controller
-            name="name"
+            name="firstName"
             control={control}
-            rules={{ required: "Name is required" }}
+            defaultValue=""
+            rules={{ required: "FirstName is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Name"
+                label="FirstName"
                 variant="outlined"
-                margin="normal"
                 fullWidth
-                error={!!errors.name}
-                helperText={errors.name?.message}
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message}
               />
             )}
           />
+
+          <Controller
+            name="lastName"
+            control={control}
+            defaultValue=""
+            rules={{ required: "LastName is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="LastName"
+                variant="outlined"
+                fullWidth
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message}
+              />
+            )}
+          />
+
           <Controller
             name="email"
             control={control}
+            defaultValue=""
             rules={{ required: "Email is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
                 label="Email"
                 variant="outlined"
-                margin="normal"
                 fullWidth
                 error={!!errors.email}
                 helperText={errors.email?.message}
-              />
-            )}
-          />
-          <Controller
-            name="password"
-            control={control}
-            rules={{ required: "Password is required" }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Password"
-                variant="outlined"
-                type="password"
-                margin="normal"
-                fullWidth
-                error={!!errors.password}
-                helperText={errors.password?.message}
               />
             )}
           />

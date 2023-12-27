@@ -26,7 +26,7 @@ export default function ProfilePage() {
       <Grid item xs={12} md={4}>
         <Avatar
           alt={currentUser?.firstName || ""}
-          src={currentUser?.avatar.data || ""}
+          //src={currentUser?.avatar.data || ""}
           sx={{ width: 150, height: 150, marginLeft: 10 }}
         />
       </Grid>

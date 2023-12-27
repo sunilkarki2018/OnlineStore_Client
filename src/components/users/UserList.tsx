@@ -36,6 +36,8 @@ export default function UserList() {
   }, [token]);
   const navigate = useNavigate();
   
+console.log("UserInfo:",users);
+
   if (currentUser && currentUser?.role.includes("customer")) {
     return <AccessDenied />;
   }
@@ -61,7 +63,7 @@ export default function UserList() {
   return (
     <>
       <Container>
-        {currentUser?.role.includes("admin") && (
+        {currentUser?.role.includes("Admin") && (
           <Button
             component={Link}
             to="/userCreate"
@@ -94,21 +96,21 @@ export default function UserList() {
                     <TableRow key={user.id}>
                       <TableCell>
                         <Avatar
-                          alt={user?.firstName || ""}
-                          src={user?.avatar.data || ""}
+                          alt={user?.firstName+' '+user?.lastName || ""}
+                          //src={user?.avatar.data || ""}
                           sx={{ width: 50, height: 50 }}
                         />
                       </TableCell>
-                      <TableCell>{user.firstName}</TableCell>
+                      <TableCell>{user.firstName+' '+user?.lastName}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>
-                        {currentUser?.role.includes("admin") && (
+                        {currentUser?.role.includes("Admin") && (
                           <Button
                             component={Link}
                             to={`/userEdit/${user.id}`}
                             size="small"
-                            disabled={!currentUser?.role.includes("admin")}
+                            disabled={!currentUser?.role.includes("Admin")}
                           >
                             <EditIcon />
                           </Button>

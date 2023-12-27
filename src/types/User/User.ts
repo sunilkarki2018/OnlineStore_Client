@@ -5,7 +5,12 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  avatar: Avatar;
+  password:string
+  avatar: string;
   role: Role;
-  address: Address;
+  houseNumber: string;
+  street: string;
+  postCode: string;
+  city: string;
+  country: string;
 }

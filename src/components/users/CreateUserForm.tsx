@@ -13,8 +13,6 @@ import uploadFile from "../../utils/uploadFile";
 import { createUserAsync } from "../../redux/reducers/userReducer";
 import AccessDenied from "../errors/AccessDenied";
 
-
-
 export default function CreateUserForm(): JSX.Element {
   const navigate = useNavigate();
   const {
@@ -28,11 +26,19 @@ export default function CreateUserForm(): JSX.Element {
   const { currentUser } = useAppSelector((state: AppState) => state.user);
 
   const handleFormSubmit = async (data: CreateUserInput) => {
-    data.avatar =
-      images.length === 0
-        ? "https://i.imgur.com/nZnWUc0.jpeg"
-        : await uploadFile(images[0]);
-    const result = await dispatch(createUserAsync(data));
+    const formData = new FormData();
+    formData.append("firstName", data.firstName);
+    formData.append("lastName", data.lastName);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("avatar", images[0]);
+    formData.append("houseNumber", data.houseNumber);
+    formData.append("street", data.street);
+    formData.append("postCode", data.postCode);
+    formData.append("city", data.city);
+    formData.append("country", data.country);
+    console.log("before submit:", formData);
+    const result = await dispatch(createUserAsync(formData));
     if (result.meta.requestStatus === "fulfilled") {
       toast.success("User added successfully");
     } else if (result.meta.requestStatus === "rejected") {
@@ -40,7 +46,7 @@ export default function CreateUserForm(): JSX.Element {
     }
     navigate("/users");
   };
-  if (currentUser && currentUser?.role.includes("customer")) {
+  if (currentUser && currentUser?.role.includes("Customer")) {
     return <AccessDenied />;
   }
   if (!currentUser) {
@@ -53,8 +59,8 @@ export default function CreateUserForm(): JSX.Element {
     }
   };
   let roles = [
-    { id: "customer", name: "customer" },
-    { id: "admin", name: "admin" },
+    { id: "Customer", name: "Customer" },
+    { id: "Admin", name: "Admin" },
   ];
 
   return (
@@ -63,18 +69,35 @@ export default function CreateUserForm(): JSX.Element {
       style={{ display: "flex", flexDirection: "column", gap: "16px" }}
     >
       <Controller
-        name="name"
+        name="firstName"
         control={control}
         defaultValue=""
-        rules={{ required: "Name is required" }}
+        rules={{ required: "FirstName is required" }}
         render={({ field }) => (
           <TextField
             {...field}
-            label="Name"
+            label="FirstName"
             variant="outlined"
             fullWidth
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            error={!!errors.firstName}
+            helperText={errors.firstName?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="lastName"
+        control={control}
+        defaultValue=""
+        rules={{ required: "LastName is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="LastName"
+            variant="outlined"
+            fullWidth
+            error={!!errors.firstName}
+            helperText={errors.firstName?.message}
           />
         )}
       />
@@ -114,29 +137,91 @@ export default function CreateUserForm(): JSX.Element {
       />
 
       <Controller
-        name="role"
+        name="houseNumber"
         control={control}
-        rules={{ required: "Role is required" }}
+        defaultValue=""
+        rules={{ required: "House Number is required" }}
         render={({ field }) => (
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Role</InputLabel>
-            <Select
-              label="Role"
-              {...field}
-              error={!!errors?.role}
-              value={field.value || ""}
-            >
-              {roles.map((role) => (
-                <MenuItem key={role.id} value={role.id}>
-                  {role.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <TextField
+            {...field}
+            label="HouseNumber"
+            variant="outlined"
+            fullWidth
+            error={!!errors.houseNumber}
+            helperText={errors.houseNumber?.message}
+          />
         )}
       />
 
-      <InputLabel htmlFor="images">Select Image</InputLabel>
+      <Controller
+        name="street"
+        control={control}
+        defaultValue=""
+        rules={{ required: "Street is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Street"
+            variant="outlined"
+            fullWidth
+            error={!!errors.street}
+            helperText={errors.street?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="postCode"
+        control={control}
+        defaultValue=""
+        rules={{ required: "PostCode is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="PostCode"
+            variant="outlined"
+            fullWidth
+            error={!!errors.postCode}
+            helperText={errors.postCode?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="city"
+        control={control}
+        defaultValue=""
+        rules={{ required: "City is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="City"
+            variant="outlined"
+            fullWidth
+            error={!!errors.city}
+            helperText={errors.city?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="country"
+        control={control}
+        defaultValue=""
+        rules={{ required: "Country is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Country"
+            variant="outlined"
+            fullWidth
+            error={!!errors.country}
+            helperText={errors.country?.message}
+          />
+        )}
+      />
+
+      <InputLabel htmlFor="avatar">Select Avatar</InputLabel>
       <Controller
         name="avatar"
         control={control}
@@ -145,6 +230,7 @@ export default function CreateUserForm(): JSX.Element {
           <input type="file" onChange={handleFileChange} />
         )}
       />
+
       <Button type="submit" variant="contained" color="primary">
         Submit
       </Button>

@@ -34,11 +34,11 @@ export const loginUserAsync = createAsyncThunk<
 >("loginUserAsync", async (cred, { rejectWithValue, dispatch }) => {
   try {
     //const result = await apis.User.login(cred);
-    const result = await axios.post(
-      "http://localhost:5238/api/v1/auth",cred
-    );    
+    const result = await axios.post("http://localhost:5238/api/v1/auth", cred);
     //const { access_token } = result;
-    const authenticatedResult = await dispatch(authenticateUserAsync(result.data));
+    const authenticatedResult = await dispatch(
+      authenticateUserAsync(result.data)
+    );
 
     if (
       typeof authenticatedResult.payload === "string" ||
@@ -71,7 +71,7 @@ export const authenticateUserAsync = createAsyncThunk<
       }
     );
     const result: User = response.data;
-    console.log("result after user dataa",result);
+    console.log("result after user dataa", result);
     return result;
   } catch (e) {
     const error = e as Error;
@@ -81,14 +81,29 @@ export const authenticateUserAsync = createAsyncThunk<
 
 export const createUserAsync = createAsyncThunk<
   User,
-  CreateUserInput,
+  FormData,
   { rejectValue: string }
 >("createUserAsync", async (newUser, { rejectWithValue }) => {
   try {
-    const result: User = await apis.User.add(newUser);
+    const access_token = localStorage.getItem("access_token");
+    console.log("before request:", newUser);
+    const response = await axios.post(
+      "http://localhost:5238/api/v1/users/create-users",
+      newUser,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    const result: User = response.data;
     return result;
+
+    //const result: User = await apis.User.add(newUser);
+    //return result;
   } catch (e) {
     const error = e as AxiosError;
+    console.log("error.message:",error.message);
     return rejectWithValue(error.message);
   }
 });

@@ -13,12 +13,13 @@ import { UpdateUserInput } from "../../types/User/UpdateUserInput";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
-import { fetchUserAsync, updateUserAsync } from "../../redux/reducers/userReducer";
+import {
+  fetchUserAsync,
+  updateUserAsync,
+} from "../../redux/reducers/userReducer";
 import { User } from "../../types/User/User";
 import AccessDenied from "../errors/AccessDenied";
 import uploadFile from "../../utils/uploadFile";
-
-
 
 export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
@@ -36,15 +37,16 @@ export default function EditProductForm(): JSX.Element {
   useEffect(() => {
     dispatch(fetchUserAsync(id!)).then((userData) => {
       const item = userData.payload as User;
-      setValue("update.name", item.firstName);
+      setValue("update.firstName", item.firstName);
+      setValue("update.lastName", item.lastName);
       setValue("update.email", item.email);
-      setValue("update.role", item.role);
-      setValue("update.avatar", item.avatar.data);
+      setValue("role", item.role);
+      setValue("update.avatar", item.avatar);
       setValue("id", item.id);
     });
   }, [dispatch, id, setValue]);
 
-  if (currentUser && currentUser?.role.includes("customer")) {
+  if (currentUser && currentUser?.role.includes("Customer")) {
     return <AccessDenied />;
   }
   if (!currentUser) {
@@ -81,21 +83,38 @@ export default function EditProductForm(): JSX.Element {
       style={{ display: "flex", flexDirection: "column", gap: "16px" }}
     >
       <Controller
-        name="update.name"
+        name="update.firstName"
         control={control}
         defaultValue=""
-        rules={{ required: "Name is required" }}
+        rules={{ required: "FirstName is required" }}
         render={({ field }) => (
           <TextField
             {...field}
             label="Name"
             variant="outlined"
             fullWidth
-            error={!!errors.update?.name}
-            helperText={errors.update?.name?.message}
+            error={!!errors.update?.firstName}
+            helperText={errors.update?.firstName?.message}
           />
         )}
       />
+      <Controller
+        name="update.lastName"
+        control={control}
+        defaultValue=""
+        rules={{ required: "LastName is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Last Name"
+            variant="outlined"
+            fullWidth
+            error={!!errors.update?.firstName}
+            helperText={errors.update?.firstName?.message}
+          />
+        )}
+      />
+
       <Controller
         name="update.email"
         control={control}
@@ -127,7 +146,7 @@ export default function EditProductForm(): JSX.Element {
         )}
       />
       <Controller
-        name="update.role"
+        name="role"
         control={control}
         rules={{ required: "Role is required" }}
         render={({ field }) => (
@@ -136,7 +155,7 @@ export default function EditProductForm(): JSX.Element {
             <Select
               label="Category"
               {...field}
-              error={!!errors.update?.role}
+              error={!!errors.role}
               value={field.value || ""}
             >
               {roles.map((role) => (
@@ -146,6 +165,87 @@ export default function EditProductForm(): JSX.Element {
               ))}
             </Select>
           </FormControl>
+        )}
+      />
+
+      <Controller
+        name="update.houseNumber"
+        control={control}
+        defaultValue=""
+        rules={{ required: "HouseNumber is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="House Number"
+            variant="outlined"
+            fullWidth
+            error={!!errors.update?.houseNumber}
+            helperText={errors.update?.houseNumber?.message}
+          />
+        )}
+      />
+      <Controller
+        name="update.street"
+        control={control}
+        defaultValue=""
+        rules={{ required: "street is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Street"
+            variant="outlined"
+            fullWidth
+            error={!!errors.update?.street}
+            helperText={errors.update?.street?.message}
+          />
+        )}
+      />
+      <Controller
+        name="update.postCode"
+        control={control}
+        defaultValue=""
+        rules={{ required: "PostCode is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="PostCode"
+            variant="outlined"
+            fullWidth
+            error={!!errors.update?.postCode}
+            helperText={errors.update?.postCode?.message}
+          />
+        )}
+      />
+      <Controller
+        name="update.city"
+        control={control}
+        defaultValue=""
+        rules={{ required: "City is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="City"
+            variant="outlined"
+            fullWidth
+            error={!!errors.update?.city}
+            helperText={errors.update?.city?.message}
+          />
+        )}
+      />
+      <Controller
+        name="update.country"
+        control={control}
+        defaultValue=""
+        rules={{ required: "Country is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Country"
+            variant="outlined"
+            fullWidth
+            error={!!errors.update?.country}
+            helperText={errors.update?.country?.message}
+          />
         )}
       />
 

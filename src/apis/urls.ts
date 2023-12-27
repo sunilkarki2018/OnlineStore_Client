@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-axios.defaults.baseURL = "https://api.escuelajs.co/api/v1/";
+axios.defaults.baseURL = "http://localhost:5238/api/v1/";
 
 //axios.defaults.baseURL = "http://localhost:5238/api/v1/";
 
