@@ -3,7 +3,6 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import App from "../layouts/App";
 import NotFound from "../components/errors/NotFound";
 import { HomePage } from "../pages/HomePage";
-import ProductView from "../components/productLines/ProductView";
 import CartList from "../components/cart/CartList";
 import Checkout from "../components/cart/Checkout";
 import Register from "../components/users/Register";
@@ -16,6 +15,9 @@ import ContactPage from "../pages/ContactPage";
 import CreateProductLineForm from "../components/productLines/CreateProductLineForm";
 import EditProductLineForm from "../components/productLines/EditProductLineForm";
 import ProductLineTableList from "../components/productLines/ProductLineTableList";
+import ProductLineView from "../components/productLines/ProductLineView";
+import ProductList from "../components/product/ProductList";
+import CreateProductForm from "../components/product/CreateProductForm";
 
 export const router = createBrowserRouter([
   {
@@ -24,10 +26,12 @@ export const router = createBrowserRouter([
     children: [
       { path: "", element: <HomePage /> },
       { path: "home", element: <HomePage /> },
-      { path: "productLines/:id", element: <ProductView /> },
+      { path: "productLines/:id", element: <ProductLineView /> },
       { path: "productLine", element: <ProductLineTableList /> },
       { path: "productLineCreate", element: <CreateProductLineForm /> },
       { path: "productLineEdit/:id", element: <EditProductLineForm /> },
+      { path: "product", element: <ProductList /> },
+      { path: "productCreate", element: <CreateProductForm /> },
       { path: "cartList", element: <CartList /> },
       { path: "checkout", element: <Checkout /> },
       { path: "contact", element: <ContactPage /> },

@@ -1,7 +1,7 @@
 export interface CreateProductInput {
-    title: string;
-    price: number;
-    description: string;
-    categoryId: string;
-    images: string[];
+  inventory: number;
+  productLineId: string;
+  productSizeId?: string | null;
+  categoryId: string;
   }
+

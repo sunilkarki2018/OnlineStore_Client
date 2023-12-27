@@ -1,8 +1,9 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import ProductCard from "./ProductCard";
+import ProductCard from "./ProductLineCard";
 import { Product } from "../../types/Product/Product";
 import { ProductLine } from "../../types/ProductLine/ProductLine";
+import ProductLineCard from "./ProductLineCard";
 
 interface Props {
   productLines: ProductLine[];
@@ -18,7 +19,7 @@ export const ProductCardList = ({ productLines }: Props) => {
           xs={4}
           style={{ width: "300px", height: "300px" }}
         >
-          <ProductCard productLine={productLine} />
+          <ProductLineCard productLine={productLine} />
         </Grid>
       ))}
     </Grid>

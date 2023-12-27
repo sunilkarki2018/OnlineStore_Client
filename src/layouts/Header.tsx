@@ -18,7 +18,7 @@ import LoginMenu from "./LoginMenu";
 const mainLinks = [
   { title: "Home", path: "home" },
   { title: "ProductLine", path: "productLine" },
-  { title: "Users", path: "users" },
+  { title: "Product", path: "product" }
 ];
 const rightLinks = [
   { title: "Login", path: "login" },
@@ -52,7 +52,7 @@ export default function Header() {
                 PROFILE
               </ListItem>
             )}
-            {currentUser && currentUser.role?.includes("admin") && (
+            {currentUser && currentUser.role?.includes("Admin") && (
               <ListItem component={NavLink} to={"/users"}>
                 USERS
               </ListItem>

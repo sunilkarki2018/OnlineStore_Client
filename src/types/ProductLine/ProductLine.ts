@@ -1,5 +1,4 @@
 import { Category } from "../Category/Category";
-import { Product } from "../Product/Product";
 
 export interface ProductLine {
     id: string;
@@ -10,3 +9,5 @@ export interface ProductLine {
     category: Category;
     imageReadDTOs: ImageReadDTO[];
   }
+
+  

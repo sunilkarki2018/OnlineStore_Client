@@ -15,7 +15,7 @@ interface Props {
   productLine: ProductLine;
 }
 
-export default function ProductCard({ productLine }: Props) {
+export default function ProductLineCard({ productLine }: Props) {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 

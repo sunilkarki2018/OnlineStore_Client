@@ -27,15 +27,16 @@ import {
   deleteProductLineAsync,
   fetchAllProductLinesAsync,
 } from "../../redux/reducers/productLineReducer";
+import { deleteProductAsync, fetchAllProductsAsync } from "../../redux/reducers/productReducer";
 
-export default function ProductLineTableList() {
-  const { productLinesList, listLoading, error } = useAppSelector(
-    (state: AppState) => state.productLine
+export default function ProductList() {
+  const { productsList, listLoading, error } = useAppSelector(
+    (state: AppState) => state.product
   );
   const { currentUser } = useAppSelector((state: AppState) => state.user);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchAllProductLinesAsync());
+    dispatch(fetchAllProductsAsync());
   }, []);
 
   const navigate = useNavigate();
@@ -54,9 +55,9 @@ export default function ProductLineTableList() {
   if (error) return <ErrorMessage message={error} />;
 
   const handleDelete = (id: string) => {
-    dispatch(deleteProductLineAsync(id)).then(() => {
-      toast.info("Product Line deleted successfully");
-      dispatch(fetchAllProductLinesAsync());
+    dispatch(deleteProductAsync(id)).then(() => {
+      toast.info("Product deleted successfully");
+      dispatch(fetchAllProductsAsync());
     });
   };
   return (
@@ -65,7 +66,7 @@ export default function ProductLineTableList() {
         {currentUser?.role.includes("Admin") && (
           <Button
             component={Link}
-            to={`/productLineCreate`}
+            to={`/productCreate`}
             variant="contained"
             color="primary"
             style={{ marginBottom: "40px" }}
@@ -84,7 +85,8 @@ export default function ProductLineTableList() {
                 <TableRow>
                   <TableCell>Title</TableCell>
                   <TableCell>Price</TableCell>
-                  <TableCell>Description</TableCell>
+                  <TableCell>Size</TableCell>
+                  <TableCell>Inventory</TableCell>
                   {currentUser?.role.includes("Admin") && (
                     <>
                       <TableCell>Delete</TableCell>
@@ -94,16 +96,17 @@ export default function ProductLineTableList() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {productLinesList.map((productLine) => (
-                  <TableRow key={productLine.id}>
-                    <TableCell>{productLine.title}</TableCell>
-                    <TableCell>{productLine.price}</TableCell>
-                    <TableCell>{productLine.description}</TableCell>
+                {productsList.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell>{product.productLine.title}</TableCell>
+                    <TableCell>{product.productLine.price}</TableCell>
+                    <TableCell>{product.productSize?.value}</TableCell>
+                    <TableCell>{product.inventory}</TableCell>
                     <TableCell>
                       {currentUser?.role.includes("Admin") && (
                         <Button
                           size="small"
-                          onClick={() => handleDelete(productLine.id)}
+                          onClick={() => handleDelete(product.id)}
                           disabled={!currentUser?.role.includes("Admin")}
                         >
                           <DeleteIcon />
@@ -114,7 +117,7 @@ export default function ProductLineTableList() {
                       {currentUser?.role.includes("Admin") && (
                         <Button
                           component={Link}
-                          to={`/productLineEdit/${productLine.id}`}
+                          to={`/productLineEdit/${product.id}`}
                           size="small"
                           disabled={!currentUser?.role.includes("Admin")}
                         >
