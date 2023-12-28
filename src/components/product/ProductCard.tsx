@@ -10,12 +10,13 @@ import { Link } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { addToCart } from "../../redux/reducers/cartReducer";
 import { ProductLine } from "../../types/ProductLine/ProductLine";
+import { Product } from "../../types/Product/Product";
 
 interface Props {
-  productLine: ProductLine;
+  product: Product;
 }
 
-export default function ProductLineCard({ productLine }: Props) {
+export default function ProductCard({ product }: Props) {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,9 +28,9 @@ export default function ProductLineCard({ productLine }: Props) {
     const debounceDelay = 500;
     dispatch(
       addToCart({
-        id: productLine.id,
-        title: productLine.title,
-        price: productLine.price,
+        id: product.id,
+        title: product.productLine.title,
+        price: product.productLine.price,
         quantity: 1,
       })
     );
@@ -50,17 +51,17 @@ export default function ProductLineCard({ productLine }: Props) {
       />
       <CardContent sx={{ height: 50 }}>
         <Typography gutterBottom variant="h6" component="div">
-          {productLine.title}
+          {product.productLine.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Price:${productLine.price}
+          Price:${product.productLine.price}
         </Typography>
       </CardContent>
       <CardActions sx={{ height: 10 }}>
         <Button onClick={handleAddToCartClick} size="small">
           {isLoading ? "Loading..." : "Add"}
         </Button>
-        <Button component={Link} to={`/productLines/${productLine.id}`} size="small">
+        <Button component={Link} to={`/productLines/${product.productLine.id}`} size="small">
           View
         </Button>
       </CardActions>

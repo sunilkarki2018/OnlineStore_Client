@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import { ProductCardList } from "../components/productLines/ProductCardList";
 import CategorySearch from "../components/category/CategorySearch";
 import ProductSort from "../components/productLines/ProductSort";
 import useAppSelector from "../hooks/useAppSelector";
@@ -20,12 +19,15 @@ import { fetchAllCategoriesAsync } from "../redux/reducers/categoryReducer";
 import ErrorMessage from "../components/errors/ErrorMessage";
 import ProductSearch from "../components/productLines/ProductSearch";
 import { fetchAllProductLinesAsync } from "../redux/reducers/productLineReducer";
+import { fetchAllProductsAsync } from "../redux/reducers/productReducer";
+import ProductList from "../components/product/ProductList";
+import { ProductCardList } from "../components/product/ProductCardList";
 
 const itemsPerPage = 20;
 
 export function HomePage() {
-  const { productLinesList, listLoading, error } = useAppSelector(
-    (state: AppState) => state.productLine
+  const { productsList, listLoading, error } = useAppSelector(
+    (state: AppState) => state.product
   );
   const [searchText, setSearchText] = useState("");
   const [categoryId, setCategoryId] = useState<number | null>(null);
@@ -36,7 +38,7 @@ export function HomePage() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllProductLinesAsync());
+    dispatch(fetchAllProductsAsync());
     dispatch(fetchAllCategoriesAsync());
   }, []);
 
@@ -105,8 +107,8 @@ export function HomePage() {
         </Grid>
         <Grid item xs={3}></Grid>
         <Grid item xs={9}>
-          {productLinesList.length > 0 && (
-            <ProductCardList productLines={productLinesList} />
+          {productsList.length > 0 && (
+            <ProductCardList products={productsList} />
           )}
         </Grid>
         <Grid item xs={3}></Grid>
