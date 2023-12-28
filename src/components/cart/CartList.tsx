@@ -14,18 +14,37 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import CartSummary from "./CartSummary";
 import { addToCart, removeFromCart } from "../../redux/reducers/cartReducer";
+import { CartItem } from "../../types/Cart/CartItem";
+import { OrderItem } from "../../types/Order/OrderItem";
+import { Product } from "../../types/Product/Product";
+import { CreateOrderInput } from "../../types/Order/CreateOrderInput";
+import { createOrderAsync } from "../../redux/reducers/orderReducer";
+import { toast } from "react-toastify";
+
+function mapCartItemsToCreateOrderInput(cartItems: CartItem[]): CreateOrderInput {
+  const orderItems: OrderItem[] = cartItems.map((cartItem) => ({
+    price: cartItem.price,
+    quantity: cartItem.quantity,
+    productId: cartItem.productId,
+  }));
+
+  return {
+    orderItems,
+  };
+}
 
 export default function CartList() {
   const { cartItems } = useAppSelector((state: AppState) => state.cart);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   if (cartItems.length === 0) {
     return (
@@ -38,6 +57,17 @@ export default function CartList() {
       </>
     );
   }
+  const handleCreateOrder = async () => {
+    const createOrderInput=mapCartItemsToCreateOrderInput(cartItems);
+    debugger;
+    const result = await dispatch(createOrderAsync(createOrderInput));
+    if (result.meta.requestStatus === "fulfilled") {
+      toast.success("Order created successfully");
+    } else if (result.meta.requestStatus === "rejected") {
+      toast.error("Error while adding Order");
+    }
+    navigate("/product");
+  };
 
   return (
     <>
@@ -136,6 +166,10 @@ export default function CartList() {
               </Button>
             </div>
           ) : null}
+
+          <Button onClick={handleCreateOrder} size="small">
+            Create Order
+          </Button>
         </Grid>
       </Grid>
     </>
