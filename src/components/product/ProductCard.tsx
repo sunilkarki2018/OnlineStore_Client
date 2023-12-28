@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { addToCart } from "../../redux/reducers/cartReducer";
-import { ProductLine } from "../../types/ProductLine/ProductLine";
 import { Product } from "../../types/Product/Product";
 
 interface Props {
@@ -28,7 +27,7 @@ export default function ProductCard({ product }: Props) {
     const debounceDelay = 500;
     dispatch(
       addToCart({
-        id: product.id,
+        productId: product.id,
         title: product.productLine.title,
         price: product.productLine.price,
         quantity: 1,
@@ -51,7 +50,7 @@ export default function ProductCard({ product }: Props) {
       />
       <CardContent sx={{ height: 50 }}>
         <Typography gutterBottom variant="h6" component="div">
-          {product.productLine.title}
+          {product.productLine.title}/Size: {product.productSize?.value}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Price:${product.productLine.price}

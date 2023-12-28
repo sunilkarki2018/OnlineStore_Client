@@ -57,7 +57,7 @@ export default function CartList() {
               <TableBody>
                 {cartItems.map((item) => (
                   <TableRow
-                    key={item.id}
+                    key={item.productId}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
@@ -71,7 +71,7 @@ export default function CartList() {
                         onClick={() =>
                           dispatch(
                             removeFromCart({
-                              itemId: item.id,
+                              itemId: item.productId,
                               quantityToRemove: 1,
                             })
                           )
@@ -85,7 +85,7 @@ export default function CartList() {
                         onClick={() =>
                           dispatch(
                             addToCart({
-                              id: item.id,
+                              productId: item.productId,
                               title: item.title,
                               price: item.price,
                               quantity: 1,
@@ -105,7 +105,7 @@ export default function CartList() {
                         onClick={() =>
                           dispatch(
                             removeFromCart({
-                              itemId: item.id,
+                              itemId: item.productId,
                               quantityToRemove: item.quantity,
                             })
                           )
@@ -132,7 +132,7 @@ export default function CartList() {
                 size="medium"
                 fullWidth
               >
-                Checkout
+                Create Order
               </Button>
             </div>
           ) : null}

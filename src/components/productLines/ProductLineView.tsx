@@ -38,7 +38,7 @@ export default function ProductDetails() {
     error,
   } = useAppSelector((state: AppState) => state.productLine);
   const { cartItems } = useAppSelector((state: AppState) => state.cart);
-  const stock = cartItems.find((item) => item.id === id)?.quantity;
+  const stock = cartItems.find((item) => item.productId === id)?.quantity;
   const dispatch = useAppDispatch();
 
   const handleAddToCartClick = () => {
@@ -65,7 +65,7 @@ export default function ProductDetails() {
     }
     dispatch(
       addToCart({
-        id: productLineSingle!.id,
+        productId: productLineSingle!.id,
         title: productLineSingle!.title,
         price: productLineSingle!.price,
         quantity: Number(inputValue),

@@ -15,7 +15,7 @@ const cartSlice = createSlice({
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const newItem = action.payload;
       let findIndex = state.cartItems.findIndex(
-        (item) => item.id === newItem.id
+        (item) => item.productId === newItem.productId
       );
       if (findIndex >= 0) {
         state.cartItems[findIndex].quantity += newItem.quantity;
@@ -28,12 +28,12 @@ const cartSlice = createSlice({
       action: PayloadAction<{ itemId: string; quantityToRemove: number }>
     ) => {
       const { itemId, quantityToRemove } = action.payload;
-      const itemToRemove = state.cartItems.find((item) => item.id === itemId);
+      const itemToRemove = state.cartItems.find((item) => item.productId === itemId);
       if (itemToRemove) {
         itemToRemove.quantity -= quantityToRemove;
         if (itemToRemove.quantity <= 0) {
           state.cartItems = state.cartItems.filter(
-            (item) => item.id !== itemId
+            (item) => item.productId !== itemId
           );
         }
       }

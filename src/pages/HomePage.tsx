@@ -15,16 +15,13 @@ import useAppSelector from "../hooks/useAppSelector";
 import { AppState } from "../redux/store";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { fetchAllCategoriesAsync } from "../redux/reducers/categoryReducer";
-//import { executeSearchandSort } from "../utils/getFilteredAndSort";
 import ErrorMessage from "../components/errors/ErrorMessage";
 import ProductSearch from "../components/productLines/ProductSearch";
-import { fetchAllProductLinesAsync } from "../redux/reducers/productLineReducer";
 import { fetchAllProductsAsync } from "../redux/reducers/productReducer";
-import ProductList from "../components/product/ProductList";
 import { ProductCardList } from "../components/product/ProductCardList";
 import { executeSearchandSort } from "../utils/getFilteredAndSort";
 
-const itemsPerPage = 20;
+const itemsPerPage = 10;
 
 export function HomePage() {
   const { productsList, listLoading, error } = useAppSelector(
@@ -43,14 +40,12 @@ export function HomePage() {
     dispatch(fetchAllCategoriesAsync());
   }, []);
 
-  
   const filteredResult = executeSearchandSort(
     productsList,
     searchText,
     categoryId,
     sortOrder
   );
-  
 
   if (listLoading)
     return (
@@ -83,11 +78,9 @@ export function HomePage() {
     setPage(value);
   };
 
-  /*
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedItems = filteredResult.slice(startIndex, endIndex);
-  */
+  const displayedItems = filteredResult.slice(startIndex, endIndex);  
 
   return (
     <>
@@ -109,21 +102,20 @@ export function HomePage() {
         <Grid item xs={3}></Grid>
         <Grid item xs={9}>
           {productsList.length > 0 && (
-            <ProductCardList products={filteredResult} />
+            <ProductCardList products={displayedItems} />
           )}
         </Grid>
         <Grid item xs={3}></Grid>
-        {/*
-           <Grid item xs={6} style={{ marginTop: "20px" }}>
-           <Stack spacing={2} justifyContent="center">
-             <Pagination
-               count={Math.ceil(filteredResult.length / itemsPerPage)}
-               page={page}
-               onChange={handleChange}
-             />
-           </Stack>
-         </Grid>
-       */}
+
+        <Grid item xs={6} style={{ marginTop: "20px" }}>
+          <Stack spacing={2} justifyContent="center">
+            <Pagination
+              count={Math.ceil(filteredResult.length / itemsPerPage)}
+              page={page}
+              onChange={handleChange}
+            />
+          </Stack>
+        </Grid>
       </Grid>
     </>
   );

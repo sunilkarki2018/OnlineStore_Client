@@ -10,7 +10,7 @@ import { cartData } from "./data/cartData";
 describe("Test cartReducer normal action", () => {
   test("Should add new product to cart", () => {
     const cartItem: CartItem = {
-      id: "3",
+      productId: "3",
       title: "Test Title",
       price: 10,
       quantity: 1,
@@ -25,7 +25,7 @@ describe("Test cartReducer normal action", () => {
   });
   test("Should not add but increase quantity based on provided product Id", () => {
     const cartItem: CartItem = {
-      id: "2",
+      productId: "2",
       title: "Test Title",
       price: 10,
       quantity: 1,
