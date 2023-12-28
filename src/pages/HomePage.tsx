@@ -22,6 +22,7 @@ import { fetchAllProductLinesAsync } from "../redux/reducers/productLineReducer"
 import { fetchAllProductsAsync } from "../redux/reducers/productReducer";
 import ProductList from "../components/product/ProductList";
 import { ProductCardList } from "../components/product/ProductCardList";
+import { executeSearchandSort } from "../utils/getFilteredAndSort";
 
 const itemsPerPage = 20;
 
@@ -30,7 +31,7 @@ export function HomePage() {
     (state: AppState) => state.product
   );
   const [searchText, setSearchText] = useState("");
-  const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [categoryId, setCategoryId] = useState<string>("");
   const [sortOrder, setSortOrder] = useState("");
 
   const [page, setPage] = useState(1);
@@ -42,14 +43,14 @@ export function HomePage() {
     dispatch(fetchAllCategoriesAsync());
   }, []);
 
-  /*
+  
   const filteredResult = executeSearchandSort(
     productsList,
     searchText,
     categoryId,
     sortOrder
   );
-  */
+  
 
   if (listLoading)
     return (
@@ -70,7 +71,7 @@ export function HomePage() {
     setSearchText(searchKey);
   };
 
-  const handleCategorySearch = (searchCategoryId: number) => {
+  const handleCategorySearch = (searchCategoryId: string) => {
     setCategoryId(searchCategoryId);
   };
 
@@ -108,7 +109,7 @@ export function HomePage() {
         <Grid item xs={3}></Grid>
         <Grid item xs={9}>
           {productsList.length > 0 && (
-            <ProductCardList products={productsList} />
+            <ProductCardList products={filteredResult} />
           )}
         </Grid>
         <Grid item xs={3}></Grid>

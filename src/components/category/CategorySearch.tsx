@@ -8,7 +8,7 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 
 interface Props {
-  onCategorySearch: (value: number) => void;
+  onCategorySearch: (value: string) => void;
 }
 
 export default function CategorySearch({ onCategorySearch }: Props) {
@@ -17,7 +17,7 @@ export default function CategorySearch({ onCategorySearch }: Props) {
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
-    onCategorySearch(+event.target.value);
+    onCategorySearch(event.target.value);
   };
 
   return (

@@ -1,28 +1,27 @@
 import { Product } from "../types/Product/Product";
 import {  isNumberNotNullOrZero, isStringNotNullOrEmpty } from "./common";
 
-/*
 export const executeSearchandSort = (
   productsList: Product[],
   searchText: string,
-  categoryId: number | null,
+  categoryId: string ,
   sortOrder: string
 ): Product[] => {
 
 
 
   let filteredResult;
-  if (isStringNotNullOrEmpty(searchText) && isNumberNotNullOrZero(categoryId)) {
+  if (isStringNotNullOrEmpty(searchText) && isStringNotNullOrEmpty(categoryId)) {
     filteredResult = productsList.filter(
       (product) =>
-        product.title.toLowerCase().includes(searchText.toLowerCase()) &&
-        product.category.id === categoryId
+        product.productLine.title.toLowerCase().includes(searchText.toLowerCase()) &&
+        product.productLine.categoryId === categoryId
     );
   } else if (isStringNotNullOrEmpty(searchText)) {
     filteredResult = productsList.filter((product) =>
-      product.title.toLowerCase().includes(searchText.toLowerCase())
+      product.productLine.title.toLowerCase().includes(searchText.toLowerCase())
     );
-  } else if (isNumberNotNullOrZero(categoryId)) {
+  } else if (isStringNotNullOrEmpty(categoryId)) {
     filteredResult = productsList.filter(
       (product) => product.category.id === categoryId
     );
@@ -31,9 +30,9 @@ export const executeSearchandSort = (
   }
   let sortedResult;
   if (sortOrder === "asc") {
-    sortedResult = [...filteredResult].sort((a, b) => a.price - b.price);
+    sortedResult = [...filteredResult].sort((a, b) => a.productLine.price - b.productLine.price);
   } else if (sortOrder === "desc") {
-    sortedResult = [...filteredResult].sort((a, b) => b.price - a.price);
+    sortedResult = [...filteredResult].sort((a, b) => b.productLine.price - a.productLine.price);
   } else {
     sortedResult = [...filteredResult];
   }
@@ -43,4 +42,4 @@ export const executeSearchandSort = (
 
 };
 
-*/
+
