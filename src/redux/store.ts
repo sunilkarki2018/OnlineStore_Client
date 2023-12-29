@@ -22,6 +22,7 @@ import productReducer from "./reducers/productReducer";
 import categoryReducer from "./reducers/categoryReducer";
 import productLineReducer from "./reducers/productLineReducer";
 import productSizeReducer from "./reducers/productSizeReducer";
+import orderReducer from "./reducers/orderReducer";
 
 const persisConfig: PersistConfig<any> = {
   key: "root",
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   user: userReducer,
   category: categoryReducer,
+  order:orderReducer
 });
 
 const persistedReducer: Reducer<AppState, AnyAction> = persistReducer(

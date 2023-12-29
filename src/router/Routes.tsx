@@ -18,6 +18,7 @@ import ProductLineTableList from "../components/productLines/ProductLineTableLis
 import ProductLineView from "../components/productLines/ProductLineView";
 import ProductList from "../components/product/ProductList";
 import CreateProductForm from "../components/product/CreateProductForm";
+import OrderList from "../components/Order/OrderList";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
       { path: "productLineCreate", element: <CreateProductLineForm /> },
       { path: "productLineEdit/:id", element: <EditProductLineForm /> },
       { path: "product", element: <ProductList /> },
+      { path: "orderList", element: <OrderList /> },
       { path: "productCreate", element: <CreateProductForm /> },
       { path: "cartList", element: <CartList /> },
       { path: "checkout", element: <Checkout /> },

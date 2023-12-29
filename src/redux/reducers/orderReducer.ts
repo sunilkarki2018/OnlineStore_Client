@@ -6,9 +6,10 @@ import { CreateOrderInput } from "../../types/Order/CreateOrderInput";
 
 const initialState: OrderInitialState = {
   orders: [],
-  orderStatus: "Registered",
   error: "",
   status: "",
+  listLoading: false,
+  singleLoading: false
 };
 export const fetchAllOrdersAsync = createAsyncThunk<
   Order[],

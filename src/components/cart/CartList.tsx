@@ -28,13 +28,14 @@ import { CreateOrderInput } from "../../types/Order/CreateOrderInput";
 import { createOrderAsync } from "../../redux/reducers/orderReducer";
 import { toast } from "react-toastify";
 
-function mapCartItemsToCreateOrderInput(cartItems: CartItem[]): CreateOrderInput {
+function mapCartItemsToCreateOrderInput(
+  cartItems: CartItem[]
+): CreateOrderInput {
   const orderItems: OrderItem[] = cartItems.map((cartItem) => ({
     price: cartItem.price,
     quantity: cartItem.quantity,
     productId: cartItem.productId,
   }));
-
   return {
     orderItems,
   };
@@ -58,8 +59,7 @@ export default function CartList() {
     );
   }
   const handleCreateOrder = async () => {
-    const createOrderInput=mapCartItemsToCreateOrderInput(cartItems);
-    debugger;
+    const createOrderInput = mapCartItemsToCreateOrderInput(cartItems);
     const result = await dispatch(createOrderAsync(createOrderInput));
     if (result.meta.requestStatus === "fulfilled") {
       toast.success("Order created successfully");
@@ -156,8 +156,7 @@ export default function CartList() {
             <div>
               <CartSummary />
               <Button
-                component={Link}
-                to="/checkout"
+                onClick={handleCreateOrder}
                 variant="contained"
                 size="medium"
                 fullWidth
@@ -166,10 +165,6 @@ export default function CartList() {
               </Button>
             </div>
           ) : null}
-
-          <Button onClick={handleCreateOrder} size="small">
-            Create Order
-          </Button>
         </Grid>
       </Grid>
     </>

@@ -18,7 +18,8 @@ import LoginMenu from "./LoginMenu";
 const mainLinks = [
   { title: "Home", path: "home" },
   { title: "ProductLine", path: "productLine" },
-  { title: "Product", path: "product" }
+  { title: "Product", path: "product" },
+  { title: "Orders", path: "orderList" }
 ];
 const rightLinks = [
   { title: "Login", path: "login" },
