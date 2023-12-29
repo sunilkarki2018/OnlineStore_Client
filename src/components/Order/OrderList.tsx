@@ -85,7 +85,7 @@ export default function OrderList() {
                   {currentUser?.role.includes("Admin") && (
                     <>
                       <TableCell>Delete</TableCell>
-                      <TableCell>Update</TableCell>
+                      <TableCell>View</TableCell>
                     </>
                   )}
                 </TableRow>
@@ -115,7 +115,7 @@ export default function OrderList() {
                       {currentUser?.role.includes("Admin") && (
                         <Button
                           component={Link}
-                          to={`/productLineEdit/${order.id}`}
+                          to={`/orderItemsList/${order.id}`}
                           size="small"
                           disabled={!currentUser?.role.includes("Admin")}
                         >

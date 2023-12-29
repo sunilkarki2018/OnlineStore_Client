@@ -5,5 +5,5 @@ export interface OrderItem {
     quantity: number;
     //orderId: string;
     productId: string; 
-    //product?: Product;
+    product?: Product;
   }

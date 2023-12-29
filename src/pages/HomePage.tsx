@@ -20,6 +20,7 @@ import ProductSearch from "../components/productLines/ProductSearch";
 import { fetchAllProductsAsync } from "../redux/reducers/productReducer";
 import { ProductCardList } from "../components/product/ProductCardList";
 import { executeSearchandSort } from "../utils/getFilteredAndSort";
+import ProductSizeSearch from "../components/productSize/productSizeSearch";
 
 const itemsPerPage = 10;
 
@@ -29,6 +30,7 @@ export function HomePage() {
   );
   const [searchText, setSearchText] = useState("");
   const [categoryId, setCategoryId] = useState<string>("");
+  const [productSizeId, setProductSizeId] = useState<string>("");
   const [sortOrder, setSortOrder] = useState("");
 
   const [page, setPage] = useState(1);
@@ -70,6 +72,10 @@ export function HomePage() {
     setCategoryId(searchCategoryId);
   };
 
+  const handleProductSizeSearch = (searchProductSizeId: string) => {
+    setProductSizeId(searchProductSizeId);
+  };
+
   const sortHandler = (sortOrder: string) => {
     setSortOrder(sortOrder);
   };
@@ -94,6 +100,9 @@ export function HomePage() {
           </Paper>
           <Paper sx={{ mb: 2 }}>
             <CategorySearch onCategorySearch={handleCategorySearch} />
+          </Paper>
+          <Paper sx={{ mb: 2 }}>
+            <ProductSizeSearch onProductSizeSearch={handleProductSizeSearch} />
           </Paper>
           <Paper sx={{ mb: 2 }}>
             <ProductSort onSort={sortHandler} />

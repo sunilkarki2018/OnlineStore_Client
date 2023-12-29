@@ -9,7 +9,7 @@ const initialState: OrderInitialState = {
   error: "",
   status: "",
   listLoading: false,
-  singleLoading: false
+  singleLoading: false,
 };
 export const fetchAllOrdersAsync = createAsyncThunk<
   Order[],
@@ -36,6 +36,29 @@ export const createOrderAsync = createAsyncThunk<
     const response = await axios.post(
       "http://localhost:5238/api/v1/orders",
       newOrder,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    const result: Order = response.data;
+    return result;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
+  }
+});
+
+export const fetchOrderByIdAsync = createAsyncThunk<
+  Order,
+  string,
+  { rejectValue: string }
+>("fetchOrderByIdAsync", async (id: string, { rejectWithValue }) => {
+  try {
+    const access_token = localStorage.getItem("access_token");
+    const response = await axios.get(
+      `http://localhost:5238/api/v1/orders/${id}`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -98,6 +121,28 @@ const orderSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message as string;
       })
+
+      .addCase(fetchOrderByIdAsync.pending, (state, action) => {
+        return {
+          ...state,
+          singleLoading: true,
+        };
+      })
+      .addCase(fetchOrderByIdAsync.rejected, (state, action) => {
+        return {
+          ...state,
+          singleLoading: false,
+          error: action.payload,
+        };
+      })
+      .addCase(fetchOrderByIdAsync.fulfilled, (state, action) => {
+        return {
+          ...state,
+          order: action.payload,
+          singleLoading: false,
+        };
+      })
+
       .addCase(createOrderAsync.fulfilled, (state, action) => {
         state.orders.push(action.payload);
       })
@@ -105,16 +150,13 @@ const orderSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(deleteOrderAsync.fulfilled, (state, action) => {
-        state.orders = state.orders.filter(
-          (p) => p.id != action.payload
-        );
-        state.error='';
+        state.orders = state.orders.filter((p) => p.id != action.payload);
+        state.error = "";
       })
-      .addCase(deleteOrderAsync.rejected, (state, action) => {
-      });
+      .addCase(deleteOrderAsync.rejected, (state, action) => {});
   },
 });
 
-const categoryReducer = orderSlice.reducer;
+const orderReducer = orderSlice.reducer;
 export const { test } = orderSlice.actions;
-export default categoryReducer;
+export default orderReducer;
