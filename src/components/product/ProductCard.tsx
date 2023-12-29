@@ -45,7 +45,8 @@ export default function ProductCard({ product }: Props) {
       <CardMedia
         sx={{ height: 150 }}
         //image={product.images[0]}
-        image="https://picsum.photos/640/640?r=1389"
+        //image="https://picsum.photos/640/640?r=1389"
+        image={`data:image/jpg;base64,${product.productLine.imageReadDTOs[0].imgBase64Data}`}
         title="green iguana"
       />
       <CardContent sx={{ height: 50 }}>

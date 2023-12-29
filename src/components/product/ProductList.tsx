@@ -23,10 +23,6 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import ErrorMessage from "../errors/ErrorMessage";
-import {
-  deleteProductLineAsync,
-  fetchAllProductLinesAsync,
-} from "../../redux/reducers/productLineReducer";
 import { deleteProductAsync, fetchAllProductsAsync } from "../../redux/reducers/productReducer";
 
 export default function ProductList() {

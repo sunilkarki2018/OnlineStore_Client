@@ -70,12 +70,12 @@ export default function ProductLineTableList() {
             color="primary"
             style={{ marginBottom: "40px" }}
           >
-            Add Product
+            Add ProductLine
           </Button>
         )}
 
         <Typography variant="h4" gutterBottom>
-          Product List
+          ProductLine List
         </Typography>
         <Paper elevation={3} style={{ marginTop: "20px" }}>
           <TableContainer>
