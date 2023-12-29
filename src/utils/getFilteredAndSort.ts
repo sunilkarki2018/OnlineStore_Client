@@ -1,45 +1,45 @@
 import { Product } from "../types/Product/Product";
-import {  isNumberNotNullOrZero, isStringNotNullOrEmpty } from "./common";
+import { isNumberNotNullOrZero, isStringNotNullOrEmpty } from "./common";
 
 export const executeSearchandSort = (
   productsList: Product[],
   searchText: string,
-  categoryId: string ,
+  categoryId: string,
+  productSizeId: string,
   sortOrder: string
 ): Product[] => {
-
-
-
-  let filteredResult;
-  if (isStringNotNullOrEmpty(searchText) && isStringNotNullOrEmpty(categoryId)) {
-    filteredResult = productsList.filter(
-      (product) =>
-        product.productLine.title.toLowerCase().includes(searchText.toLowerCase()) &&
-        product.productLine.categoryId === categoryId
-    );
-  } else if (isStringNotNullOrEmpty(searchText)) {
+  let filteredResult = productsList;
+  if (isStringNotNullOrEmpty(searchText)) {
     filteredResult = productsList.filter((product) =>
       product.productLine.title.toLowerCase().includes(searchText.toLowerCase())
     );
-  } else if (isStringNotNullOrEmpty(categoryId)) {
-    filteredResult = productsList.filter(
-      (product) => product.category.id === categoryId
-    );
-  } else {
-    filteredResult = productsList;
   }
-  let sortedResult;
+
+  if (isStringNotNullOrEmpty(categoryId)) {
+    filteredResult = filteredResult.filter(
+      (product) => product.productLine.categoryId === categoryId
+    );
+  }
+  if (!isStringNotNullOrEmpty(productSizeId)) {
+    productSizeId = "34";
+  }
+  if (isStringNotNullOrEmpty(productSizeId)) {
+    filteredResult = filteredResult.filter(
+      (product) => product.productSize?.value === productSizeId
+    );
+  }
+
+  let sortedResult = [];
   if (sortOrder === "asc") {
-    sortedResult = [...filteredResult].sort((a, b) => a.productLine.price - b.productLine.price);
+    sortedResult = [...filteredResult].sort(
+      (a, b) => a.productLine.price - b.productLine.price
+    );
   } else if (sortOrder === "desc") {
-    sortedResult = [...filteredResult].sort((a, b) => b.productLine.price - a.productLine.price);
+    sortedResult = [...filteredResult].sort(
+      (a, b) => b.productLine.price - a.productLine.price
+    );
   } else {
     sortedResult = [...filteredResult];
   }
   return sortedResult;
-
-
-
 };
-
-

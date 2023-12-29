@@ -21,6 +21,7 @@ import { fetchAllProductsAsync } from "../redux/reducers/productReducer";
 import { ProductCardList } from "../components/product/ProductCardList";
 import { executeSearchandSort } from "../utils/getFilteredAndSort";
 import ProductSizeSearch from "../components/productSize/productSizeSearch";
+import { fetchAllProductSizesAsync } from "../redux/reducers/productSizeReducer";
 
 const itemsPerPage = 10;
 
@@ -40,12 +41,14 @@ export function HomePage() {
   useEffect(() => {
     dispatch(fetchAllProductsAsync());
     dispatch(fetchAllCategoriesAsync());
+    dispatch(fetchAllProductSizesAsync());
   }, []);
 
   const filteredResult = executeSearchandSort(
     productsList,
     searchText,
     categoryId,
+    productSizeId,
     sortOrder
   );
 
