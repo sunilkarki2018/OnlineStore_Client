@@ -2,7 +2,7 @@ import { User } from "../User/User";
 import { OrderItem } from "./OrderItem";
 
 export interface Order {
-    Id:string
+    id:string
     orderStatus: string;
     user: User;
     orderNumber:string;

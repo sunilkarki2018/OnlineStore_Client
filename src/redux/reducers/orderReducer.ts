@@ -50,6 +50,32 @@ export const createOrderAsync = createAsyncThunk<
   }
 });
 
+export const deleteOrderAsync = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("deleteOrderAsync", async (id: string, { rejectWithValue }) => {
+  try {
+    const access_token = localStorage.getItem("access_token");
+    const response = await axios.delete(
+      `http://localhost:5238/api/v1/orders/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    const result: boolean = response.data;
+    if (!result) {
+      throw new Error("Cannot delete");
+    }
+    return id;
+  } catch (e) {
+    const error = e as AxiosError;
+    return rejectWithValue(error.message);
+  }
+});
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -72,12 +98,19 @@ const orderSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message as string;
       })
-
       .addCase(createOrderAsync.fulfilled, (state, action) => {
         state.orders.push(action.payload);
       })
       .addCase(createOrderAsync.rejected, (state, action) => {
         state.error = action.payload;
+      })
+      .addCase(deleteOrderAsync.fulfilled, (state, action) => {
+        state.orders = state.orders.filter(
+          (p) => p.id != action.payload
+        );
+        state.error='';
+      })
+      .addCase(deleteOrderAsync.rejected, (state, action) => {
       });
   },
 });

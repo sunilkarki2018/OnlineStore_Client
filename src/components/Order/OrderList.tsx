@@ -26,7 +26,10 @@ import {
   deleteProductLineAsync,
   fetchAllProductLinesAsync,
 } from "../../redux/reducers/productLineReducer";
-import { fetchAllOrdersAsync } from "../../redux/reducers/orderReducer";
+import {
+  deleteOrderAsync,
+  fetchAllOrdersAsync,
+} from "../../redux/reducers/orderReducer";
 
 export default function OrderList() {
   const { orders, error, listLoading } = useAppSelector(
@@ -53,12 +56,17 @@ export default function OrderList() {
     );
   if (error) return <ErrorMessage message={error} />;
 
-  const handleDelete = (id: string) => {
-    dispatch(deleteProductLineAsync(id)).then(() => {
-      toast.info("Product Line deleted successfully");
-      dispatch(fetchAllProductLinesAsync());
-    });
+  const handleDelete = async (id: string) => {
+
+    const result = await dispatch(deleteOrderAsync(id));
+    if (result.meta.requestStatus === "fulfilled") {
+      toast.success("Order deleted successfully");
+    } else if (result.meta.requestStatus === "rejected") {
+      toast.error("Error while deleting Order");
+    }
+    navigate("/orderList");
   };
+
   return (
     <>
       <Container>
@@ -84,7 +92,7 @@ export default function OrderList() {
               </TableHead>
               <TableBody>
                 {orders.map((order) => (
-                  <TableRow key={order.Id}>
+                  <TableRow key={order.id}>
                     <TableCell>
                       {order.user.firstName + " " + order.user.lastName}
                     </TableCell>
@@ -93,21 +101,21 @@ export default function OrderList() {
                     <TableCell>{order.orderStatus}</TableCell>
 
                     <TableCell>
-                      {currentUser?.role.includes("Admin") && (
-                        <Button
-                          size="small"
-                          onClick={() => handleDelete(order.Id)}
-                          disabled={!currentUser?.role.includes("Admin")}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      )}
+                      <Button
+                        size="small"
+                        onClick={() => {
+                          console.log("from button", order);
+                          handleDelete(order.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Button>
                     </TableCell>
                     <TableCell>
                       {currentUser?.role.includes("Admin") && (
                         <Button
                           component={Link}
-                          to={`/productLineEdit/${order.Id}`}
+                          to={`/productLineEdit/${order.id}`}
                           size="small"
                           disabled={!currentUser?.role.includes("Admin")}
                         >
