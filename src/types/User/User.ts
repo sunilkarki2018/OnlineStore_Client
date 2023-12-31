@@ -13,4 +13,5 @@ export interface User {
   postCode: string;
   city: string;
   country: string;
+  address?: Address|null;
 }

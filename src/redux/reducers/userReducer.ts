@@ -184,6 +184,18 @@ const userSlice = createSlice({
       .addCase(createUserAsync.rejected, (state, action) => {
         state.error = action.payload;
       })
+      .addCase(fetchUserAsync.rejected, (state, action) => {
+        return {
+          ...state,
+          error: action.payload,
+        };
+      })
+      .addCase(fetchUserAsync.fulfilled, (state, action) => {
+        return {
+          ...state,
+          user: action.payload,
+        };
+      })
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         const foundIndex = state.users.findIndex(
           (u) => u.id === action.payload.id

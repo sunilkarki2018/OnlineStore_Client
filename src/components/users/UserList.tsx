@@ -109,7 +109,7 @@ console.log("UserInfo:",users);
                         {currentUser?.role.includes("Admin") && (
                           <Button
                             component={Link}
-                            to={`/userEdit/${user.id}`}
+                            to={`/userView/${user.id}`}
                             size="small"
                             disabled={!currentUser?.role.includes("Admin")}
                           >

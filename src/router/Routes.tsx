@@ -20,6 +20,7 @@ import ProductList from "../components/product/ProductList";
 import CreateProductForm from "../components/product/CreateProductForm";
 import OrderList from "../components/Order/OrderList";
 import OrderItemsList from "../components/Order/OrderItemsList";
+import UserView from "../components/users/UserView";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "users", element: <UserPage /> },
       { path: "userCreate", element: <CreateUserForm /> },
+      { path: "userView/:id", element: <UserView /> },
       { path: "userEdit/:id", element: <EditUserForm /> },
       { path: "profile", element: <ProfilePage /> },
       { path: "notFound", element: <NotFound /> },
