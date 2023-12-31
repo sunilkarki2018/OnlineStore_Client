@@ -1,7 +1,7 @@
 import { User } from "../../types/User/User";
 
 export const usersData: User[] = [
-  
+  /*
   {
     id: "a9bca7dc-b115-4c15-83f3-819a6fc700b4",
     email: "john@mail.com",
@@ -44,5 +44,5 @@ export const usersData: User[] = [
     city: "string",
     country: "string"
   },
-  
+  */
 ];

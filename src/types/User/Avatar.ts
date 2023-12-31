@@ -2,5 +2,5 @@ interface Avatar {
     id: string;
     userId: string;
     data: Uint8Array[];
-    base64Data:string;
+    avatarBase64Value?:string|null;
 }

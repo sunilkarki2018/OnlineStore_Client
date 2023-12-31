@@ -41,7 +41,7 @@ export default function EditProductForm(): JSX.Element {
       setValue("update.lastName", item.lastName);
       setValue("update.email", item.email);
       setValue("role", item.role);
-      setValue("update.avatar", item.avatar);
+      //setValue("update.avatar", item.avatar.avatarBase64Value);
       setValue("id", item.id);
     });
   }, [dispatch, id, setValue]);
@@ -249,14 +249,14 @@ export default function EditProductForm(): JSX.Element {
         )}
       />
 
-      <InputLabel htmlFor="update.avatar">Select Image</InputLabel>
+      {/*<InputLabel htmlFor="update.avatar">Select Image</InputLabel>
       <Controller
         name="update.avatar"
         control={control}
         render={({ field }) => (
           <input type="file" multiple onChange={handleFileChange} />
         )}
-      />
+      /> */}
 
       <Button type="submit" variant="contained" color="primary">
         Update

@@ -98,6 +98,7 @@ console.log("UserInfo:",users);
                         <Avatar
                           alt={user?.firstName+' '+user?.lastName || ""}
                           //src={user?.avatar.data || ""}
+                           src={`data:image/jpg;base64,${user.avatar?.avatarBase64Value}`}
                           sx={{ width: 50, height: 50 }}
                         />
                       </TableCell>
