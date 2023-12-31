@@ -54,7 +54,6 @@ export default function CreateProductLineForm(): JSX.Element {
     for (let i = 0; i < images.length; i++) {
       formData.append("images", images[i]);
     }
-    console.log("before submit:", formData);
     const result = await dispatch(createProductLineAsync(formData));
     if (result.meta.requestStatus === "fulfilled") {
       toast.success("Product Line added successfully");

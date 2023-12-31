@@ -73,16 +73,19 @@ export const createProductLineAsync = createAsyncThunk<
   }
 });
 
+
+
 export const updateProductLineAsync = createAsyncThunk<
-  string,
-  UpdateProductLineInput,
+  boolean,
+  FormData,
   { rejectValue: string }
->("updateProductLineAsync", async (updateProductInput: UpdateProductLineInput, { rejectWithValue }) => {
+>("updateProductLineAsync", async (updateProductLine, { rejectWithValue }) => {
   try {
     const access_token = localStorage.getItem("access_token");
+    const id=updateProductLine.get("id");
     const response = await axios.patch(
-      `http://localhost:5238/api/v1/productlines/${updateProductInput.id}`,
-      updateProductInput,
+      "http://localhost:5238/api/v1/productlines",
+      updateProductLine,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -93,7 +96,7 @@ export const updateProductLineAsync = createAsyncThunk<
     if (!result) {
       throw new Error("Cannot update");
     }
-    return updateProductInput.id;
+    return result;
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);

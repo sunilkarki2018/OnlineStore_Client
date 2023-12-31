@@ -51,7 +51,6 @@ export default function CreateProductForm(): JSX.Element {
     (state: AppState) => state.productSize
   );
   
-  console.log("productSizes:", productSizes);
   const handleFormSubmit = async (data: CreateProductInput) => {
     const formData = new FormData();
     formData.append("inventory", data.inventory.toString());

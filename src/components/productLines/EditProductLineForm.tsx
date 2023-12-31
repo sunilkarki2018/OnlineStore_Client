@@ -69,17 +69,20 @@ export default function EditProductForm(): JSX.Element {
   }
 
   const handleFormSubmit = async (data: UpdateProductLineInput) => {
-    /*
-    if (images.length) {
-      let imageLocations: string[] = new Array(images.length);
-      for (let i = 0; i < images.length; i++) {
-        imageLocations[i] = await uploadFile(images[i]);
-      }
-      data.update.images = imageLocations;
+  
+    const formData = new FormData();
+    formData.append("id", data.id);
+    formData.append("title", data.title);
+    formData.append("price", data.price.toString());
+    formData.append("description", data.description);
+    formData.append("categoryId", data.categoryId);
+
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
     }
-    */
+
     console.log("after submit:", data);
-    const result = await dispatch(updateProductLineAsync(data));
+    const result = await dispatch(updateProductLineAsync(formData));
     if (result.meta.requestStatus === "fulfilled") {
       toast.success("Product Line updated successfully");
     } else if (result.meta.requestStatus === "rejected") {
@@ -216,8 +219,28 @@ export default function EditProductForm(): JSX.Element {
             />
           )}
         />
+        
 
 */}
+
+
+<InputLabel htmlFor="images">Select Images</InputLabel>
+        <Controller
+          name="images"
+          control={control}
+          defaultValue={[]}
+          render={({ field }) => (
+            <>
+              <input
+                type="file"
+                multiple
+                style={{ margin: "20px 0 0 0", width: "100%" }}
+                onChange={handleFileChange}
+              />
+            </>
+          )}
+        />
+
 
         <Button
           type="submit"
