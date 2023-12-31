@@ -22,18 +22,20 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("Test for User Reducer", () => {
-  /*
+  
   test("should fetch all users", async () => {
     await store.dispatch(fetchUsersAsync());
+    console.log("Store check :",store.getState());
     expect(store.getState().userReducer.users.length).toBe(3);
   });
+  
+  /*
   test("should login user with right credentials", async () => {
     await store.dispatch(
       loginUserAsync({ email: "john@mail.com", password: "changeme" })
     );
-    expect(store.getState().userReducer.currentUser).toMatchObject(
-      usersData[0]
-    );
+    console.log("Store check :",store.getState());
+    expect(store.getState().userReducer.currentUser).toMatchObject(usersData[0]);
   });
   test("should authenticate with right token", async () => {
     await store.dispatch(authenticateUserAsync(access_token + "_2"));
@@ -53,5 +55,5 @@ describe("Test for User Reducer", () => {
     expect(store.getState().userReducer.users[0].name).toBe("test name");
     expect(store.getState().userReducer.users.length).toBe(3);
   });
-  */
+*/  
 });

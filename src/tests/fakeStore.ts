@@ -7,6 +7,7 @@ import cartReducer from "../redux/reducers/cartReducer";
 import { productsData } from "./data/productsData";
 import { usersData } from "./data/usersData";
 import categoryReducer from "../redux/reducers/categoryReducer";
+import { categoriesData } from "./data/catagoriesData";
 
 export const fakeStore = () => {
   return configureStore({
@@ -28,6 +29,11 @@ export const fakeStore = () => {
         users:usersData,
         error: "",
         loading: false,
+      },
+      categoryReducer:{
+        categories:categoriesData,
+        error: "",
+        status:""
       }
     },
   });

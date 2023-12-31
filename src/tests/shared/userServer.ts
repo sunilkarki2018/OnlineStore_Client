@@ -7,12 +7,12 @@ import { UpdateUserInput } from "../../types/User/UpdateUserInput";
 export const access_token = "aaa-bbb-ccc";
 
 export const handlers = [
-  rest.get("https://api.escuelajs.co/api/v1/users", (req, res, ctx) => {
+  rest.get("http://localhost:5238/api/v1/users", (req, res, ctx) => {
     return res(ctx.json(usersData));
   }),
-  /*
+  
   rest.post(
-    "https://api.escuelajs.co/api/v1/auth/login",
+    "http://localhost:5238/api/v1/auth/login",
     async (req, res, ctx) => {
       const { email, password } = await req.json();
       const foundUser = usersData.find(
@@ -28,11 +28,11 @@ export const handlers = [
     }
   ),
 
-  rest.get("https://api.escuelajs.co/api/v1/auth/profile", (req, res, ctx) => {
+  rest.get("http://localhost:5238/api/v1/auth/profile", (req, res, ctx) => {
     const token = req.headers.get("Authorization")?.split(" ")[1];
     const originalToken = token?.split("_")[0];
     const id = token?.split("_")[1];
-    const user = usersData.find((u) => u.id === Number(id));
+    const user = usersData.find((u) => u.id === id);
     if (originalToken === access_token && user) {
       return res(ctx.json(user));
     } else {
@@ -41,11 +41,11 @@ export const handlers = [
     }
   }),
   rest.put(
-    "https://api.escuelajs.co/api/v1/users/:id",
+    "http://localhost:5238/api/v1/users/:id",
     async (req, res, ctx) => {
       const input: UpdateUserInput = await req.json();
       const { id } = req.params;
-      const findIndex = usersData.findIndex((i) => i.id === Number(id));
+      const findIndex = usersData.findIndex((i) => i.id === id);
       if (findIndex > -1) {
         return res(
           ctx.json({
@@ -67,7 +67,7 @@ export const handlers = [
       }
     }
   ),
-    */
+    
 ];
 
 const userServer = setupServer(...handlers);

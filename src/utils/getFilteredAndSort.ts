@@ -21,7 +21,7 @@ export const executeSearchandSort = (
     );
   }
   if (!isStringNotNullOrEmpty(productSizeId)) {
-    productSizeId = "34";
+    productSizeId = "M";
   }
   if (isStringNotNullOrEmpty(productSizeId)) {
     filteredResult = filteredResult.filter(

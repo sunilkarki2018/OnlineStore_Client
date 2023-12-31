@@ -9,6 +9,7 @@ import { UserCredential } from "../../types/User/UserCredential";
 
 const initialState: UserReducerState = {
   users: [],
+  currentUser: undefined,
   error: "",
   loading: false,
 };
@@ -103,7 +104,7 @@ export const createUserAsync = createAsyncThunk<
     //return result;
   } catch (e) {
     const error = e as AxiosError;
-    console.log("error.message:",error.message);
+    console.log("error.message:", error.message);
     return rejectWithValue(error.message);
   }
 });
