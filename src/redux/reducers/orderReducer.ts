@@ -58,7 +58,7 @@ export const fetchOrderByIdAsync = createAsyncThunk<
   try {
     const access_token = localStorage.getItem("access_token");
     const response = await axios.get(
-      `http://localhost:5238/api/v1/orders/${id}`,
+      `https://ecommerce2024v1.azurewebsites.net/api/v1/orders/${id}`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -81,7 +81,7 @@ export const deleteOrderAsync = createAsyncThunk<
   try {
     const access_token = localStorage.getItem("access_token");
     const response = await axios.delete(
-      `http://localhost:5238/api/v1/orders/${id}`,
+      `https://ecommerce2024v1.azurewebsites.net/api/v1/orders/${id}`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,

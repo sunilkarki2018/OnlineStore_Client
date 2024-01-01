@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { User } from "../../types/User/User";
 import { UserReducerState } from "../../types/User/UserReducerState";
-import { CreateUserInput } from "../../types/User/CreateUserInput";
 import { UpdateUserInput } from "../../types/User/UpdateUserInput";
 import apis from "../../apis/urls";
 import { UserCredential } from "../../types/User/UserCredential";
@@ -35,7 +34,7 @@ export const loginUserAsync = createAsyncThunk<
 >("loginUserAsync", async (cred, { rejectWithValue, dispatch }) => {
   try {
     //const result = await apis.User.login(cred);
-    const result = await axios.post("http://localhost:5238/api/v1/auth", cred);
+    const result = await axios.post("https://ecommerce2024v1.azurewebsites.net/api/v1/auth", cred);
     //const { access_token } = result;
     const authenticatedResult = await dispatch(
       authenticateUserAsync(result.data)
@@ -64,7 +63,7 @@ export const authenticateUserAsync = createAsyncThunk<
   try {
     //const result: User = await apis.User.profile(access_token);
     const response = await axios.get(
-      "http://localhost:5238/api/v1/auth/get-profile",
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/auth/get-profile",
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -88,7 +87,7 @@ export const createUserAsync = createAsyncThunk<
     const access_token = localStorage.getItem("access_token");
     console.log("before request:", newUser);
     const response = await axios.post(
-      "http://localhost:5238/api/v1/users/create-users",
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/users/create-users",
       newUser,
       {
         headers: {

@@ -2,8 +2,6 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ProductLine } from "../../types/ProductLine/ProductLine";
 import axios, { AxiosError } from "axios";
 import { ProductLineInitialState } from "../../types/ProductLine/ProductLineInitialState";
-import { CreateProductLineInput } from "../../types/ProductLine/CreateProductLineInput";
-import { UpdateProductLineInput } from "../../types/ProductLine/UpdateProductLineInput";
 
 const initialState: ProductLineInitialState = {
   productLinesList: [],
@@ -20,7 +18,7 @@ export const fetchAllProductLinesAsync = createAsyncThunk<
 >("fetchAllProductLinesAsync", async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get(
-      "http://localhost:5238/api/v1/productlines"
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines"
     );
     const result: ProductLine[] = response.data;
     return result;
@@ -37,12 +35,10 @@ export const fetchProductLineAsync = createAsyncThunk<
 >("fetchProductLineAsync", async (id, { rejectWithValue }) => {
   try {
     const response = await axios.get(
-      `http://localhost:5238/api/v1/productlines/${id}`
+      `https://ecommerce2024v1.azurewebsites.net/api/v1/productlines/${id}`
     );
     const result: ProductLine = response.data;
     return result;
-
-    //http://localhost:5238/api/v1/products/088cd42b-8266-49ee-8823-3f52e412355d
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);
@@ -57,7 +53,7 @@ export const createProductLineAsync = createAsyncThunk<
   try {
     const access_token = localStorage.getItem("access_token");
     const response = await axios.post(
-      "http://localhost:5238/api/v1/productlines",
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines",
       newProductLine,
       {
         headers: {
@@ -73,8 +69,6 @@ export const createProductLineAsync = createAsyncThunk<
   }
 });
 
-
-
 export const updateProductLineAsync = createAsyncThunk<
   boolean,
   FormData,
@@ -84,7 +78,7 @@ export const updateProductLineAsync = createAsyncThunk<
     const access_token = localStorage.getItem("access_token");
     const id=updateProductLine.get("id");
     const response = await axios.patch(
-      "http://localhost:5238/api/v1/productlines",
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines",
       updateProductLine,
       {
         headers: {
@@ -112,7 +106,7 @@ export const deleteProductLineAsync = createAsyncThunk<
     //const result: boolean = await apis.Product.delete(id);
     const access_token = localStorage.getItem("access_token");
     const response = await axios.delete(
-      `http://localhost:5238/api/v1/productlines/${id}`,
+      `https://ecommerce2024v1.azurewebsites.net/api/v1/productlines/${id}`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -135,7 +129,6 @@ const productLineSlice = createSlice({
   initialState,
   reducers: {
     addProductLine: (state, action: PayloadAction<ProductLine>) => {
-      //state.products.push(action.payload);
     },
   },
 

@@ -14,7 +14,7 @@ export const fetchAllProductSizesAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchAllProductSizesAsync", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('http://localhost:5238/api/v1/productsizes');    
+    const response = await axios.get('https://ecommerce2024v1.azurewebsites.net/api/v1/productsizes');    
     const result: ProductSize[] =response.data
     return result;
   } catch (e) {

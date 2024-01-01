@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Category } from "../../types/Category/Category";
 import axios, { AxiosError } from "axios";
-import apis from "../../apis/urls";
 import { CategoryInitialState } from "../../types/Category/CategoryInitialState";
 
 const initialState: CategoryInitialState = {
@@ -15,7 +14,7 @@ export const fetchAllCategoriesAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchAllCategoriesAsync", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('http://localhost:5238/api/v1/categorys');    
+    const response = await axios.get('https://ecommerce2024v1.azurewebsites.net/api/v1/categorys');    
     const result: Category[] =response.data
     return result;
   } catch (e) {
