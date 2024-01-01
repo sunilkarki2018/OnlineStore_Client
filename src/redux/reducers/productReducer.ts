@@ -21,7 +21,7 @@ export const fetchAllProductsAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchAllProductsAsync", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get("http://localhost:5238/api/v1/products");
+    const response = await axios.get("https://ecommerce2024v1.azurewebsites.net/api/v1/products");
     const result: Product[] = response.data;
     return result;
   } catch (e) {
@@ -40,7 +40,7 @@ export const fetchProductAsync = createAsyncThunk<
     //return result;
 
     const response = await axios.get(
-      `http://localhost:5238/api/v1/products/${id}`
+      `https://ecommerce2024v1.azurewebsites.net/api/v1/products/${id}`
     );
     const result: Product = response.data;
     return result;
@@ -58,7 +58,7 @@ export const createProductAsync = createAsyncThunk<
   try {
     const access_token = localStorage.getItem("access_token");
     const response = await axios.post(
-      "http://localhost:5238/api/v1/products",
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/products",
       newProduct,
       {
         headers: {

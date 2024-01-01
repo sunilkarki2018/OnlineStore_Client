@@ -63,7 +63,7 @@ const Product = {
 };
 
 const Category = {
-  list: () => requests.get("categories"),
+  list: () => requests.get("categorys"),
 };
 
 const Order = {

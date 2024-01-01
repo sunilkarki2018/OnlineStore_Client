@@ -60,7 +60,7 @@ export const authenticateUserAsync = createAsyncThunk<
 >("authenticateUserAsync", async (access_token, { rejectWithValue }) => {
   try {
     const response = await axios.get(
-      "http://localhost:5238/api/v1/auth/get-profile",
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/auth/get-profile",
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -84,7 +84,7 @@ export const createUserAsync = createAsyncThunk<
     const access_token = localStorage.getItem("access_token");
     console.log("before request:", newUser);
     const response = await axios.post(
-      "http://localhost:5238/api/v1/users/create-users",
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/users/create-users",
       newUser,
       {
         headers: {

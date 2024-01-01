@@ -87,7 +87,7 @@ console.log("UserInfo:",users);
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Role</TableCell>
-                  <TableCell>Update</TableCell>
+                  <TableCell>View</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
