@@ -68,7 +68,7 @@ export const handlers = [
       if (findIndex > -1) {
         return res(
           ctx.json({
-            ...productsData[findIndex],
+            ...productLinesData[findIndex],
             ...input,
           })
         );

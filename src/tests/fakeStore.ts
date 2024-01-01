@@ -4,7 +4,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import productReducer from "../redux/reducers/productReducer";
 import userReducer from "../redux/reducers/userReducer";
 import cartReducer from "../redux/reducers/cartReducer";
-import { productsData } from "./data/productsData";
 import { usersData } from "./data/usersData";
 import categoryReducer from "../redux/reducers/categoryReducer";
 import { categoriesData } from "./data/catagoriesData";

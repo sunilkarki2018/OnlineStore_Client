@@ -1,6 +1,5 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { productsData } from "../data/productsData";
 import { usersData } from "../data/usersData";
 import { UpdateUserInput } from "../../types/User/UpdateUserInput";
 
