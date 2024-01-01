@@ -48,7 +48,7 @@ export const loginUserAsync = createAsyncThunk<
       throw Error(authenticatedResult.payload || "Cannot login");
     } else {
       localStorage.setItem("access_token", result.data);
-      return authenticatedResult.payload as User;
+      return authenticatedResult.payload;
     }
   } catch (e) {
     const error = e as Error;
@@ -72,7 +72,6 @@ export const authenticateUserAsync = createAsyncThunk<
       }
     );
     const result: User = response.data;
-    console.log("result after user dataa", result);
     return result;
   } catch (e) {
     const error = e as Error;

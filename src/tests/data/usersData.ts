@@ -1,7 +1,7 @@
 import { User } from "../../types/User/User";
 
 export const usersData: User[] = [
-  /*
+  
   {
     id: "a9bca7dc-b115-4c15-83f3-819a6fc700b4",
     email: "john@mail.com",
@@ -9,7 +9,7 @@ export const usersData: User[] = [
     firstName: "Jhon",
     lastName:"Def",
     role: "customer",
-    avatar: "https://i.imgur.com/DumuKkD.jpeg",
+    avatar: undefined,
     houseNumber: "string",
     street: "string",
     postCode: "string",
@@ -23,7 +23,7 @@ export const usersData: User[] = [
     firstName: "maria",
     lastName:"swift",
     role: "customer",
-    avatar: "https://i.imgur.com/00qWleT.jpeg",
+    avatar: undefined,
     houseNumber: "string",
     street: "string",
     postCode: "string",
@@ -37,12 +37,12 @@ export const usersData: User[] = [
     firstName: "Jhon",
     lastName:"Lenon",
     role: "admin",
-    avatar: "https://i.imgur.com/5mPmJYO.jpeg",
+    avatar: null,
     houseNumber: "string",
     street: "string",
     postCode: "string",
     city: "string",
     country: "string"
   },
-  */
+    
 ];

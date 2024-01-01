@@ -2,7 +2,7 @@ import { User } from "./User";
 
 export interface UserReducerState {
   users: User[];
-  user?: User|undefined;
+  user?: User;
   currentUser?: User;
   error?: string;
   loading: boolean;

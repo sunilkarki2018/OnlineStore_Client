@@ -27,6 +27,8 @@ export const fakeStore = () => {
       },
       userReducer:{
         users:usersData,
+        user:undefined,
+        currentUser:undefined,
         error: "",
         loading: false,
       },

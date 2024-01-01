@@ -97,7 +97,7 @@ export default function ProductDetails() {
     <Grid container spacing={6}>
       <Grid item xs={6}>
         <Carousel>
-          {productLineSingle?.imageReadDTOs?.map((image, index) => (
+          {productLineSingle?.images?.map((image, index) => (
             <img
               key={index}
               src={`data:image/jpg;base64,${image.imgBase64Data}`}

@@ -28,8 +28,8 @@ export default function ProductCard({ product }: Props) {
     dispatch(
       addToCart({
         productId: product.id,
-        title: product.productLine.title,
-        price: product.productLine.price,
+        title: product.productLine?.title,
+        price: product.productLine?.price,
         quantity: 1,
       })
     );
@@ -44,24 +44,24 @@ export default function ProductCard({ product }: Props) {
     <Card sx={cardStyle}>
       <CardMedia
         sx={{ height: 150 }}
-        //image={product.images[0]}
-        //image="https://picsum.photos/640/640?r=1389"
-        image={`data:image/jpg;base64,${product.productLine.imageReadDTOs[0].imgBase64Data}`}
+        image={ product.productLine?.images && product.productLine.images.length > 0
+          ? `data:image/jpg;base64,${product.productLine.images[0].imgBase64Data}`
+          : 'https://picsum.photos/640/640?r=1389'}
         title="green iguana"
       />
       <CardContent sx={{ height: 50 }}>
         <Typography gutterBottom variant="h6" component="div">
-          {product.productLine.title}/Size: {product.productSize?.value}
+          {product.productLine?.title}/Size: {product.productSize?.value}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Price:${product.productLine.price}
+          Price:${product.productLine?.price}
         </Typography>
       </CardContent>
       <CardActions sx={{ height: 10 }}>
         <Button onClick={handleAddToCartClick} size="small">
           {isLoading ? "Loading..." : "Add"}
         </Button>
-        <Button component={Link} to={`/productLines/${product.productLine.id}`} size="small">
+        <Button component={Link} to={`/productLines/${product.productLine?.id}`} size="small">
           View
         </Button>
       </CardActions>

@@ -9,10 +9,9 @@ export const access_token = "aaa-bbb-ccc";
 export const handlers = [
   rest.get("http://localhost:5238/api/v1/users", (req, res, ctx) => {
     return res(ctx.json(usersData));
-  }),
-  
+  }),  
   rest.post(
-    "http://localhost:5238/api/v1/auth/login",
+    "http://localhost:5238/api/v1/auth",
     async (req, res, ctx) => {
       const { email, password } = await req.json();
       const foundUser = usersData.find(
@@ -20,7 +19,7 @@ export const handlers = [
       );
       if (foundUser) {
         const token = access_token + "_" + foundUser.id;
-        return res(ctx.json({ access_token: token }));
+        return res(ctx.json( token ));
       } else {
         ctx.status(401);
         return res(ctx.text("Cannot authenticate user"));
@@ -28,12 +27,15 @@ export const handlers = [
     }
   ),
 
-  rest.get("http://localhost:5238/api/v1/auth/profile", (req, res, ctx) => {
+  rest.get("http://localhost:5238/api/v1/auth/get-profile", (req, res, ctx) => {
     const token = req.headers.get("Authorization")?.split(" ")[1];
     const originalToken = token?.split("_")[0];
     const id = token?.split("_")[1];
     const user = usersData.find((u) => u.id === id);
+    console.log("token after login:",token);
+    console.log("User after login:",user);
     if (originalToken === access_token && user) {
+      
       return res(ctx.json(user));
     } else {
       ctx.status(401);

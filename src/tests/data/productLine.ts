@@ -1,20 +1,19 @@
-import { Product } from "../../types/Product/Product";
+import { ProductLine } from "../../types/ProductLine/ProductLine";
 
-
-export const productsData: Product[] = [
+export const productsData: ProductLine[] = [
   /*
   {
     id: "a9bca7dc-b115-4c15-83f3-819a6fc700b4",
     title: "yes",
-    price: 1212,
     description: "test",
+    price: 1212,
     images: ["https://picsum.photos/640/640?r=2123"],
     creationAt: "2023-09-28T12:04:22.000Z",
     updatedAt: "2023-09-28T12:04:22.000Z",
     category: {
       id: "b9bca7dc-b115-4c15-83f3-819a6fc700b4",
       name: "Clothe555",
-      image: "https://picsum.photos/640/640?r=1389"
+      image: "https://picsum.photos/640/640?r=1389",
     },
   },
   {
@@ -29,7 +28,7 @@ export const productsData: Product[] = [
     category: {
       id: "d9bca7dc-b115-4c15-83f3-819a6fc700b4",
       name: "Shoes",
-      image: "https://picsum.photos/640/640?r=2293"
+      image: "https://picsum.photos/640/640?r=2293",
     },
   },
   {
@@ -44,9 +43,8 @@ export const productsData: Product[] = [
     category: {
       id: "f9bca7dc-b115-4c15-83f3-819a6fc700b4",
       name: "Clothe555",
-      image: "https://picsum.photos/640/640?r=1389"
+      image: "https://picsum.photos/640/640?r=1389",
     },
   },
   */
 ];
-
