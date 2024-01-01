@@ -1,23 +1,23 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { productsData } from "../data/productsData";
-import { CreateProductInput } from "../../types/Product/CreateProductInput";
 import { categoriesData } from "../data/catagoriesData";
-import { Product } from "../../types/Product/Product";
-import { UpdateProductInput } from "../../types/Product/UpdateProductInput";
+import { productLinesData } from "../data/productLinesData";
+import { CreateProductLineInput } from "../../types/ProductLine/CreateProductLineInput";
+import { ProductLine } from "../../types/ProductLine/ProductLine";
+import { UpdateProductLineInput } from "../../types/ProductLine/UpdateProductLineInput";
 
 export const handlers = [
 
-  rest.get("https://api.escuelajs.co/api/v1/products", (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(productsData));
+  rest.get("http://localhost:5238/api/v1/productlines", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(productLinesData));
   }),
 
   rest.delete(
-    "https://api.escuelajs.co/api/v1/products/:id",
+    "http://localhost:5238/api/v1/productlines/:id",
     (req, res, ctx) => {
       const { id } = req.params;
-      const productIndex = productsData.findIndex(
-        (product) => product.id === id
+      const productIndex = productLinesData.findIndex(
+        (productline) => productline.id === id
       );
       if (productIndex !== -1) {
         return res(ctx.json(true));
@@ -26,24 +26,23 @@ export const handlers = [
       }
     }
   ),
-/*
+
   rest.post(
-    "https://api.escuelajs.co/api/v1/products/",
+    "http://localhost:5238/api/v1/productlines/",
     async (req, res, ctx) => {
-      const input: CreateProductInput = await req.json();
+      const input: CreateProductLineInput = await req.json();
       const category = categoriesData.find((c) => c.id === input.categoryId);
       if (category) {
-        const newProduct: Product = {
-          id: productsData.length + 1,
-          images: input.images,
+        const newProductLine: ProductLine = {
+          id: "a9bca7dc-b115-4c15-83f3-819a6fc700b9",
+          images: undefined,
           title: input.title,
           description: input.description,
+          categoryId:"a9bca7dc-b115-4c15-83f3-819a6fc700b1",
           category,
           price: input.price,
-          creationAt: "",
-          updatedAt: "",
         };
-        return res(ctx.json(newProduct));
+        return res(ctx.json(newProductLine));
       } else {
         ctx.status(400);
         ctx.json({
@@ -58,15 +57,14 @@ export const handlers = [
         });
       }
     }
-  ),
-  */
+  ),  
 
   rest.put(
-    "https://api.escuelajs.co/api/v1/products/:id",
+    "http://localhost:5238/api/v1/productlines/:id",
     async (req, res, ctx) => {
-      const input: UpdateProductInput = await req.json();
+      const input: UpdateProductLineInput = await req.json();
       const { id } = req.params;
-      const findIndex = productsData.findIndex((i) => i.id === id);
+      const findIndex = productLinesData.findIndex((i) => i.id === id);
       if (findIndex > -1) {
         return res(
           ctx.json({
@@ -91,6 +89,7 @@ export const handlers = [
   ),
 ];
 
-const productServer = setupServer(...handlers);
+const productLineServer = setupServer(...handlers);
 
-export default productServer;
+export default productLineServer;
+

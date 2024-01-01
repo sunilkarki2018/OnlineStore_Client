@@ -7,7 +7,7 @@ export interface ProductLine {
     price: number;    
     categoryId: string;
     category?: Category;
-    images?: ImageReadDTO[];
+    images?: Image[];
   }
 
   

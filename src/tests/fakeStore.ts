@@ -8,19 +8,22 @@ import { productsData } from "./data/productsData";
 import { usersData } from "./data/usersData";
 import categoryReducer from "../redux/reducers/categoryReducer";
 import { categoriesData } from "./data/catagoriesData";
+import productLineReducer from "../redux/reducers/productLineReducer";
+import { productLinesData } from "./data/productLinesData";
 
 export const fakeStore = () => {
   return configureStore({
     reducer: {
       productReducer,
+      productLineReducer,
       userReducer,
       cartReducer,
       categoryReducer
     },
     preloadedState: {
-      productReducer: {
-        productsList: productsData,
-        productsSingle: productsData[0],
+      productLineReducer: {
+        productLinesList: productLinesData,
+        productLineSingle: productLinesData[0],
         listLoading: false,
         singleLoading: false,
         error: null,

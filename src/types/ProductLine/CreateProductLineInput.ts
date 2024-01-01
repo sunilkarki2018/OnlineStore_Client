@@ -3,5 +3,5 @@ export interface CreateProductLineInput {
   price: number;
   description: string;
   categoryId: string;
-  images: string[];
+  images?: string[];
 }

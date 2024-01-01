@@ -20,7 +20,7 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import CartSummary from "./CartSummary";
-import { addToCart, removeFromCart } from "../../redux/reducers/cartReducer";
+import { addToCart, clearCartItems, removeFromCart } from "../../redux/reducers/cartReducer";
 import { CartItem } from "../../types/Cart/CartItem";
 import { OrderItem } from "../../types/Order/OrderItem";
 import { Product } from "../../types/Product/Product";
@@ -62,6 +62,7 @@ export default function CartList() {
     const createOrderInput = mapCartItemsToCreateOrderInput(cartItems);
     const result = await dispatch(createOrderAsync(createOrderInput));
     if (result.meta.requestStatus === "fulfilled") {
+      dispatch(clearCartItems());
       toast.success("Order created successfully");
     } else if (result.meta.requestStatus === "rejected") {
       toast.error("Error while adding Order");

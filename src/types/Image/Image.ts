@@ -1,4 +1,4 @@
-interface ImageReadDTO {
+interface Image {
     id: string;
     productLineId: string;
     data: Uint8Array[];
