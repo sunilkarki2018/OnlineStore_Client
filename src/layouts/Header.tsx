@@ -19,7 +19,6 @@ const mainLinks = [
   { title: "Home", path: "home" },
   { title: "ProductLine", path: "productLine" },
   { title: "Product", path: "product" },
-  { title: "Orders", path: "orderList" }
 ];
 const rightLinks = [
   { title: "Login", path: "login" },
@@ -54,9 +53,15 @@ export default function Header() {
               </ListItem>
             )}
             {currentUser && currentUser.role?.includes("Admin") && (
-              <ListItem component={NavLink} to={"/users"}>
-                USERS
-              </ListItem>
+              <>
+                {" "}
+                <ListItem component={NavLink} to={"/users"}>
+                  USERS
+                </ListItem>
+                <ListItem component={NavLink} to={"/orderList"}>
+                  Orders
+                </ListItem>
+              </>
             )}
           </List>
           <Box display="flex" alignItems="center">

@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { OrderInitialState } from "../../types/Order/OrderInitialState";
 import { Order } from "../../types/Order/Order";
 import { CreateOrderInput } from "../../types/Order/CreateOrderInput";
+import apis from "../../apis/urls";
 
 const initialState: OrderInitialState = {
   orders: [],
@@ -17,8 +18,11 @@ export const fetchAllOrdersAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchAllOrdersAsync", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get("http://localhost:5238/api/v1/orders");
-    const result: Order[] = response.data;
+    const access_token = localStorage.getItem("access_token");
+    if (access_token === null) {
+      throw new Error("Access token is null");
+    }
+    const result: Order[] = await apis.Order.listWithToken(access_token);
     return result;
   } catch (e) {
     const error = e as AxiosError;
@@ -33,15 +37,10 @@ export const createOrderAsync = createAsyncThunk<
 >("createOrderAsync", async (newOrder, { rejectWithValue }) => {
   try {
     const access_token = localStorage.getItem("access_token");
-    const response = await axios.post(
-      "http://localhost:5238/api/v1/orders",
-      newOrder,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
+    if (access_token === null) {
+      throw new Error("Access token is null");
+    }
+    const response = await apis.Order.addWithToken(newOrder, access_token);
     const result: Order = response.data;
     return result;
   } catch (e) {
@@ -57,16 +56,12 @@ export const fetchOrderByIdAsync = createAsyncThunk<
 >("fetchOrderByIdAsync", async (id: string, { rejectWithValue }) => {
   try {
     const access_token = localStorage.getItem("access_token");
-    const response = await axios.get(
-      `https://ecommerce2024v1.azurewebsites.net/api/v1/orders/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
-    const result: Order = response.data;
-    return result;
+
+    if (access_token === null) {
+      throw new Error("Access token is null");
+    }
+    const response: Order = await apis.Order.detailsWithToken(id, access_token);
+    return response;
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);
@@ -80,18 +75,11 @@ export const deleteOrderAsync = createAsyncThunk<
 >("deleteOrderAsync", async (id: string, { rejectWithValue }) => {
   try {
     const access_token = localStorage.getItem("access_token");
-    const response = await axios.delete(
-      `https://ecommerce2024v1.azurewebsites.net/api/v1/orders/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
-    const result: boolean = response.data;
-    if (!result) {
-      throw new Error("Cannot delete");
+
+    if (access_token === null) {
+      throw new Error("Access token is null");
     }
+    const response: boolean = await apis.Order.deletWithToken(id, access_token);
     return id;
   } catch (e) {
     const error = e as AxiosError;

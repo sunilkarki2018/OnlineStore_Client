@@ -18,7 +18,7 @@ export const fetchAllProductLinesAsync = createAsyncThunk<
 >("fetchAllProductLinesAsync", async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines"
+      "http://localhost:5238/api/v1/productlines"
     );
     const result: ProductLine[] = response.data;
     return result;
@@ -35,7 +35,7 @@ export const fetchProductLineAsync = createAsyncThunk<
 >("fetchProductLineAsync", async (id, { rejectWithValue }) => {
   try {
     const response = await axios.get(
-      `https://ecommerce2024v1.azurewebsites.net/api/v1/productlines/${id}`
+      `http://localhost:5238/api/v1/productlines/${id}`
     );
     const result: ProductLine = response.data;
     return result;
@@ -53,7 +53,7 @@ export const createProductLineAsync = createAsyncThunk<
   try {
     const access_token = localStorage.getItem("access_token");
     const response = await axios.post(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines",
+      "http://localhost:5238/api/v1/productlines",
       newProductLine,
       {
         headers: {
@@ -78,7 +78,7 @@ export const updateProductLineAsync = createAsyncThunk<
     const access_token = localStorage.getItem("access_token");
     const id=updateProductLine.get("id");
     const response = await axios.patch(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines",
+      "http://localhost:5238/api/v1/productlines",
       updateProductLine,
       {
         headers: {
@@ -106,7 +106,7 @@ export const deleteProductLineAsync = createAsyncThunk<
     //const result: boolean = await apis.Product.delete(id);
     const access_token = localStorage.getItem("access_token");
     const response = await axios.delete(
-      `https://ecommerce2024v1.azurewebsites.net/api/v1/productlines/${id}`,
+      `http://localhost:5238/api/v1/productlines/${id}`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,

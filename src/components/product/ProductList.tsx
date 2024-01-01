@@ -86,7 +86,6 @@ export default function ProductList() {
                   {currentUser?.role.includes("Admin") && (
                     <>
                       <TableCell>Delete</TableCell>
-                      <TableCell>Update</TableCell>
                     </>
                   )}
                 </TableRow>
@@ -106,18 +105,6 @@ export default function ProductList() {
                           disabled={!currentUser?.role.includes("Admin")}
                         >
                           <DeleteIcon />
-                        </Button>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {currentUser?.role.includes("Admin") && (
-                        <Button
-                          component={Link}
-                          to={`/productLineEdit/${product.id}`}
-                          size="small"
-                          disabled={!currentUser?.role.includes("Admin")}
-                        >
-                          <EditIcon />
                         </Button>
                       )}
                     </TableCell>
