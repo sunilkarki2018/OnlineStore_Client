@@ -23,10 +23,6 @@ import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import ErrorMessage from "../errors/ErrorMessage";
 import {
-  deleteProductLineAsync,
-  fetchAllProductLinesAsync,
-} from "../../redux/reducers/productLineReducer";
-import {
   deleteOrderAsync,
   fetchAllOrdersAsync,
 } from "../../redux/reducers/orderReducer";

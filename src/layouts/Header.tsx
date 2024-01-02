@@ -59,7 +59,7 @@ export default function Header() {
                   USERS
                 </ListItem>
                 <ListItem component={NavLink} to={"/orderList"}>
-                  Orders
+                  ORDERS
                 </ListItem>
               </>
             )}

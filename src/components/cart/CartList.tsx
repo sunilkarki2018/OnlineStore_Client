@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Grid,
   Paper,
@@ -14,7 +13,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
@@ -23,7 +22,6 @@ import CartSummary from "./CartSummary";
 import { addToCart, clearCartItems, removeFromCart } from "../../redux/reducers/cartReducer";
 import { CartItem } from "../../types/Cart/CartItem";
 import { OrderItem } from "../../types/Order/OrderItem";
-import { Product } from "../../types/Product/Product";
 import { CreateOrderInput } from "../../types/Order/CreateOrderInput";
 import { createOrderAsync } from "../../redux/reducers/orderReducer";
 import { toast } from "react-toastify";
