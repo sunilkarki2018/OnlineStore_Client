@@ -21,8 +21,7 @@ export const fetchAllProductsAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchAllProductsAsync", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get("https://ecommerce2024v1.azurewebsites.net/api/v1/products");
-    const result: Product[] = response.data;
+    const result: Product[] = await apis.Product.list();
     return result;
   } catch (e) {
     const error = e as AxiosError;
@@ -36,14 +35,8 @@ export const fetchProductAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchProductAsync", async (id, { rejectWithValue }) => {
   try {
-    //const result: Product = await apis.Product.details(id);
-    //return result;
-
-    const response = await axios.get(
-      `https://ecommerce2024v1.azurewebsites.net/api/v1/products/${id}`
-    );
-    const result: Product = response.data;
-    return result;
+    const response: Product = await apis.Product.details(id);
+    return response;
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);
@@ -57,15 +50,10 @@ export const createProductAsync = createAsyncThunk<
 >("createProductAsync", async (newProduct, { rejectWithValue }) => {
   try {
     const access_token = localStorage.getItem("access_token");
-    const response = await axios.post(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/products",
-      newProduct,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
+    if (access_token === null) {
+      throw new Error("Access token is null");
+    }
+    const response = await apis.Product.addWithToken(newProduct, access_token);
     const result: Product = response.data;
     return result;
   } catch (e) {
@@ -99,7 +87,15 @@ export const updateProductAsync = createAsyncThunk<
   "updateProductAsync",
   async ({ id, update }: UpdateProductInput, { rejectWithValue }) => {
     try {
-      const result: Product = await apis.Product.update(id, update);
+      const access_token = localStorage.getItem("access_token");
+      if (access_token === null) {
+        throw new Error("Access token is null");
+      }
+      const result: Product = await apis.Product.updateWithToken(
+        id,
+        update,
+        access_token
+      );
       return result;
     } catch (e) {
       const error = e as AxiosError;

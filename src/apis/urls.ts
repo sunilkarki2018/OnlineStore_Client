@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
-axios.defaults.baseURL = "https://ecommerce2024v1.azurewebsites.net/api/v1/";
+//axios.defaults.baseURL = "https://ecommerce2024v1.azurewebsites.net/api/v1/";
 
-//axios.defaults.baseURL = "http://localhost:5238/api/v1/";
+axios.defaults.baseURL = "http://localhost:5238/api/v1/";
 
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -51,6 +51,14 @@ const requests = {
         },
       })
       .then(responseBody),
+  putWithToken: (url: string, body: {}, headerData: string) =>
+    axios
+      .put(url, body, {
+        headers: {
+          Authorization: `Bearer ${headerData}`,
+        },
+      })
+      .then(responseBody),
 };
 
 const Product = {
@@ -60,10 +68,36 @@ const Product = {
   update: (id: string, productData: {}) =>
     requests.put(`products/${id}`, productData),
   delete: (id: string) => requests.del(`products/${id}`),
+  listWithToken: (headerData: string) =>
+  requests.getWithToken(`products`, headerData),
+addWithToken: (productData: {}, headerData: string) =>
+  requests.postWithToken(`products`, productData, headerData),
+updateWithToken: (id: string,productData: {}, headerData: string) =>
+  requests.putWithToken(`products/${id}`, productData, headerData),
+deletWithToken: (id: string, headerData: string) =>
+  requests.deleteWithToken(`products/${id}`, headerData),
+};
+
+const ProductLine = {
+  list: () => requests.get("productlines"),
+  details: (id: string) => requests.get(`productlines/${id}`),
+  add: (productData: {}) => requests.post("productlines", productData),
+  update: (id: string, productlineData: {}) =>
+    requests.put(`productlines/${id}`, productlineData),
+  delete: (id: string) => requests.del(`productlines/${id}`),
+  addWithToken: (productlineData: {}, headerData: string) =>
+    requests.postWithToken(`productlines`, productlineData, headerData),
+  updateWithToken: (id: string,productlineData: {}, headerData: string) =>
+    requests.putWithToken(`productlines/${id}`, productlineData, headerData),
+  deletWithToken: (id: string, headerData: string) =>
+    requests.deleteWithToken(`productlines/${id}`, headerData),
 };
 
 const Category = {
   list: () => requests.get("categorys"),
+};
+const ProductSize = {
+  list: () => requests.get("productsizes"),
 };
 
 const Order = {
@@ -98,6 +132,8 @@ const apis = {
   Category,
   User,
   Order,
+  ProductLine,
+  ProductSize
 };
 
 export default apis;

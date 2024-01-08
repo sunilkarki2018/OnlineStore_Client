@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { ProductSizeInitialState } from "../../types/ProductSize/ProductSizeInitialState";
 import { ProductSize } from "../../types/Product/ProductSize";
+import apis from "../../apis/urls";
 
 const initialState: ProductSizeInitialState = {
   productSizes: [],
@@ -14,8 +15,7 @@ export const fetchAllProductSizesAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchAllProductSizesAsync", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('https://ecommerce2024v1.azurewebsites.net/api/v1/productsizes');    
-    const result: ProductSize[] =response.data
+    const result: ProductSize[] = await apis.ProductSize.list();
     return result;
   } catch (e) {
     const error = e as AxiosError;

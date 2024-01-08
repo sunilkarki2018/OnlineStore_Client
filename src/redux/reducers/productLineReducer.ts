@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ProductLine } from "../../types/ProductLine/ProductLine";
 import axios, { AxiosError } from "axios";
 import { ProductLineInitialState } from "../../types/ProductLine/ProductLineInitialState";
+import apis from "../../apis/urls";
 
 const initialState: ProductLineInitialState = {
   productLinesList: [],
@@ -17,10 +18,7 @@ export const fetchAllProductLinesAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchAllProductLinesAsync", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines"
-    );
-    const result: ProductLine[] = response.data;
+    const result: ProductLine[] = await apis.ProductLine.list();
     return result;
   } catch (e) {
     const error = e as AxiosError;
@@ -34,11 +32,8 @@ export const fetchProductLineAsync = createAsyncThunk<
   { rejectValue: string }
 >("fetchProductLineAsync", async (id, { rejectWithValue }) => {
   try {
-    const response = await axios.get(
-      `https://ecommerce2024v1.azurewebsites.net/api/v1/productlines/${id}`
-    );
-    const result: ProductLine = response.data;
-    return result;
+    const response: ProductLine = await apis.ProductLine.details(id);
+    return response;
   } catch (e) {
     const error = e as AxiosError;
     return rejectWithValue(error.message);
@@ -52,14 +47,12 @@ export const createProductLineAsync = createAsyncThunk<
 >("createProductLineAsync", async (newProductLine, { rejectWithValue }) => {
   try {
     const access_token = localStorage.getItem("access_token");
-    const response = await axios.post(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines",
+    if (access_token === null) {
+      throw new Error("Access token is null");
+    }
+    const response = await apis.ProductLine.addWithToken(
       newProductLine,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
+      access_token
     );
     const result: ProductLine = response.data;
     return result;
@@ -76,9 +69,9 @@ export const updateProductLineAsync = createAsyncThunk<
 >("updateProductLineAsync", async (updateProductLine, { rejectWithValue }) => {
   try {
     const access_token = localStorage.getItem("access_token");
-    const id=updateProductLine.get("id");
+    const id = updateProductLine.get("id");
     const response = await axios.patch(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines",
+      "http://localhost:5238/api/v1/productlines",
       updateProductLine,
       {
         headers: {
@@ -103,20 +96,15 @@ export const deleteProductLineAsync = createAsyncThunk<
   { rejectValue: string }
 >("deleteProductLineAsync", async (id: string, { rejectWithValue }) => {
   try {
-    //const result: boolean = await apis.Product.delete(id);
     const access_token = localStorage.getItem("access_token");
-    const response = await axios.delete(
-      `https://ecommerce2024v1.azurewebsites.net/api/v1/productlines/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
-    const result: boolean = response.data;
-    if (!result) {
-      throw new Error("Cannot delete");
+
+    if (access_token === null) {
+      throw new Error("Access token is null");
     }
+    const response: boolean = await apis.ProductLine.deletWithToken(
+      id,
+      access_token
+    );
     return id;
   } catch (e) {
     const error = e as AxiosError;
@@ -128,8 +116,7 @@ const productLineSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    addProductLine: (state, action: PayloadAction<ProductLine>) => {
-    },
+    addProductLine: (state, action: PayloadAction<ProductLine>) => {},
   },
 
   extraReducers: (builder) => {
@@ -193,8 +180,8 @@ const productLineSlice = createSlice({
     });
 
     builder.addCase(updateProductLineAsync.fulfilled, (state, action) => {
-     console.log("after fulfilled,",action.payload);
-     /*  
+      console.log("after fulfilled,", action.payload);
+      /*  
       const foundIndex = state.productLinesList.findIndex(
         (p) => p.id === action.payload.id
       );
