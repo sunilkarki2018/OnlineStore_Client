@@ -1,0 +1,15 @@
+name: "Run unit test after pushing code"
+on: ["push"]
+jobs: 
+    unit-test:
+        name: unit-test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout github repo
+              uses: actions/checkout@v4
+            - name: Print a message
+              run: echo "Here is a message"
+            - name: Install packages
+              run: npm install 
+            - name: Run unit test
+              run: npm test 
