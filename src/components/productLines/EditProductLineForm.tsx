@@ -42,8 +42,6 @@ export default function EditProductForm(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchProductLineAsync(id!)).then((productData) => {
-      console.log("Test Id:", id);
-      console.log("Test ProductLine:", productData);
       if (productData.meta.requestStatus === "fulfilled") {
         const item = productData.payload as ProductLine;
         setValue("title", item.title);

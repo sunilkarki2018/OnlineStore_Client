@@ -85,14 +85,14 @@ export const updateProductAsync = createAsyncThunk<
   { rejectValue: string }
 >(
   "updateProductAsync",
-  async ({ id, update }: UpdateProductInput, { rejectWithValue }) => {
+  async (update: UpdateProductInput, { rejectWithValue }) => {
     try {
       const access_token = localStorage.getItem("access_token");
       if (access_token === null) {
         throw new Error("Access token is null");
       }
       const result: Product = await apis.Product.updateWithToken(
-        id,
+        update.id,
         update,
         access_token
       );

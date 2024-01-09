@@ -21,6 +21,7 @@ import CreateProductForm from "../components/product/CreateProductForm";
 import OrderList from "../components/Order/OrderList";
 import OrderItemsList from "../components/Order/OrderItemsList";
 import UserView from "../components/users/UserView";
+import EditProductForm from "../components/product/EditProductForm";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ export const router = createBrowserRouter([
       { path: "orderList", element: <OrderList /> },
       { path: "orderItemsList/:id", element: <OrderItemsList /> },
       { path: "productCreate", element: <CreateProductForm /> },
+      { path: "productEdit/:id", element: <EditProductForm /> },
       { path: "cartList", element: <CartList /> },
       { path: "checkout", element: <Checkout /> },
       { path: "contact", element: <ContactPage /> },

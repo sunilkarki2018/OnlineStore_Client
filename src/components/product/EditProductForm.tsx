@@ -6,39 +6,33 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Box, Typography } from "@mui/material";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import AccessDenied from "../errors/AccessDenied";
-import {
-  fetchAllProductLinesAsync,
-} from "../../redux/reducers/productLineReducer";
-import { CreateProductInput } from "../../types/Product/CreateProductInput";
+import { fetchAllProductLinesAsync } from "../../redux/reducers/productLineReducer";
 import { fetchAllProductSizesAsync } from "../../redux/reducers/productSizeReducer";
-import { createProductAsync } from "../../redux/reducers/productReducer";
+import {
+  fetchProductAsync,
+  updateProductAsync,
+} from "../../redux/reducers/productReducer";
+import { Product } from "../../types/Product/Product";
+import { UpdateProductInput } from "../../types/Product/UpdateProductInput";
 
-export default function CreateProductForm(): JSX.Element {
+export default function EditProductForm(): JSX.Element {
   const navigate = useNavigate();
-  const validationSchema = yup
-    .object({
-      inventory: yup.number().required("Inventory is is required"),
-      productLineId: yup.string().required("Product Line is required"),
-    })
-    .required();
+  const { id } = useParams();
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<CreateProductInput>({
-    resolver: yupResolver(validationSchema),
-  });
+  } = useForm<UpdateProductInput>();
 
   const dispatch = useAppDispatch();
   const { currentUser } = useAppSelector((state: AppState) => state.user);
@@ -48,24 +42,21 @@ export default function CreateProductForm(): JSX.Element {
   const { productSizes } = useAppSelector(
     (state: AppState) => state.productSize
   );
+  useEffect(() => {
+    dispatch(fetchProductAsync(id!)).then((productData) => {
+      if (productData.meta.requestStatus === "fulfilled") {
+        const item = productData.payload as Product;
+        setValue("inventory", item.inventory);
+        setValue("productLineId", item.productLineId);
+        console.log("productLineId:", item.productLineId);
+        setValue("productSizeId", item.productSizeId);
+        console.log("productSizeId:", item.productSizeId);
+        setValue("id", item.id);
+      }
+    });
+  }, [dispatch, id, setValue]);
+
   
-  const handleFormSubmit = async (data: CreateProductInput) => {
-    const formData = new FormData();
-    formData.append("inventory", data.inventory.toString());
-    formData.append("productLineId", data.productLineId);
-    if (data.productSizeId)
-      formData.append("productSizeId", data.productSizeId);
-
-    const result = await dispatch(createProductAsync(data));
-    if (result.meta.requestStatus === "fulfilled") {
-      toast.success("Product added successfully");
-    } else if (result.meta.requestStatus === "rejected") {
-      toast.error("Error while adding Product");
-    }
-    navigate("/product");
-  };
-  const { categories } = useAppSelector((state: AppState) => state.category);
-
   useEffect(() => {
     dispatch(fetchAllProductLinesAsync());
     dispatch(fetchAllProductSizesAsync());
@@ -74,10 +65,19 @@ export default function CreateProductForm(): JSX.Element {
   if (currentUser && currentUser?.role.includes("Customer")) {
     return <AccessDenied />;
   }
-
   if (!currentUser) {
     navigate("/login");
   }
+
+  const handleFormSubmit = async (data: UpdateProductInput) => {
+    const result = await dispatch(updateProductAsync(data));
+    if (result.meta.requestStatus === "fulfilled") {
+      toast.success("Product updated successfully");
+    } else if (result.meta.requestStatus === "rejected") {
+      toast.error("Error while updating Product");
+    }
+    navigate("/product");
+  };
 
   return (
     <Box
@@ -89,7 +89,7 @@ export default function CreateProductForm(): JSX.Element {
       }}
     >
       <Typography component="h1" variant="h5">
-        Add Product
+        Edit Product
       </Typography>
       <Box
         component="form"
@@ -107,11 +107,12 @@ export default function CreateProductForm(): JSX.Element {
           render={({ field }) => (
             <TextField
               {...field}
-              label="Inventory"
+              label={"Inventory"}
               variant="outlined"
               margin="normal"
               fullWidth
               error={!!errors.inventory}
+              value={field.value || ""}
               helperText={errors.inventory?.message}
             />
           )}
@@ -128,6 +129,7 @@ export default function CreateProductForm(): JSX.Element {
                 label="ProductLine"
                 {...field}
                 error={!!errors.productLineId}
+                value={field.value || ""}
               >
                 {productLinesList.map((item) => (
                   <MenuItem key={item.id} value={item.id}>
@@ -149,6 +151,7 @@ export default function CreateProductForm(): JSX.Element {
                 label="productSizeId"
                 {...field}
                 error={!!errors.productSizeId}
+                value={field.value || ""}
               >
                 {productSizes.map((item) => (
                   <MenuItem key={item.id} value={item.id}>

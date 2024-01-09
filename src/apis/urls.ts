@@ -53,7 +53,7 @@ const requests = {
       .then(responseBody),
   putWithToken: (url: string, body: {}, headerData: string) =>
     axios
-      .put(url, body, {
+      .patch(url, body, {
         headers: {
           Authorization: `Bearer ${headerData}`,
         },
