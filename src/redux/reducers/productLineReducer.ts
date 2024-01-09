@@ -71,7 +71,7 @@ export const updateProductLineAsync = createAsyncThunk<
     const access_token = localStorage.getItem("access_token");
     const id = updateProductLine.get("id");
     const response = await axios.patch(
-      "http://localhost:5238/api/v1/productlines",
+      "https://ecommerce2024v1.azurewebsites.net/api/v1/productlines",
       updateProductLine,
       {
         headers: {
