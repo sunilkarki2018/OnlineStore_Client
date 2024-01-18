@@ -15,11 +15,7 @@ import { AppState } from "../redux/store";
 import useAppSelector from "../hooks/useAppSelector";
 import LoginMenu from "./LoginMenu";
 
-const mainLinks = [
-  { title: "Home", path: "home" },
-  { title: "ProductLine", path: "productLine" },
-  { title: "Product", path: "product" },
-];
+const mainLinks = [{ title: "Online Store", path: "home" }];
 const rightLinks = [
   { title: "Login", path: "login" },
   { title: "Register", path: "register" },
@@ -38,23 +34,23 @@ export default function Header() {
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Online Store
+              {mainLinks.map(({ title, path }) => (
+                <ListItem component={NavLink} to={path} key={path}>
+                  {title.toUpperCase()}
+                </ListItem>
+              ))}
             </Typography>
           </Box>
           <List sx={{ display: "flex" }}>
-            {mainLinks.map(({ title, path }) => (
-              <ListItem component={NavLink} to={path} key={path}>
-                {title.toUpperCase()}
-              </ListItem>
-            ))}
-            {currentUser && (
-              <ListItem component={NavLink} to={"/profile"}>
-                PROFILE
-              </ListItem>
-            )}
             {currentUser && currentUser.role?.includes("Admin") && (
               <>
                 {" "}
+                <ListItem component={NavLink} to={"/productLine"}>
+                  PRODUCTLINE
+                </ListItem>
+                <ListItem component={NavLink} to={"/product"}>
+                  PRODUCTS
+                </ListItem>
                 <ListItem component={NavLink} to={"/users"}>
                   USERS
                 </ListItem>
@@ -62,6 +58,11 @@ export default function Header() {
                   ORDERS
                 </ListItem>
               </>
+            )}
+            {currentUser && (
+              <ListItem component={NavLink} to={"/profile"}>
+                PROFILE
+              </ListItem>
             )}
           </List>
           <Box display="flex" alignItems="center">
