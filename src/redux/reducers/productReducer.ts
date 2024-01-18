@@ -54,7 +54,7 @@ export const createProductAsync = createAsyncThunk<
       throw new Error("Access token is null");
     }
     const response = await apis.Product.addWithToken(newProduct, access_token);
-    const result: Product = response.data;
+    const result: Product = response;
     return result;
   } catch (e) {
     const error = e as AxiosError;
@@ -68,7 +68,11 @@ export const deleteProductAsync = createAsyncThunk<
   { rejectValue: string }
 >("deleteProductAsync", async (id: string, { rejectWithValue }) => {
   try {
-    const result: boolean = await apis.Product.delete(id);
+    const access_token = localStorage.getItem("access_token");
+    if (access_token === null) {
+      throw new Error("Access token is null");
+    }
+    const result: boolean = await apis.Product.deletWithToken(id,access_token);
     if (!result) {
       throw new Error("Cannot delete");
     }
@@ -158,7 +162,6 @@ const productsSlice = createSlice({
     });
 
     builder.addCase(createProductAsync.fulfilled, (state, action) => {
-      debugger;
       state.productsList.push(action.payload);
     });
     builder.addCase(createProductAsync.rejected, (state, action) => {

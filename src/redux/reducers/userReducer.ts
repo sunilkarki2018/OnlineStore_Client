@@ -83,7 +83,7 @@ export const createUserAsync = createAsyncThunk<
   try {
     const access_token = localStorage.getItem("access_token");
     const response = await axios.post(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/users/create-users",
+      "http://localhost:5238/api/v1/users/create-users",
       newUser,
       {
         headers: {

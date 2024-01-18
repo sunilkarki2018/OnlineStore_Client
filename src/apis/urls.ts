@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
-axios.defaults.baseURL = "https://ecommerce2024v1.azurewebsites.net/api/v1/";
+//axios.defaults.baseURL = "https://ecommerce2024v1.azurewebsites.net/api/v1/";
 
-//axios.defaults.baseURL = "http://localhost:5238/api/v1/";
+axios.defaults.baseURL = "http://localhost:5238/api/v1/";
 
 const responseBody = (response: AxiosResponse) => response.data;
 

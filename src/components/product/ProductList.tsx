@@ -23,7 +23,10 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { AppState } from "../../redux/store";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import ErrorMessage from "../errors/ErrorMessage";
-import { deleteProductAsync, fetchAllProductsAsync } from "../../redux/reducers/productReducer";
+import {
+  deleteProductAsync,
+  fetchAllProductsAsync,
+} from "../../redux/reducers/productReducer";
 
 export default function ProductList() {
   const { productsList, listLoading, error } = useAppSelector(
@@ -49,6 +52,7 @@ export default function ProductList() {
       </Box>
     );
   if (error) return <ErrorMessage message={error} />;
+  console.log("productsList from ProductList", productsList);
 
   const handleDelete = (id: string) => {
     dispatch(deleteProductAsync(id)).then(() => {
@@ -94,8 +98,8 @@ export default function ProductList() {
               <TableBody>
                 {productsList.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell>{product.productLine.title}</TableCell>
-                    <TableCell>{product.productLine.price}</TableCell>
+                    <TableCell>{product.productLine?.title}</TableCell>
+                    <TableCell>{product.productLine?.price}</TableCell>
                     <TableCell>{product.productSize?.value}</TableCell>
                     <TableCell>{product.inventory}</TableCell>
                     <TableCell>
