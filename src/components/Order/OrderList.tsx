@@ -95,7 +95,6 @@ export default function OrderList() {
                     <TableCell>{order.user.email}</TableCell>
                     <TableCell>{order.orderNumber}</TableCell>
                     <TableCell>{order.orderStatus}</TableCell>
-
                     <TableCell>
                       <Button
                         size="small"

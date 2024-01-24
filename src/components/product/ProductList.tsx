@@ -71,7 +71,7 @@ export default function ProductList() {
             color="primary"
             style={{ marginBottom: "40px" }}
           >
-            Add Product
+            Add New
           </Button>
         )}
 

@@ -70,7 +70,7 @@ export default function ProductLineTableList() {
             color="primary"
             style={{ marginBottom: "40px" }}
           >
-            Add ProductLine
+            Add New
           </Button>
         )}
 

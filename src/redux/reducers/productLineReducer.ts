@@ -54,7 +54,7 @@ export const createProductLineAsync = createAsyncThunk<
       newProductLine,
       access_token
     );
-    const result: ProductLine = response.data;
+    const result: ProductLine = response;
     return result;
   } catch (e) {
     const error = e as AxiosError;
