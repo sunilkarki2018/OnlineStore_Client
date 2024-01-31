@@ -18,8 +18,8 @@ import ProductLineTableList from "../components/productLines/ProductLineTableLis
 import ProductLineView from "../components/productLines/ProductLineView";
 import ProductList from "../components/product/ProductList";
 import CreateProductForm from "../components/product/CreateProductForm";
-import OrderList from "../components/Order/OrderList";
-import OrderItemsList from "../components/Order/OrderItemsList";
+import OrderList from "../components/order/OrderList";
+import OrderItemsList from "../components/order/OrderItemsList";
 import UserView from "../components/users/UserView";
 import EditProductForm from "../components/product/EditProductForm";
 
