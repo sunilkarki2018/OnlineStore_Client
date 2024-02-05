@@ -33,7 +33,7 @@ export const loginUserAsync = createAsyncThunk<
   { rejectValue: string }
 >("loginUserAsync", async (cred, { rejectWithValue, dispatch }) => {
   try {
-    const result = await axios.post("https://ecommerce2024v1.azurewebsites.net/api/v1/auth", cred);
+    const result = await axios.post("https://onlinestore2024.azurewebsites.net/api/v1/auth", cred);
     const authenticatedResult = await dispatch(
       authenticateUserAsync(result.data)
     );
@@ -60,7 +60,7 @@ export const authenticateUserAsync = createAsyncThunk<
 >("authenticateUserAsync", async (access_token, { rejectWithValue }) => {
   try {
     const response = await axios.get(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/auth/get-profile",
+      "https://onlinestore2024.azurewebsites.net/api/v1/auth/get-profile",
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -83,7 +83,7 @@ export const createUserAsync = createAsyncThunk<
   try {
     const access_token = localStorage.getItem("access_token");
     const response = await axios.post(
-      "https://ecommerce2024v1.azurewebsites.net/api/v1/users/create-users",
+      "https://onlinestore2024.azurewebsites.net/api/v1/users/create-users",
       newUser,
       {
         headers: {

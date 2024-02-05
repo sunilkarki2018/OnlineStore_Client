@@ -1,13 +1,13 @@
 # Introduction
 
-It is an Ecommerce application designed as a frontend task at Integrify. This application uses [link](https://ecommerce2024v1.azurewebsites.net/swagger/index.html) as endpoint. It is deployed in netlify.[Deployment Link](https://bucolic-semifreddo-2378d4.netlify.app/)
+It is an Ecommerce application designed as a frontend task at Integrify. This application uses [link](https://onlinestore2024.azurewebsites.net/swagger/index.html) as endpoint. It is deployed in netlify.[Deployment Link](https://bucolic-semifreddo-2378d4.netlify.app/)
 
 ## Getting Started
 
 To start the project first clone the project from the repository and run the node commands.
 
-1. git clone https://github.com/sunilkarki2018/EcommerceApp.git
-2. cd fs16_6-frontend-project
+1. git clone https://github.com/sunilkarki2018/OnlineStore_Client.git
+2. cd OnlineStore_Client
 3. git checkout develop
 4. npm install
 5. npm start
